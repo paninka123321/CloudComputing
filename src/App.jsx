@@ -4,11 +4,13 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <AuthProvider>
       <Router>
+        <Navbar></Navbar>
         <Routes>
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
