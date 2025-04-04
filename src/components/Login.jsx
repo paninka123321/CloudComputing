@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import './LoginPage.css';
 
 const Login = () => {
@@ -37,6 +38,12 @@ const Login = () => {
         onChange={(e) => setPassword(e.target.value)} required />
         </div>
         <button type="submit">Login</button>
+
+        {/* Links for Sign Up and Forgot Password */}
+        <div className="login-links">
+          <p>Haven't got an account? <Link to="/signup">Sign up</Link></p>
+          <p><Link to="/forgot-password">Forgot password?</Link></p>
+        </div>
   
       </form>
       {error && <p>{error}</p>}
