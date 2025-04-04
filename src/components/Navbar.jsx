@@ -10,7 +10,7 @@ console.log("Navbar is rendering...");
       <ul className="nav-links">
         <li><Link to="/">Home</Link></li>
         <li><Link to="/about">About Us</Link></li>
-        <li><Link to="/psychosfera">PsychoSfera</Link></li>
+        <li><Link to="/psychosphere">PsychoSphere</Link></li>
         <li><Link to="/login">Login/Register</Link></li>
       </ul>
     </nav>

@@ -19,7 +19,6 @@ const Login = () => {
   };
 
   return (
-    <body>
     <div className="login-container">
       <form onSubmit={handleLogin} className="login-form">
         <div className="input-group">
@@ -42,7 +41,6 @@ const Login = () => {
       </form>
       {error && <p>{error}</p>}
     </div>
-    </body>
   );
 };
 
