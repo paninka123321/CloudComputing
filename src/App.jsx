@@ -12,7 +12,6 @@ import ForgotPassword from "./components/ForgotPassword";
 
 function App() {
   return (
-    <body>
     <AuthProvider>
       <Router>
         <Navbar></Navbar>
@@ -26,7 +25,6 @@ function App() {
         </Routes>
       </Router>
     </AuthProvider>
-    </body>
   );
 }
 
