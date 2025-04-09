@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { View, Text, StyleSheet, Button, TouchableOpacity, Animated } from "react-native";
-import { useRouter } from "expo-router";
+import { useNavigate } from "react-router-dom";
 
 const emotions = {
   happy: [
@@ -29,7 +29,7 @@ const emotions = {
 const getRandom = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)];
 
 export default function Gra2() {
-  const router = useRouter();
+  const navigate = useNavigate(); 
   const [round, setRound] = useState(1);
   const [answers, setAnswers] = useState<string[]>([]);
   const [showCongrats, setShowCongrats] = useState(false);
@@ -65,7 +65,7 @@ export default function Gra2() {
         console.log("Wyniki gracza:", finalAnswers);
         setShowCongrats(true);
         setTimeout(() => {
-          router.push("/");
+          navigate("/");
         }, 2000);
         return;
       }
@@ -110,7 +110,7 @@ export default function Gra2() {
         </Animated.View>
       </View>
       <Text style={styles.roundText}>Runda: {round} / 4</Text>
-      <Button title="Wróć na ekran główny" onPress={() => router.push("/")} />
+      <Button title="Wróć na ekran główny" onPress={() => navigate("/")} />
     </View>
   );
 }

@@ -26,13 +26,16 @@ const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
 // Fetch the user role from Firestore
-const getUserRole = async (userId) => {
-  const docRef = doc(db, "users", userId);
+const getUserRole = async (uid) => {
+  const docRef = doc(db, "users", uid);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     return docSnap.data().role; // role will be teacher, parent, or child
   }
-  return null;
+  {
+    console.warn("No such document!");
+    return null;
+  }
 };
 
 export { auth, getUserRole };
