@@ -9,7 +9,7 @@ import Home from "./components/Home";
 import PsychoSphere from "./components/PsychoSphere";
 import './App.css'
 import ForgotPassword from "./components/ForgotPassword";
-import MyHumorScreen from "./components/MyHumor";
+
 
 function App() {
   return (
@@ -23,7 +23,6 @@ function App() {
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
           <Route path="/psychosphere" element={<PsychoSphere />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/my-humor" element={<MyHumorScreen />} />
         </Routes>
       </Router>
     </AuthProvider>
