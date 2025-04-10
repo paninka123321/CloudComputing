@@ -7,6 +7,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import PsychoSphere from "./components/PsychoSphere";
+import Logout from "./components/Logout";
 import './App.css'
 import ForgotPassword from "./components/ForgotPassword";
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
           <Route path="/psychosphere" element={<PsychoSphere />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/Logout" element={<Logout />} />
         </Routes>
       </Router>
     </AuthProvider>
