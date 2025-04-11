@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "neurodetective",
+  "private_key_id": "21cf52fe5eea8c5c5a0414481b942c330e89bc5a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDMwQgTWU1vLnqc\nkF7YbRI0gwoM2ccTvxvagdbBJl7UX85P6aeLysKxuioqosb2Mre4dIP3FZkVyXlf\nW3UgYiUYKBvDnVx7FqtRrDB4pJtQsy3gHYLdEFzjLlc9tazTpGzE0QiRS0mNWrc1\nS8nanu7JdW3PH6LDYzUYuTlVAhXdkdAcKHwlFdeamAWIbZcG4EIkXMj+QDSI8Vgc\nQKHYyh/JSiXaCDQQ2PJBB1zQCLyktOi+6DqGBw7mNG0Kz6WAcYfciivEvGiSofTL\n7nI69RtmJDYUZHfQ3RYOJ/D4YALjX3PJjL8xJdS/JgvXzh/C+NKF7Yqu2lRVTsTA\n9ef6Y2x9AgMBAAECggEAI+IyhZ2Rdgo5v8WHcbuPxLcwZDcobfwAqCc4GUqdtO+D\nazriO5wRye7749P6NXyG+SMmW3+kAA76n+0Z1k6M/LJOx1YFNqcu6BXautHyTE7S\nm+PgItjyxnfBH1X/D2pSC54st7Xvkn/S+tqo6hEPfSwAzhtXvZFd5VLUyuKeLWHH\nZ5wpD8Ds1R8+gGfY+gv6oS7gZec2mK6KQzBY84mAF2R4HI1dJm3h9oIsxVp036oW\nwgAAAzmFOW84b/eoQCdBGp3HeTWWwLFrwcmM+4kEm+V5oyo52xP60sIhi0o+rcY8\nrdKv4i5mBhyy/i7RZlp/kLtYzYfwRL910qFpY2ySKwKBgQD823uRNDTXwceLNRuv\nmXk7dLShi3OXzEn0prg4I657p0VKRkn/RO3BROXeezCVu1Fn/EzIXR+UB/e2AifS\n5UGb7oHlEA53uFjK+nDi2+JH6sE9VFcguCub7SddO/mGU+Wk/vndGUdSXBGWz7wK\nTWEKMZn2FIemWn/4gHNuicI2swKBgQDPTH+RJtc+/ZQMt1Khiun+AEDumvYl091i\ngbj0hpeK7Suj9Frng5+q5Zf228EiMeJoL0Kc6on3u2DhtoecOa8YxFfppkpgeDXf\nlIuptwxQg427eYWOKm2FKvSOfRfc53PHlzNezZAGeKO3maTmQjU70Iije8JoVWsk\nbNZTN9DoDwKBgCVDSxB4+xiYrAltyCi2m1ERv9TWsjA6oON29kr/pyT93440kY8W\n31rOBnok+WH3euWyHragUpkEG5Ms+iVwN5z9JxNUrG0kM6GmCqDD+rLSe6vIFBb0\nTSjraBOrVPhgwMTx9myI3yPaAZWSA4oZISXZbXEAUYVIbPd4JoqxrndVAoGBAJ9V\neDPUO9uhwtrnSW77PBFMlpwPpaS7rM0bUlM45GAXHdT+a6TJSb9si5plnJQw7YoQ\n0U2VBIjSkIvM5X0R5WDPAZeIhmCR5S69mX/QP3nfM+Bmbl4whE+4DZM72Uyk5hwC\nPqzeqZYfwg7L3LBTMWGRToUCChJxnVG5Ch+apkrHAoGAJjBWlyz27oSzlLvBO3OM\nDVq1MTOTx7ZjFMY3RWWGR6n+wg7pU+LV0ygm5g+5IaFCiSkcOSiN+XUj2/+koJow\n+PL9zheZ+B0kNA4+n0ybFIVWZdshLWEv2iSdgAI9zSExZBLS48PXG9zVkmjUx3oO\nbZPM6l2q89Ndpn9+0E8glS0=\n-----END PRIVATE KEY-----\n",
+  "client_email": "terraform@neurodetective.iam.gserviceaccount.com",
+  "client_id": "100282198236534166888",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/terraform%40neurodetective.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
