@@ -33,9 +33,8 @@ const getUserRole = async (uid) => {
     return docSnap.data().role; // role will be teacher, parent, or child
   }
   {
-    console.warn("No such document!");
+    //console.warn("No such document!");
     return null;
   }
 };
-
-export { auth, getUserRole };
+export { auth, getUserRole,db };
