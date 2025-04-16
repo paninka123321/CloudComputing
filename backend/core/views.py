@@ -1,3 +1,8 @@
 from django.shortcuts import render
 
-# Create your views here.
+# for testing:
+from django.http import JsonResponse
+
+def hello_api(request):
+    return JsonResponse({"message": "Hello from Django!"})
+
