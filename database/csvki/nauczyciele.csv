@@ -1,4 +1,4 @@
-id_nauczyciela;Imię;Nazwisko;Wykształcenie;Nauczany przedmiot;Wiek;Płeć;Klasa;Nazwa szkoły
+id_nauczyciela;imię;nazwisko;wykształcenie;nauczany_przedmiot;wiek;plec;klasa;nazwa_szkoły
 1;Anna;Kowalska;Magister;Matematyka;42;Kobieta;1A;Szkoła Podstawowa nr 5
 2;Jan;Nowak;Licencjat;Historia;38;Mężczyzna;1B;Szkoła Podstawowa nr 5
 3;Katarzyna;Wiśniewska;Magister;Język polski;29;Kobieta;1C;Szkoła Podstawowa nr 5
