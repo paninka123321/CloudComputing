@@ -62,3 +62,10 @@ resource "google_storage_bucket_iam_member" "frontend_public" {
   role   = "roles/storage.objectViewer"
   member = "allUsers"
 }
+
+resource "google_artifact_registry_repository" "docker_repo" {
+  location      = var.region
+  repository_id = "django-backend-repo"
+  format        = "DOCKER"
+}
+
