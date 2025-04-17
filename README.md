@@ -11,7 +11,7 @@
 | **Backend**     | Django (in `backend`)               | REST API with CORS support, connected to frontend                           |
 | **Database**    | PostgreSQL (in `database`)          | Primary data storage for user profiles, grades, and educational content    |
 | **Auth**       | Firebase                            | Secure user authentication with role management                             |
-| **Infrastructure** | Terraform (in `terraform`)       | Cloud provisioning and infrastructure-as-code                               |
+| **Infrastructure** | Terraform (in `terraform`)       | Cloud provisioning and platform-as-a-code                               |
 
 ## 👥 Role-Based Access System
 ### 🔐 Authentication Flow
