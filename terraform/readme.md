@@ -1,4 +1,4 @@
-# 🌐 Terraform Configuration for NeuroDetective (GCP)
+# Terraform Configuration for NeuroDetective (GCP)
 
 This folder contains all the Terraform configuration files required to deploy the **NeuroDetective** infrastructure on **Google Cloud Platform**.
 
@@ -10,7 +10,7 @@ The project includes deployment of:
 
 ---
 
-## 📁 File Overview
+## File Overview
 
 | File                 | Description                                                                 |
 |----------------------|-----------------------------------------------------------------------------|
@@ -24,7 +24,7 @@ The project includes deployment of:
 
 ---
 
-## 🚀 Infrastructure Components
+## Infrastructure Components
 
 This configuration deploys:
 
@@ -41,7 +41,7 @@ This configuration deploys:
 
 ---
 
-## 🔧 Deployment Guide
+## Deployment Guide
 
 1. **Install prerequisites**:
    - Terraform ≥ 1.5.0
