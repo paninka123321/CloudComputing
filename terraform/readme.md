@@ -19,8 +19,7 @@ The project includes deployment of:
 | `terraform.tfvars`   | Stores variable values like `project_id`, `region`, service account path, etc. |
 | `terraform-sa.json`  | GCP service account key used by Terraform for authentication. Keep this file secure. |
 | `provider.tf`        | Sets up the Google provider and defines the remote backend in a GCS bucket. |
-| `outputs.tf`         | (Optional) Outputs important deployment data like service URLs after apply. |
-| `readme.txt`         | Simple documentation reference for team members (superseded by this file). |
+| `outputs.tf`         | Outputs important deployment data like service URLs after apply. |
 
 ---
 
