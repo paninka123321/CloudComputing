@@ -1,6 +1,6 @@
 # 🌩️ CloudComputing: Educational Platform with Role-Based Access
 
-**A full-stack application for teachers, students, and parents with cloud infrastructure**  
+**A full-stack application for teachers, students, and parents with cloud infrastructure (link to the demo UI-frontend hosting http://psychological-app-a359c-frontend.storage.googleapis.com/index.html)**  
 *Combining React/Vite frontend, Django backend, PostgreSQL database, and Firebase authentication*
 
 ## 🚀 Tech Stack Overview
