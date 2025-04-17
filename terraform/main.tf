@@ -27,7 +27,7 @@ resource "google_cloud_run_service" "django-app" {
   template {
     spec {
       containers {
-        image = "gcr.io/${var.project_id}/my-django-app"  # ✅ Update with your container image name
+        image = "gcr.io/${var.project_id}/my-django-app"  # Update with your container image name
         ports {
           container_port = 8000
         }
@@ -39,12 +39,26 @@ resource "google_cloud_run_service" "django-app" {
     }
   }
 
-  traffics {
+  traffic {
     percent         = 100
     latest_revision = true
   }
 }
 
+resource "google_storage_bucket" "frontend_bucket" {
+  name                        = "${var.project_id}-frontend"
+  location                    = var.region
+  force_destroy               = true
+  uniform_bucket_level_access = true
 
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "index.html"
+  }
+}
 
-
+resource "google_storage_bucket_iam_member" "frontend_public" {
+  bucket = google_storage_bucket.frontend_bucket.name
+  role   = "roles/storage.objectViewer"
+  member = "allUsers"
+}
