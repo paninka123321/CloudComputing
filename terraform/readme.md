@@ -37,7 +37,7 @@ This configuration deploys:
 - **IAM Roles**  
   Public access to the frontend bucket is granted with the `roles/storage.objectViewer` role.
 
-> Additional components like **Cloud SQL** and **Artifact Registry** can be added for full backend support and CI/CD workflows.
+> Additional components like **Cloud SQL** and **Artifact Registry** are added for full backend support via main.tf.
 
 ---
 
@@ -51,4 +51,4 @@ This configuration deploys:
 2. **Authenticate and configure GCP**:
    ```bash
    gcloud auth application-default login
-   gcloud config set project <your-project-id>
+   gcloud config set project psychological-app-a359c
