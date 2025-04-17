@@ -1,2 +1,2 @@
-project_id = "psychological-app-a359c"
+project_id = "neurodetective"
 region     = "europe-west1"
