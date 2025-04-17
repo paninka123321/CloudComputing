@@ -37,9 +37,5 @@ cd CloudComputing
 npm install
 pip install -r backend/requirements.txt
 
-# 3. Configure environment
-cp .env.example .env
-# Fill in your Firebase/PostgreSQL credentials
-
 # 4. Run development servers
 npm run dev & python backend/manage.py runserver
