@@ -29,3 +29,14 @@ backend/.env
 # Ignnore large files:
 ./node_modules
 ./terraform/.terraform/providers/registry.terraform.io/hashicorp/google/5.45.2/darwin_amd64/terraform-provider-google_v5.45.2_x5
+
+# virtual enviroment folder
+venv/
+
+# python files
+__pycache__/
+*.py[cod]
+
+# ide conf
+.idea/
+.vscode/
