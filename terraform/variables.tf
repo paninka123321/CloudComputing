@@ -13,5 +13,3 @@ variable "credentials_file" {
   description = "Path to the service account key JSON"
   type        = string
 }
-
-
