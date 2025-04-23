@@ -60,3 +60,42 @@ class WynikiKwestionariuszy(models.Model):
 
 def __str__(self):
         return f"{self.odp_1} {self.odp_2} {self.odp_3} {self.odp_4} {self.odp_5}"
+
+# i think thi is no more needed
+class WynikiGier(models.Model):
+  id_wyniku = models.IntegerField(primary_key=True)
+  id_gry = models.IntegerField()
+  id_ucznia = models.ForeignKey(Uczen, on_delete=models.SET_NULL, null=True)
+  czas_wykonania = models.IntegerField()
+  wynik_1 = models.DecimalField(max_digits=5, decimal_places=2)
+  wynik_2 = models.DecimalField(max_digits=5, decimal_places=2)
+  wynik_3 = models.DecimalField(max_digits=5, decimal_places=2)
+  wynik_4 = models.DecimalField(max_digits=5, decimal_places=2)
+  wynik_5 = models.DecimalField(max_digits=5, decimal_places=2)
+  wynik_6 = models.DecimalField(max_digits=5, decimal_places=2)
+
+def __str__(self):
+     return f"{self.id_ucznia} {self.id_gry} {self.wynik_1} {self.wynik_2} {self.wynik_3} {self.wynik_4} {self.wynik_5} {self.wynik_6}"
+
+# game scores
+class ShapesDataset:
+  game_id = models.IntegerField(primary_key=True)
+  student_id = models.ForeignKey(Uczen, on_delete=models.SET_NULL, null=True)
+  correct = models.IntegerField()
+  incorrect = models.IntegerField()
+  time = models.DecimalField()
+
+class EmotionsDataset: 
+  game_id = models.IntegerField(primary_key=True)
+  student_id = models.ForeignKey(Uczen, on_delete=models.SET_NULL, null=True)
+  happy = models.IntegerField()
+  angry = models.IntegerField()
+  sad = models.IntegerField()
+  time = models.DecimalField()
+
+class WritingsDataset: 
+  game_id = models.IntegerField(primary_key=True)
+  student_id = models.ForeignKey(Uczen, on_delete=models.SET_NULL, null=True)
+  image = models.BinaryField() # This stores raw binary data (like .png)
+  time = models.DecimalField()
+
