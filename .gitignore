@@ -7,7 +7,6 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
 dist
 dist-ssr
 *.local
@@ -24,3 +23,18 @@ dist-ssr
 *.sw?
 venv
 package-lock.json
+
+
+# Ignore secrets keys and database thing by .env (from backend)
+backend/.env
+
+# Ignnore large files:
+./terraform/.terraform/providers/registry.terraform.io/hashicorp/google/5.45.2/darwin_amd64/terraform-provider-google_v5.45.2_x5
+
+# virtual enviroment folder
+venv/
+
+# python files
+__pycache__/
+*.py[cod]
+

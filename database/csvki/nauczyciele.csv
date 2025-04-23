@@ -1,0 +1,21 @@
+id_nauczyciela;imię;nazwisko;wykształcenie;nauczany_przedmiot;wiek;plec;klasa;nazwa_szkoły
+1;Anna;Kowalska;Magister;Matematyka;42;Kobieta;1A;Szkoła Podstawowa nr 5
+2;Jan;Nowak;Licencjat;Historia;38;Mężczyzna;1B;Szkoła Podstawowa nr 5
+3;Katarzyna;Wiśniewska;Magister;Język polski;29;Kobieta;1C;Szkoła Podstawowa nr 5
+4;Tomasz;Lewandowski;Doktor;Fizyka;50;Mężczyzna;1D;Szkoła Podstawowa nr 5
+5;Barbara;Dąbrowska;Magister;Chemia;41;Kobieta;2A;Szkoła Podstawowa nr 5
+6;Piotr;Wójcik;Licencjat;Wychowanie fizyczne;36;Mężczyzna;2B;Szkoła Podstawowa nr 5
+7;Monika;Kamińska;Magister;Biologia;39;Kobieta;2C;Szkoła Podstawowa nr 5
+8;Marek;Zieliński;Magister;Geografia;44;Mężczyzna;3A;Szkoła Podstawowa nr 5
+9;Agnieszka;Szymańska;Doktor;Język angielski;48;Kobieta;3B;Szkoła Podstawowa nr 5
+10;Wojciech;Woźniak;Magister;Informatyka;40;Mężczyzna;3C;Szkoła Podstawowa nr 5
+11;Ewa;Kozłowska;Licencjat;Muzyka;37;Kobieta;1A;Szkoła Podstawowa nr 12
+12;Krzysztof;Jankowski;Magister;Plastyka;43;Mężczyzna;1B;Szkoła Podstawowa nr 12
+13;Magdalena;Mazur;Magister;Język niemiecki;46;Kobieta;1C;Szkoła Podstawowa nr 12
+14;Andrzej;Krawczyk;Doktor;Chemia;51;Mężczyzna;2A;Szkoła Podstawowa nr 12
+15;Karolina;Piotrowska;Magister;Matematyka;39;Kobieta;2B;Szkoła Podstawowa nr 12
+16;Łukasz;Grabowski;Licencjat;Historia;35;Mężczyzna;2C;Szkoła Podstawowa nr 12
+17;Zofia;Pawłowska;Magister;Język polski;47;Kobieta;3A;Szkoła Podstawowa nr 12
+18;Adam;Michalski;Magister;Informatyka;42;Mężczyzna;3B;Szkoła Podstawowa nr 12
+19;Dorota;Nowicka;Doktor;Biologia;50;Kobieta;3C;Szkoła Podstawowa nr 12
+20;Sebastian;Czarnecki;Magister;Wychowanie fizyczne;38;Mężczyzna;1D;Szkoła Podstawowa nr 12

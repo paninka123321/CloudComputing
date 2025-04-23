@@ -1,12 +1,41 @@
-# React + Vite
+# 🌩️ CloudComputing: Educational Platform with Role-Based Access
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**A full-stack application for teachers, students, and parents with cloud infrastructure (link to the demo UI-frontend hosting http://psychological-app-a359c-frontend.storage.googleapis.com/index.html)**  
+*Combining React/Vite frontend, Django backend, PostgreSQL database, and Firebase authentication*
 
-Currently, two official plugins are available:
+## 🚀 Tech Stack Overview
+| Component       | Technology                          | Description                                                                 |
+|-----------------|-------------------------------------|-----------------------------------------------------------------------------|
+| **Frontend**    | React + Vite                        | Responsive web interface with role-based navigation                         |
+| **Mobile App**  | React Native (in `apka_tablet`)     | Tablet-optimized experience for young students                              |
+| **Backend**     | Django (in `backend`)               | REST API with CORS support, connected to frontend                           |
+| **Database**    | PostgreSQL (in `database`)          | Primary data storage for user profiles, grades, and educational content    |
+| **Auth**       | Firebase                            | Secure user authentication with role management                             |
+| **Infrastructure** | Terraform (in `terraform`)       | Cloud provisioning and infrastracture-as-a-code                               |
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 👥 Role-Based Access System
+### 🔐 Authentication Flow
+- Firebase handles user registration/login
+- JWT tokens for session management
+- Password reset functionality
 
-## Expanding the ESLint configuration
+### 🎯 User Roles
+| Role      | Access Features                                                                 |
+|-----------|---------------------------------------------------------------------------------|
+| **Student** | 🎮 Interactive games<br>😊 Emotion tracking dashboard<br>📚 Learning materials |
+| **Teacher** | 👨‍🏫 Class management<br>📊 Performance analytics<br>💬 Parent communication |
+| **Parent**  | 👶 Child progress monitoring<br>🔔 Notifications<br>📩 Teacher messaging     |
+| *Unauthenticated* | ℹ️ "About Us"<br>🧠 Psychological resources                                |
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Development Setup
+```bash
+# 1. Clone repository
+git clone https://github.com/paninka123321/CloudComputing.git
+cd CloudComputing
+
+# 2. Install dependencies
+npm install
+pip install -r backend/requirements.txt
+
+# 4. Run development servers
+npm run dev & python backend/manage.py runserver

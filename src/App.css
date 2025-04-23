@@ -1,7 +1,6 @@
 #root {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 0;
   text-align: center;
 }
 
@@ -38,5 +37,7 @@ body {
   background-image: url('/static-images/background1.webp');
   background-size: cover;
   background-attachment: fixed; /* could be scroll also*/
+  margin: 0;
+  padding: 0;
 
 }

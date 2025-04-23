@@ -1,14 +1,22 @@
-/* Navbar.css */
+﻿/* Navbar.css */
 .navbar {
-    position: fixed; /*bar stay at the same place all the time */
-    top: 0; 
+    position: fixed;
+    top: 0;
     width: 100%;
+    display: flex; /* ← KLUCZOWE */
     justify-content: space-between;
     align-items: center;
     background-color: #333;
     padding: 15px 20px;
-    z-index: 1000; /* Make sure it's on top of other elements */
-  }
+    z-index: 1000;
+}
+.nav-sections {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+}
   
   .logo {
     color: white;
@@ -17,12 +25,12 @@
     text-align: center;
     margin: 1.5%;
   }
-  
-  .nav-links {
+
+.nav-links {
     list-style: none;
     display: flex;
     gap: 20px;
-  }
+}
   
   .nav-links li {
     display: inline;
@@ -34,9 +42,27 @@
     font-size: 18px;
     padding: 8px 12px;
   }
-  
+    .nav-links a, .logout-button {
+        white-space: nowrap;
+    }
   .nav-links a:hover {
     background-color: #555;
     border-radius: 5px;
   }
-  
+
+
+    .logout-section a {
+        margin-right: 50px; /* lub margin-left: 20px w zależności od kierunku */
+        font-size: 18px;
+    }
+.logout-button {
+    background-color: red;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+    .logout-button:hover {
+        background-color: #c0392b;
+    }
