@@ -29,8 +29,8 @@ package-lock.json
 backend/.env
 
 # Ignnore large files:
-./terraform/.terraform/
-./terraform/.terraform.lock.hcl/
+terraform/.terraform/
+terraform/.terraform.lock.hcl/
 
 # virtual enviroment folder
 venv/
