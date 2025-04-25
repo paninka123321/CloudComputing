@@ -1,8 +1,9 @@
 import { useRef, useState, useEffect } from "react";
-import { View, Text, StyleSheet, Dimensions, Button } from "react-native";
+import { View, Text, StyleSheet, Dimensions, Button, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import SignatureScreen from "react-native-signature-canvas";
 import { useChild } from "../contexts/ChildContext";
+import { sendWritingsData } from "../utils/api";
 
 const { width, height } = Dimensions.get("window");
 
@@ -17,6 +18,13 @@ export default function Gra3() {
   const randomWord = words[Math.floor(Math.random() * words.length)];
 
   useEffect(() => {
+    const parsedId = parseInt(childId);
+    if (!childId || isNaN(parsedId)) {
+      Alert.alert("Błąd", "Brak poprawnego ID dziecka. Wróć do ekranu głównego.");
+      router.push("/");
+      return;
+    }
+    
     setStartTime(Date.now());
   }, []);
 
@@ -24,17 +32,28 @@ export default function Gra3() {
     signatureRef.current?.clearSignature();
   };
 
-  const handleDone = (signature: string) => {
+  const handleDone = async (signature: string) => {
+    if (!childId || isNaN(parseInt(childId))) {
+      Alert.alert("Błąd", "Brak poprawnego ID dziecka.");
+      return;
+    }
+
     const endTime = Date.now();
-    const durationSec = ((endTime - startTime!) / 1000).toFixed(2);
+    const durationSec = Math.round((endTime - startTime!) / 1000);
 
-    const results = [childId, randomWord, signature, durationSec];
-    console.log("Wynik rysowania:", results);
+    try {
+      await sendWritingsData({
+        student: parseInt(childId),
+        imageUri: `data:image/png;base64,${signature}`, // już base64, więc traktujemy jako URI
+        time: durationSec,
+      });
 
-    // TODO: tu można dodać zapis do pliku lub wysłanie do serwera, np. jako PNG
-    // np. zapis base64 jako obraz PNG do lokalnego pliku
-
-    router.push("/");
+      console.log("Wysłano dane rysowania dla " + childId);
+      router.push("/");
+    } catch (error) {
+      console.error("Błąd przy wysyłaniu rysunku:", error);
+      Alert.alert("Błąd", "Nie udało się wysłać danych.");
+    }
   };
 
   return (

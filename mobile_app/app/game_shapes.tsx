@@ -1,13 +1,7 @@
 import { useState, useEffect } from "react";
 import { useChild } from "../contexts/ChildContext"; 
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  ImageSourcePropType,
-} from "react-native";
+import { sendShapesData } from "../utils/api";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ImageSourcePropType, Alert } from "react-native";
 import { useRouter } from "expo-router";
 
 const shapes = {
@@ -32,6 +26,7 @@ const shapes = {
     require("../assets/images/shapes/zle7.png"),
   ],
 };
+
 const shapeNames = {
   trojkat: "trójkąt",
   kwadrat: "kwadrat",
@@ -58,6 +53,13 @@ export default function Gra1() {
   const [startTime, setStartTime] = useState<number | null>(null);
 
   useEffect(() => {
+    const parsedId = parseInt(childId);
+    if (!childId || isNaN(parsedId)) {
+      Alert.alert("Błąd", "Brak poprawnego ID dziecka. Wróć do ekranu głównego.");
+      router.push("/");
+      return;
+    }
+    
     setStartTime(Date.now());
     startNewRound();
   }, []);
@@ -85,27 +87,47 @@ export default function Gra1() {
     setImages(all);
   };
 
-  const handlePress = (img: ImageSourcePropType) => {
+  const handleRoundCompletion = async (results: number[]) => {
+    if (!startTime) return;
+
+    try {
+      const durationSec = Math.round((Date.now() - startTime) / 1000);
+      const correct = results.filter(r => r === 1).length;
+      const incorrect = results.filter(r => r === 0).length;
+
+      await sendShapesData({
+        student: Number(childId),
+        correct,
+        incorrect,
+        time: durationSec,
+      });
+
+      console.log(`Wyniki shapes wysłane dla ${childId}`);
+      router.push("/");
+    } catch (error) {
+      console.error("Błąd wysyłania shapes:", error);
+      Alert.alert("Błąd", "Nie udało się wysłać wyników shapes");
+      router.push("/");
+    }
+  };
+
+  const handlePress = async (img: ImageSourcePropType) => {
     const uri = Image.resolveAssetSource(img).uri;
     const isCorrect = uri.includes(target);
     const updatedResults = [...results, isCorrect ? 1 : 0];
     setResults(updatedResults);
 
-    if (round >= 6) {
-      if (startTime !== null) {
-        const durationMs = Date.now() - startTime;
-        const durationSec = Number((durationMs / 1000).toFixed(2));
-        const finalResults = [childId, ...updatedResults, durationSec];
-        console.log("Wyniki gry w kształty:", finalResults);
-      }
-
+    if (isCorrect) {
       setShowCongrats(true);
       setTimeout(() => {
-        router.push("/");
+        if (round >= 6) {
+          handleRoundCompletion(updatedResults);
+        } else {
+          setRound(prev => prev + 1);
+          startNewRound();
+          setShowCongrats(false);
+        }
       }, 2000);
-    } else {
-      setRound(prev => prev + 1);
-      startNewRound();
     }
   };
 
@@ -168,3 +190,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  bigText: {
+    fontSize: 32,
+    fontWeight: "bold",
+  }
+});

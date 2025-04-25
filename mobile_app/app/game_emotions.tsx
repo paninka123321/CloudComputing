@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, Button, TouchableOpacity, Animated } from "react-native";
+import { View, Text, StyleSheet, Button, TouchableOpacity, Animated, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import { useChild } from "../contexts/ChildContext";
+import { sendEmotionsData } from "../utils/api";
 
 const emotions = {
   happy: [
@@ -45,6 +46,14 @@ export default function Gra2() {
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
+  const countEmotions = (array: string[]) => {
+    return {
+      happy: array.filter(e => e === "happy").length,
+      sad: array.filter(e => e === "sad").length,
+      angry: array.filter(e => e === "angry").length,
+    };
+  };
+
   const animate = (toValue: number, duration = 300) =>
     new Promise((resolve) => {
       Animated.timing(fadeAnim, {
@@ -52,20 +61,38 @@ export default function Gra2() {
         duration,
         useNativeDriver: true,
       }).start(() => resolve(true));
-    });
+  });
 
     const handleChoice = async (choice: "happy" | "sad" | "angry") => {
       await animate(0); // fade-out
       setAnswers((prev) => [...prev, choice]);
+
+      const parsedId = parseInt(childId);
+      if (isNaN(parsedId)) {
+        console.warn("Brak poprawnego ID dziecka – dane nie zostały wysłane");
+        return;
+      }
     
       if (round >= 4) {
-        let finalAnswers = [childId, ...answers, choice];
+
         if (startTime !== null) {
-          const timeSec = ((Date.now() - startTime) / 1000).toFixed(2);
-          finalAnswers = [...finalAnswers, `${timeSec}`];
+          const timeSec = Math.round((Date.now() - startTime) / 1000);
+          const emotionCounts = countEmotions([...answers, choice]);
+        
+          sendEmotionsData({
+            student: parseInt(childId), 
+            happy: emotionCounts.happy,
+            sad: emotionCounts.sad,
+            angry: emotionCounts.angry,
+            time: timeSec,
+          }).then(() => {
+            console.log("Dane emocji zostały wysłane dla " + childId);
+          }).catch((err) => {
+            console.error("Błąd przy wysyłaniu danych:", err);
+          });
         }
-        console.log("Wyniki gracza:", finalAnswers);
         setShowCongrats(true);
+
         setTimeout(() => {
           router.push("/");
         }, 2000);
@@ -83,6 +110,13 @@ export default function Gra2() {
     };
 
   useEffect(() => {
+    const parsedId = parseInt(childId);
+    if (!childId || isNaN(parsedId)) {
+      Alert.alert("Błąd", "Brak poprawnego ID dziecka. Wróć do ekranu głównego.");
+      router.push("/");
+      return;
+    }
+    
     setStartTime(Date.now());
     animate(1); // initial fade-in
   }, []);
@@ -102,7 +136,7 @@ export default function Gra2() {
       <View style={styles.emojiContainer}>
         <Animated.View style={{ flexDirection: "row", opacity: fadeAnim }}>
           {["happy", "sad", "angry"].map((emotion) => (
-            <TouchableOpacity key={emotion} onPress={() => handleChoice(emotion as any)}>
+            <TouchableOpacity key={emotion} onPress={() => handleChoice(emotion as "happy" | "sad" | "angry")}>
               <Animated.Image
                 source={currentSet[emotion as keyof typeof currentSet]}
                 style={styles.emoji}
