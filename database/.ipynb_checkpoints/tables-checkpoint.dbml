@@ -1,0 +1,97 @@
+Table "nauczyciele" {
+  "id_nauczyciela" integer [pk, not null]
+  "imie" "character varying(100)"
+  "nazwisko" "character varying(100)"
+  "wyksztalcenie" "character varying(50)"
+  "nauczany_przedmiot" "character varying(100)"
+  "wiek" integer
+  "plec" "character varying(10)"
+  "klasa" "character varying(2)"
+  "nazwa_szkoly" "character varying(100)"
+}
+
+Table "rodzice" {
+  "id_rodzica" integer [pk, not null]
+  "imie" "character varying(100)"
+  "nazwisko" "character varying(100)"
+  "wiek" integer
+  "zawod" "character varying(100)"
+  "tel_kontaktowy" "character varying(15)"
+  "email" "character varying(100)"
+}
+
+Table "uczniowie" {
+  "id_ucznia" integer [pk, not null]
+  "imie" "character varying(100)"
+  "nazwisko" "character varying(100)"
+  "klasa" "character varying(2)"
+  "wiek" integer
+  "id_rodzica" integer
+  "krotki_opis_nauczyciela" "character varying(100)"
+  "srednia_z_zachowania" numeric(2,1)
+  "srednia_ocen" numeric(2,1)
+}
+
+Table "klasa" {
+  "nazwa" character (max_length=2, unique=True)  # e.g. "1A", "2B"
+}
+
+Table "wyniki_gier" {
+  "id_wyniku" integer [pk, not null]
+  "id_gry" integer
+  "id_ucznia" integer
+  "czas_wykonania" integer
+  "wynik_1" numeric(5,2)
+  "wynik_2" numeric(5,2)
+  "wynik_3" numeric(5,2)
+  "wynik_4" numeric(5,2)
+  "wynik_5" numeric(5,2)
+  "wynik_6" numeric(5,2)
+}
+
+Table "wyniki_kwestionariuszy" {
+  "id_wynik_kwest" integer [pk, not null]
+  "id_kwestionariusza" integer
+  "id_ucznia" integer
+  "id_nauczyciela" integer
+  "odp_1" integer
+  "odp_2" integer
+  "odp_3" integer
+  "odp_4" integer
+  "odp_5" integer
+}
+
+# games results 
+Table "shapes_dataset" {
+  game_id integer [pk, not null]
+  student_id integer [fk, not null]
+  correct integer
+  incorrect integer
+  time
+}
+
+Table "
+emotions_dataset" {
+  game_id integer [pk, not null]
+  student_id integer [fk, not null]
+  happy integer
+  angry integer
+  sad integer
+  time
+}
+
+Table "writing_dataset" {
+  game_id integer [pk, not null]
+  student_id integer [fk, not null]
+  image models.BinaryField()  # This stores raw binary data (like .png)
+  time
+}
+
+Table 
+# referances:
+Ref rodzice_uczniowie: rodzice.id_rodzica < uczniowie.id_rodzica // one-to-many
+Ref nauczyciele_uczniowie: nauczyciele.klasa > uczniowie.klasa // many-to-one
+
+Ref uczniowie_gry: wyniki_gier.id_ucznia < uczniowie.id_ucznia // one-to-many
+Ref uczniowie_kwestionariusze: wyniki_kwestionariuszy.id_ucznia > uczniowie.id_ucznia // many-to-one
+Ref nauczyciele_kwestionariusze: wyniki_kwestionariuszy.id_nauczyciela > nauczyciele.id_nauczyciela // many-to-one

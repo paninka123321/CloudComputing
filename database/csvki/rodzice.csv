@@ -1,46 +1,46 @@
-ID_Rodzica;Imię;Nazwisko;Wiek;Zawód;Tel_kontaktowy;Email
-101;Jan;Kowalczyk;35;Inżynier;600123456;jan.kowalczyk@mail.com
+﻿ID_Rodzica;ImiÄ™;Nazwisko;Wiek;ZawĂłd;Tel_kontaktowy;Email
+101;Jan;Kowalczyk;35;InĹĽynier;600123456;jan.kowalczyk@mail.com
 102;Anna;Nowicka;37;Nauczycielka;601234567;anna.nowicka@mail.com
-103;Piotr;Wójcik;40;Lekarz;602345678;piotr.wojcik@mail.com
+103;Piotr;WĂłjcik;40;Lekarz;602345678;piotr.wojcik@mail.com
 104;Magdalena;Lewandowska;38;Prawnik;603456789;magda.lewandowska@mail.com
-105;Tomasz;Dąbrowski;41;Kierowca;604567890;tomasz.dabrowski@mail.com
-106;Karolina;Zielińska;36;Projektantka;605678901;karolina.zielinska@mail.com
-107;Marek;Szymański;39;Mechanik;606789012;marek.szymanski@mail.com
-108;Ewa;Woźniak;42;Aptekarka;607890123;ewa.wozniak@mail.com
-109;Andrzej;Kamiński;37;Przedsiębiorca;608901234;andrzej.kaminski@mail.com
-110;Agnieszka;Kowalska;34;Księgowa;609012345;agnieszka.kowalska@mail.com
-111;Paweł;Wiśniewski;43;Programista;610123456;pawel.wisniewski@mail.com
+105;Tomasz;DÄ…browski;41;Kierowca;604567890;tomasz.dabrowski@mail.com
+106;Karolina;ZieliĹ„ska;36;Projektantka;605678901;karolina.zielinska@mail.com
+107;Marek;SzymaĹ„ski;39;Mechanik;606789012;marek.szymanski@mail.com
+108;Ewa;WoĹşniak;42;Aptekarka;607890123;ewa.wozniak@mail.com
+109;Andrzej;KamiĹ„ski;37;PrzedsiÄ™biorca;608901234;andrzej.kaminski@mail.com
+110;Agnieszka;Kowalska;34;KsiÄ™gowa;609012345;agnieszka.kowalska@mail.com
+111;PaweĹ‚;WiĹ›niewski;43;Programista;610123456;pawel.wisniewski@mail.com
 112;Monika;Jankowska;39;Dziennikarka;611234567;monika.jankowska@mail.com
 113;Szymon;Grabowski;38;Policjant;612345678;szymon.grabowski@mail.com
 114;Natalia;Pawlak;35;Fryzjerka;613456789;natalia.pawlak@mail.com
 115;Dariusz;Mazur;44;Architekt;614567890;dariusz.mazur@mail.com
 116;Joanna;Krawczyk;41;Analityczka;615678901;joanna.krawczyk@mail.com
 117;Bartosz;Piotrowski;36;Handlowiec;616789012;bartosz.piotrowski@mail.com
-118;Katarzyna;Nowak;37;Pielęgniarka;617890123;katarzyna.nowak@mail.com
+118;Katarzyna;Nowak;37;PielÄ™gniarka;617890123;katarzyna.nowak@mail.com
 119;Krzysztof;Kaczmarek;45;Hydraulik;618901234;krzysztof.kaczmarek@mail.com
-120;Elżbieta;Michalska;40;Nauczycielka;619012345;elzbieta.michalska@mail.com
-121;Łukasz;Czarnecki;39;Pracownik IT;620123456;lukasz.czarnecki@mail.com
-122;Barbara;Adamska;43;Psycholożka;621234567;barbara.adamska@mail.com
-123;Adam;Król;36;Elektryk;622345678;adam.krol@mail.com
-124;Magda;Zając;38;Florystka;623456789;magda.zajac@mail.com
+120;ElĹĽbieta;Michalska;40;Nauczycielka;619012345;elzbieta.michalska@mail.com
+121;Ĺukasz;Czarnecki;39;Pracownik IT;620123456;lukasz.czarnecki@mail.com
+122;Barbara;Adamska;43;PsycholoĹĽka;621234567;barbara.adamska@mail.com
+123;Adam;KrĂłl;36;Elektryk;622345678;adam.krol@mail.com
+124;Magda;ZajÄ…c;38;Florystka;623456789;magda.zajac@mail.com
 125;Grzegorz;Wasilewski;42;Murarz;624567890;grzegorz.wasilewski@mail.com
-126;Dorota;Stępień;37;Recepcjonistka;625678901;dorota.stepien@mail.com
+126;Dorota;StÄ™pieĹ„;37;Recepcjonistka;625678901;dorota.stepien@mail.com
 127;Marcin;Sadowski;40;Kierownik;626789012;marcin.sadowski@mail.com
 128;Renata;Borkowska;44;Krawcowa;627890123;renata.borkowska@mail.com
 129;Wojciech;Chmielewski;39;Logistyk;628901234;wojciech.chmielewski@mail.com
-130;Teresa;Cieślak;41;Bankierka;629012345;teresa.cieslak@mail.com
-131;Jakub;Górski;35;Kucharz;630123456;jakub.gorski@mail.com
+130;Teresa;CieĹ›lak;41;Bankierka;629012345;teresa.cieslak@mail.com
+131;Jakub;GĂłrski;35;Kucharz;630123456;jakub.gorski@mail.com
 132;Marta;Lis;37;Doradczyni finansowa;631234567;marta.lis@mail.com
 133;Robert;Janik;42;Magazynier;632345678;robert.janik@mail.com
-134;Aleksandra;Kopeć;38;Terapeutka;633456789;aleksandra.kopec@mail.com
+134;Aleksandra;KopeÄ‡;38;Terapeutka;633456789;aleksandra.kopec@mail.com
 135;Daniel;Pietrzak;40;Kierowca autobusu;634567890;daniel.pietrzak@mail.com
-136;Patrycja;Wróbel;36;Artystka;635678901;patrycja.wrobel@mail.com
-137;Łukasz;Kruk;39;Stolarz;636789012;lukasz.kruk@mail.com
+136;Patrycja;WrĂłbel;36;Artystka;635678901;patrycja.wrobel@mail.com
+137;Ĺukasz;Kruk;39;Stolarz;636789012;lukasz.kruk@mail.com
 138;Joanna;Kubiak;42;Redaktorka;637890123;joanna.kubiak@mail.com
-139;Mariusz;Sikora;37;Agent nieruchomości;638901234;mariusz.sikora@mail.com
+139;Mariusz;Sikora;37;Agent nieruchomoĹ›ci;638901234;mariusz.sikora@mail.com
 140;Klaudia;Urban;40;Marketingowiec;639012345;klaudia.urban@mail.com
 141;Piotr;Tomaszewski;45;Operator maszyn;640123456;piotr.tomaszewski@mail.com
 142;Justyna;Ostrowska;38;Fotografka;641234567;justyna.ostrowska@mail.com
-143;Paweł;Przybylski;39;Informatyk;642345678;pawel.przybylski@mail.com
-144;Karina;Jastrzębska;37;Adwokatka;643456789;karina.jastrzebska@mail.com
+143;PaweĹ‚;Przybylski;39;Informatyk;642345678;pawel.przybylski@mail.com
+144;Karina;JastrzÄ™bska;37;Adwokatka;643456789;karina.jastrzebska@mail.com
 145;Sebastian;Szulc;41;Konserwator;644567890;sebastian.szulc@mail.com
