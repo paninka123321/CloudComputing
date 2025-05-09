@@ -1,21 +1,16 @@
-﻿id_nauczyciela;imiÄ™;nazwisko;wyksztaĹ‚cenie;nauczany_przedmiot;wiek;plec;klasa;nazwa_szkoĹ‚y
-1;Anna;Kowalska;Magister;Matematyka;42;Kobieta;1A;SzkoĹ‚a Podstawowa nr 5
-2;Jan;Nowak;Licencjat;Historia;38;MÄ™ĹĽczyzna;1B;SzkoĹ‚a Podstawowa nr 5
-3;Katarzyna;WiĹ›niewska;Magister;JÄ™zyk polski;29;Kobieta;1C;SzkoĹ‚a Podstawowa nr 5
-4;Tomasz;Lewandowski;Doktor;Fizyka;50;MÄ™ĹĽczyzna;1D;SzkoĹ‚a Podstawowa nr 5
-5;Barbara;DÄ…browska;Magister;Chemia;41;Kobieta;2A;SzkoĹ‚a Podstawowa nr 5
-6;Piotr;WĂłjcik;Licencjat;Wychowanie fizyczne;36;MÄ™ĹĽczyzna;2B;SzkoĹ‚a Podstawowa nr 5
-7;Monika;KamiĹ„ska;Magister;Biologia;39;Kobieta;2C;SzkoĹ‚a Podstawowa nr 5
-8;Marek;ZieliĹ„ski;Magister;Geografia;44;MÄ™ĹĽczyzna;3A;SzkoĹ‚a Podstawowa nr 5
-9;Agnieszka;SzymaĹ„ska;Doktor;JÄ™zyk angielski;48;Kobieta;3B;SzkoĹ‚a Podstawowa nr 5
-10;Wojciech;WoĹşniak;Magister;Informatyka;40;MÄ™ĹĽczyzna;3C;SzkoĹ‚a Podstawowa nr 5
-11;Ewa;KozĹ‚owska;Licencjat;Muzyka;37;Kobieta;1A;SzkoĹ‚a Podstawowa nr 12
-12;Krzysztof;Jankowski;Magister;Plastyka;43;MÄ™ĹĽczyzna;1B;SzkoĹ‚a Podstawowa nr 12
-13;Magdalena;Mazur;Magister;JÄ™zyk niemiecki;46;Kobieta;1C;SzkoĹ‚a Podstawowa nr 12
-14;Andrzej;Krawczyk;Doktor;Chemia;51;MÄ™ĹĽczyzna;2A;SzkoĹ‚a Podstawowa nr 12
-15;Karolina;Piotrowska;Magister;Matematyka;39;Kobieta;2B;SzkoĹ‚a Podstawowa nr 12
-16;Ĺukasz;Grabowski;Licencjat;Historia;35;MÄ™ĹĽczyzna;2C;SzkoĹ‚a Podstawowa nr 12
-17;Zofia;PawĹ‚owska;Magister;JÄ™zyk polski;47;Kobieta;3A;SzkoĹ‚a Podstawowa nr 12
-18;Adam;Michalski;Magister;Informatyka;42;MÄ™ĹĽczyzna;3B;SzkoĹ‚a Podstawowa nr 12
-19;Dorota;Nowicka;Doktor;Biologia;50;Kobieta;3C;SzkoĹ‚a Podstawowa nr 12
-20;Sebastian;Czarnecki;Magister;Wychowanie fizyczne;38;MÄ™ĹĽczyzna;1D;SzkoĹ‚a Podstawowa nr 12
+﻿id_nauczyciela,Imię,Nazwisko,Wykształcenie,Nauczany_przedmiot,Wiek,Płeć,Klasa,Nazwa_szkoły
+1,Anna,Kowalska,magister inżynier,angielski,50,kobieta,"3C, 1C",Szkoła Podstawowa nr 5 im. Marii Konopnickiej
+2,Paweł,Nowak,magister,matematyka,31,mężczyzna,2E,Szkoła Podstawowa nr 5 im. Marii Konopnickiej
+3,Katarzyna,Wiśniewska,licencjat,matematyka,31,kobieta,"2C, 1B",Szkoła Podstawowa nr 5 im. Marii Konopnickiej
+4,Tomasz,Wójcik,doktor,informatyka,41,mężczyzna,"3C, 3B, 1A",Szkoła Podstawowa nr 5 im. Marii Konopnickiej
+5,Ewa,Zielińska,doktor,informatyka,42,kobieta,"2B, 1B, 3A",Szkoła Podstawowa nr 5 im. Marii Konopnickiej
+6,Marcin,Kamiński,magister inżynier,plastyka,28,mężczyzna,2E,Szkoła Podstawowa nr 5 im. Marii Konopnickiej
+7,Magdalena,Lewandowska,doktor,plastyka,55,kobieta,1A,Szkoła Podstawowa nr 5 im. Marii Konopnickiej
+8,Andrzej,Mazur,licencjat,język polski,47,mężczyzna,"2C, 3B",Szkoła Podstawowa nr 5 im. Marii Konopnickiej
+9,Agnieszka,Krawczyk,magister,informatyka,59,kobieta,"3D, 3E, 3C",Szkoła Podstawowa nr 5 im. Marii Konopnickiej
+10,Krzysztof,Piotrowska,doktor,informatyka,47,mężczyzna,"3C, 2E",Szkoła Podstawowa nr 5 im. Marii Konopnickiej
+11,Joanna,Grabowska,doktor,przyroda,44,kobieta,"3A, 2E, 2B",Szkoła Podstawowa nr 5 im. Marii Konopnickiej
+12,Rafał,Zając,doktor,przyroda,47,mężczyzna,3A,Szkoła Podstawowa nr 5 im. Marii Konopnickiej
+13,Monika,Król,magister,język polski,51,kobieta,"2B, 1A, 3B",Szkoła Podstawowa nr 5 im. Marii Konopnickiej
+14,Grzegorz,Jabłońska,magister inżynier,matematyka,32,mężczyzna,1A,Szkoła Podstawowa nr 5 im. Marii Konopnickiej
+15,Beata,Wieczorek,doktor,przyroda,43,kobieta,3B,Szkoła Podstawowa nr 5 im. Marii Konopnickiej

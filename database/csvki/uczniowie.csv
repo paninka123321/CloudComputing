@@ -1,46 +1,101 @@
-id_ucznia;Imię;Nazwisko;Klasa;Wiek;ID_Rodzica;Krótki_opis_nauczyciela;Średnia_z_zachowania;Średnia_ocen
-1;Aleksandra;Kowalczyk;1A;7;101;Miła i cierpliwa;4.5;4.8
-2;Michał;Nowicki;1B;7;102;Wymagający, ale sprawiedliwy;4.2;3.0
-3;Zofia;Wójcik;1C;7;103;Bardzo dobrze tłumaczy;4.7;4.9
-4;Kacper;Lewandowski;2A;8;104;Lubi angażować uczniów;4.1;4.3
-5;Julia;Dąbrowska;2B;8;105;Zawsze przygotowany;4.6;4.7
-6;Mateusz;Zieliński;2C;8;106;Zabawny, ale konsekwentny;4.0;3.0
-7;Martyna;Szymańska;3A;9;107;Motywuje do nauki;4.8;4.9
-8;Bartosz;Woźniak;3B;9;108;Cierpliwy i pomocny;4.4;4.0
-9;Wiktoria;Kamińska;3C;9;109;Uczy przez praktykę;4.9;5.0
-10;Piotr;Kowalski;1A;7;110;Zawsze w dobrym humorze;4.3;4.4
-11;Natalia;Wiśniewska;1B;7;111;Dużo zadaje, ale warto;4.1;4.2
-12;Szymon;Jankowski;1C;7;112;Tłumaczy w przystępny sposób;4.5;4.8
-13;Anna;Grabowska;2A;8;113;Lubi pomagać uczniom;4.7;4.9
-14;Oskar;Pawlak;2B;8;114;Zachęca do aktywności;4.2;4.5
-15;Emilia;Mazur;2C;8;115;Jest bardzo wymagający;3.9;4.0
-16;Adam;Krawczyk;3A;9;116;Dobrze organizuje lekcje;4.6;4.8
-17;Lena;Piotrowska;3B;9;117;Bardzo cierpliwa;4.8;4.9
-18;Kamil;Nowak;3C;9;118;Zawsze punktualny;4.3;4.5
-19;Olivia;Kaczmarek;1A;7;119;Zna się na rzeczy;4.4;4.7
-20;Patryk;Michalski;1B;7;120;Ma dobre podejście do uczniów;4.2;4.3
-21;Amelia;Czarnecka;1C;7;121;Zawsze wyrozumiały;4.6;4.9
-22;Hubert;Adamski;2A;8;122;Potrafi zainteresować przedmiotem;4.1;4.3
-23;Gabriela;Król;2B;8;123;Daje ciekawe prace domowe;4.5;4.7
-24;Dawid;Zając;2C;8;124;Często daje quizy;4.3;4.4
-25;Julia;Wasilewska;3A;9;125;Uwielbiają go wszyscy;4.9;3.0
-26;Sebastian;Stępień;3B;9;126;Dba o dobrą atmosferę;4.4;4.6
-27;Natalia;Sadowska;3C;9;127;Wymagający, ale sprawiedliwy;4.7;4.8
-28;Tymoteusz;Borkowski;1A;7;128;Bardzo cierpliwa;4.5;4.6
-29;Marta;Chmielewska;1B;7;129;Wszystko dokładnie tłumaczy;4.3;4.5
-30;Jakub;Cieślak;1C;7;130;Lubi zadawać pytania;4.2;4.4
-31;Alicja;Górska;2A;8;131;Pomaga słabszym uczniom;4.6;4.8
-32;Marek;Lis;2B;8;132;Potrafi wytłumaczyć trudne rzeczy;4.1;4.3
-33;Dominika;Janik;2C;8;133;Ma dobre poczucie humoru;4.8;4.9
-34;Damian;Kopeć;3A;9;134;Bardzo motywujący;4.7;4.9
-35;Ewelina;Pietrzak;3B;9;135;Daje dużo notatek;4.4;4.6
-36;Igor;Wróbel;3C;9;136;Wymaga systematycznej nauki;4.2;4.5
-37;Paulina;Kruk;1A;7;137;Uwielbia swoją pracę;4.5;4.8
-38;Mikołaj;Kubiak;1B;7;138;Ma indywidualne podejście;4.3;4.6
-39;Angelika;Sikora;1C;7;139;Dba o komfort uczniów;4.7;4.9
-40;Konrad;Urban;2A;8;140;Zawsze uśmiechnięty;4.6;4.7
-41;Aleksandra;Tomaszewska;2B;8;141;Lubiany przez uczniów;4.4;4.6
-42;Filip;Ostrowski;2C;8;142;Bardzo sumienny;4.3;4.4
-43;Kamila;Przybylska;3A;9;143;Dba o integrację klasy;4.8;4.9
-44;Rafał;Jastrzębski;3B;9;144;Dobrze tłumaczy;4.6;4.7
-45;Nikola;Szulc;3C;9;145;Lubi rozmowy z uczniami;4.5;4.7
+﻿id_ucznia,Imię,Nazwisko,Klasa,Wiek,ID_Rodzica,Krótki_opis_nauczyciela,Średnia_z_zachowania,Średnia_ocen,Podejrzenie_ADHD
+1,Oliwia,Lewandowski,1D,9,101,Lubi pracę w grupie.,4.4,5.2,podejrzenie
+2,Oliwia,Sikora,3C,9,102,Świetnie współpracuje z klasą.,5.9,5.6,brak
+3,Igor,Zielińska,1E,7,103,Bardzo dobre wyniki i wzorowe zachowanie.,6.0,4.4,brak
+4,Michał,Nowak,2D,7,104,Świetnie współpracuje z klasą.,5.9,5.9,brak
+5,Filip,Wróbel,3D,7,105,Wymaga wsparcia przy koncentracji.,4.4,5.0,brak
+6,Szymon,Pawlak,2C,9,106,Często bierze udział w konkursach.,5.8,3.9,brak
+7,Oliwia,Pawlak,3A,9,107,Otwarty na nowe wyzwania.,4.8,5.7,brak
+8,Aleksander,Zając,3A,7,108,Wymaga wsparcia przy koncentracji.,5.6,4.4,brak
+9,Antoni,Kowalska,3D,8,109,Chętnie pomaga nauczycielowi.,5.4,5.3,brak
+10,Wiktoria,Jabłoński,2E,7,110,Chętnie pomaga nauczycielowi.,5.0,5.1,brak
+11,Zuzanna,Król,1B,9,111,Bardzo dobre wyniki i wzorowe zachowanie.,5.9,5.3,brak
+12,Michał,Wójcik,3A,7,112,Wymaga wsparcia przy koncentracji.,5.9,5.0,brak
+13,Lena,Nowak,3A,8,113,Wzorowa uczennica.,3.6,4.8,brak
+"14,Szymon,Kowalska,3A,9,114,""Zadaje dużo pytań, dociekliwa."",3.7,5.2,brak"
+15,Lena,Wieczorek,3E,8,115,Chętnie pomaga nauczycielowi.,5.5,5.0,brak
+16,Julia,Kowalska,3C,9,116,Bardzo grzeczna i ambitna.,3.4,5.5,brak
+"17,Lena,Wójcik,2E,9,117,""Pomocna kolegom, aktywna na lekcjach."",4.7,4.4,brak"
+18,Oliwia,Lewandowski,1A,8,118,Dynamiczny i pełen energii.,3.1,6.0,brak
+19,Michał,Duda,1D,7,119,Chętnie pomaga nauczycielowi.,4.4,5.3,brak
+20,Maja,Mazur,3D,7,120,Wzorowa uczennica.,5.7,5.0,brak
+"21,Michał,Grabowski,1D,8,121,""Ciekawy świata, dużo pyta."",5.6,4.9,brak"
+"22,Lena,Pawlak,2E,9,122,""Cicha, ale pilna uczennica."",5.8,4.8,brak"
+"23,Aleksander,Wiśniewska,3B,7,123,""Ma trudności z dyscypliną, ale pracuje nad sobą."",3.3,5.2,brak"
+24,Julia,Wiśniewska,2C,9,124,Lubi pracę w grupie.,5.1,5.3,brak
+25,Zuzanna,Lewandowski,2E,9,125,Otwarty na nowe wyzwania.,4.8,4.3,brak
+26,Julia,Wójcik,1C,7,126,Lubi pracę w grupie.,5.3,5.7,brak
+"27,Zuzanna,Kowalska,3B,8,127,""Energiczny, czasem rozkojarzony."",5.3,5.8,brak"
+28,Julia,Duda,3A,9,128,Często bierze udział w konkursach.,5.9,5.6,brak
+29,Filip,Pawlak,1A,7,129,Wzorowa uczennica.,5.4,6.0,brak
+30,Amelia,Król,1B,7,130,Bardzo dobre wyniki i wzorowe zachowanie.,4.1,5.6,brak
+31,Szymon,Grabowski,1D,9,131,Bardzo grzeczna i ambitna.,4.6,5.3,brak
+32,Michał,Jabłoński,2C,9,132,Dynamiczny i pełen energii.,5.5,5.8,brak
+"33,Oliwia,Nowak,2A,7,133,""Zdolny, ale wymaga motywacji."",4.9,4.3,brak"
+34,Igor,Pawlak,3E,9,134,Często bierze udział w konkursach.,5.7,5.2,brak
+35,Zuzanna,Wróbel,1C,7,135,Chętnie pomaga nauczycielowi.,4.7,5.3,brak
+36,Amelia,Lewandowski,3C,8,136,Kreatywna i zaangażowana.,4.6,4.8,brak
+37,Franciszek,Mazur,3B,7,137,Otwarty na nowe wyzwania.,5.9,5.2,podejrzenie
+38,Kacper,Lewandowski,3A,7,138,Kreatywna i zaangażowana.,5.7,4.0,brak
+39,Szymon,Duda,1E,7,139,Bardzo dobre wyniki i wzorowe zachowanie.,5.6,5.8,brak
+40,Maja,Wójcik,1B,8,140,Dynamiczny i pełen energii.,5.8,5.1,brak
+41,Jan,Kowalska,1D,8,141,Wrażliwa i empatyczna wobec innych.,4.0,5,stwierdzone
+42,Amelia,Jabłoński,2D,7,142,Często bierze udział w konkursach.,5.0,5.8,brak
+43,Kacper,Sikora,3D,8,143,Lubi pracę w grupie.,5.3,5.7,brak
+"44,Jan,Piotrowski,2E,9,144,""Zadaje dużo pytań, dociekliwa."",4.8,5.4,brak"
+45,Natalia,Wróbel,1A,8,145,Wymaga wsparcia przy koncentracji.,4.3,4.8,brak
+46,Zuzanna,Sikora,2E,7,146,Bardzo dobre wyniki i wzorowe zachowanie.,5.9,5.8,brak
+47,Aleksander,Nowak,3A,8,147,Wrażliwa i empatyczna wobec innych.,5.2,5.8,brak
+48,Oliwia,Mazur,2A,8,148,Otwarty na nowe wyzwania.,4.9,5.7,brak
+"49,Michał,Wróbel,3C,9,149,""Ma trudności z dyscypliną, ale pracuje nad sobą."",4.6,5.7,brak"
+"50,Natalia,Krawczyk,2C,9,150,""Spokojny, ale systematyczny."",3.1,5.4,brak"
+51,Jan,Wróbel,3E,8,151,Dynamiczny i pełen energii.,3.2,5.7,brak
+52,Igor,Zielińska,3B,7,152,Otwarty na nowe wyzwania.,4.4,4.8,brak
+"53,Michał,Duda,3C,9,153,""Ciekawy świata, dużo pyta."",4.1,5.0,brak"
+54,Natalia,Król,2D,7,154,Bardzo grzeczna i ambitna.,5.2,5.7,brak
+55,Szymon,Sikora,3C,7,155,Dynamiczny i pełen energii.,5.4,6.0,brak
+56,Julia,Baran,1B,8,156,Wrażliwa i empatyczna wobec innych.,5.1,5.9,brak
+57,Aleksander,Wieczorek,3A,7,157,Kreatywna i zaangażowana.,3.2,5.3,stwierdzone
+58,Antoni,Duda,3E,8,158,Bardzo grzeczna i ambitna.,4.7,5.8,brak
+59,Oliwia,Kamiński,2C,7,159,Dynamiczny i pełen energii.,5.2,5.9,brak
+60,Szymon,Piotrowski,2A,9,160,Wymaga wsparcia przy koncentracji.,4.9,5.0,brak
+61,Szymon,Wróbel,1B,8,161,Otwarty na nowe wyzwania.,5.9,5.7,brak
+62,Szymon,Lewandowski,1E,7,162,Świetnie współpracuje z klasą.,5.3,5.8,brak
+63,Oliwia,Piotrowski,3B,7,163,Lubi pracę w grupie.,4.9,5.1,brak
+"64,Igor,Nowak,2C,9,164,""Cicha, ale pilna uczennica."",6.0,5.2,brak"
+65,Amelia,Kowalska,2C,8,165,Kreatywna i zaangażowana.,4.0,5.1,podejrzenie
+66,Antoni,Zając,3D,8,166,Lubi pracę w grupie.,5.5,5.5,brak
+67,Igor,Duda,3D,8,167,Świetnie współpracuje z klasą.,5.3,4.8,brak
+68,Jan,Wróbel,1E,7,168,Często bierze udział w konkursach.,5.5,4.9,brak
+"69,Laura,Zielińska,2E,7,169,""Ciekawy świata, dużo pyta."",5.7,6.0,brak"
+70,Wiktoria,Pawlak,2D,8,170,Często bierze udział w konkursach.,5.7,5.7,brak
+71,Natalia,Sikora,1A,9,171,Wymaga wsparcia przy koncentracji.,4.6,5.0,brak
+72,Natalia,Wójcik,3B,8,172,Chętnie pomaga nauczycielowi.,5.0,5.1,brak
+73,Antoni,Duda,1A,8,173,Dynamiczny i pełen energii.,4.6,5.9,brak
+74,Szymon,Wróbel,3D,8,174,Otwarty na nowe wyzwania.,3.1,5.0,brak
+"75,Franciszek,Krawczyk,2D,9,175,""Zadaje dużo pytań, dociekliwa."",4.9,5.1,brak"
+76,Filip,Krawczyk,2E,8,176,Świetnie współpracuje z klasą.,5.7,5.3,brak
+77,Oliwia,Nowak,2D,7,177,Kreatywna i zaangażowana.,3.5,5.2,brak
+78,Nikodem,Krawczyk,2C,8,178,Dynamiczny i pełen energii.,3.4,5.2,brak
+79,Laura,Kamiński,2A,9,179,Chętnie pomaga nauczycielowi.,4.5,5.4,brak
+80,Jan,Kowalska,1A,7,180,Kreatywna i zaangażowana.,3.7,5.1,stwierdzone
+81,Antoni,Nowak,2C,8,181,Bardzo dobre wyniki i wzorowe zachowanie.,5.4,5.1,brak
+82,Wiktoria,Wieczorek,1C,9,182,Wzorowa uczennica.,5.2,5.1,brak
+"83,Natalia,Baran,2E,9,183,""Zadaje dużo pytań, dociekliwa."",3.3,4.8,brak"
+"84,Zuzanna,Piotrowski,1E,8,184,""Spokojny, ale systematyczny."",6.0,4.9,brak"
+85,Jan,Wróbel,2E,9,185,Często bierze udział w konkursach.,5.6,5.1,brak
+"86,Filip,Zielińska,3D,7,186,""Zadaje dużo pytań, dociekliwa."",5.4,4.8,brak"
+87,Maja,Jabłoński,2D,8,187,Często bierze udział w konkursach.,5.6,4.8,brak
+88,Antoni,Lewandowski,3B,7,188,Dynamiczny i pełen energii.,4,5.6,podejrzenie
+89,Wiktoria,Jabłoński,3E,9,189,Świetnie współpracuje z klasą.,3.1,5.3,brak
+"90,Maja,Wójcik,1D,9,190,""Spokojny, ale systematyczny."",5.5,5.6,brak"
+91,Wiktoria,Kamiński,3D,8,191,Dynamiczny i pełen energii.,5.3,4.1,brak
+92,Wiktoria,Mazur,2E,7,192,Chętnie pomaga nauczycielowi.,5.5,5.9,brak
+93,Szymon,Baran,1D,8,193,Dynamiczny i pełen energii.,3.4,5.8,podejrzenie
+94,Nikodem,Krawczyk,3A,9,194,Bardzo grzeczna i ambitna.,5.1,4.9,brak
+95,Zofia,Wieczorek,2C,7,195,Wymaga wsparcia przy koncentracji.,3.8,4.7,stwierdzone
+96,Jan,Mazur,1A,8,196,Wrażliwa i empatyczna wobec innych.,5.5,5.5,brak
+97,Antoni,Kamiński,3A,8,197,Wrażliwa i empatyczna wobec innych.,5.4,3.8,brak
+98,Szymon,Wieczorek,2A,7,198,Chętnie pomaga nauczycielowi.,3.8,5.1,stwierdzone
+"99,Antoni,Wieczorek,1A,9,199,""Ma trudności z dyscypliną, ale pracuje nad sobą."",3.6,4.9,stwierdzone"
+"100,Maja,Wójcik,3A,8,200,""Zadaje dużo pytań, dociekliwa."",5.0,5.0,brak"
