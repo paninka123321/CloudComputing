@@ -32,7 +32,7 @@ class Command(BaseCommand):
                 continue
 
             self.stdout.write(f"📥 Importing {name}...")
-            with open(path, newline='', encoding='utf-8') as csvfile:
+            with open(path, newline='', encoding='utf-8-sig') as csvfile:
                 reader = csv.DictReader(csvfile)
                 with transaction.atomic():
                     for row in reader:
