@@ -23,7 +23,7 @@ export interface ShapesData {
   }
   
 export const sendShapesData = (data: ShapesData) => {
-    return fetch("http://localhost:8000/api/shapes/", {
+    return fetch("http://localhost:5173/api/shapes/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -31,7 +31,7 @@ export const sendShapesData = (data: ShapesData) => {
   };
   
   export const sendEmotionsData = (data: EmotionsData) => {
-    return fetch("http://localhost:8000/api/emotions/", {
+    return fetch("http://localhost:5173/api/emotions/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -49,7 +49,7 @@ export const sendShapesData = (data: ShapesData) => {
         time: data.time,
     };
 
-    return fetch("http://localhost:8000/api/writings/", {
+    return fetch("http://localhost:5173/api/writings/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

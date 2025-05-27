@@ -1,4 +1,4 @@
-;ID_Wynik;ID_Gry;ID_Ucznia;Czas_Wykonania;Wynik_1;Wynik_2;Wynik_3;Wynik_4;Wynik_5;Wynik_6
+;id_wynik;id_gry;id_ucznia;czas_wykonania;wynik_1;wynik_2;wynik_3;wynik_4;wynik_5;wynik_6
 0;1;1;1;111;81.4;84.0;83.8;79.7;82.6;75.7
 1;2;2;1;113;76.9;75.1;75.5;74.0;70.3;74.9
 2;3;3;1;127;72.2;76.7;68.9;63.0;81.2;73.8

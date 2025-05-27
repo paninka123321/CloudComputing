@@ -1,4 +1,4 @@
-ID_Ucznia,Imię,Nazwisko,Klasa,Wiek,ID_Rodzica,Krótki_opis_nauczyciela,Średnia_z_zachowania,Średnia_ocen,Podejrzenie_ADHD
+id_ucznia,imie,nazwisko,klasa,wiek,id_rodzica,krotki_opis_nauczyciela,srednia_z_zachowania,srednia_ocen,podejrzenie_ADHD
 1,Oliwia,Lewandowski,1D,9.0,101.0,Lubi pracę w grupie.,4.3,5.2,podejrzenie
 2,Oliwia,Sikora,3C,9.0,102.0,Świetnie współpracuje z klasą.,5.0,5.6,brak
 3,Igor,Zielińska,1E,7.0,103.0,Bardzo dobre wyniki i wzorowe zachowanie.,5.7,4.4,brak

@@ -1,7 +1,8 @@
 from django.db import models
 
 class Klasa(models.Model):
-    nazwa = models.CharField(max_length=2, unique=True)  # e.g. "1A", "2B"
+    id_klasa = models.IntegerField()
+    nazwa = models.CharField(max_length=2, unique=True, primary_key=True)  # e.g. "1A", "2B"
     
     def __str__(self):
         return self.nazwa
@@ -14,7 +15,7 @@ class Nauczyciel(models.Model):
     nauczany_przedmiot = models.CharField(max_length=100)
     wiek = models.IntegerField()
     plec = models.CharField(max_length=10)
-    klasa = models.ForeignKey(Klasa, on_delete=models.SET_NULL, null=True)
+    klasa = models.ManyToManyField(Klasa)
     nazwa_szkoly = models.CharField(max_length=100)
 
     def __str__(self):
@@ -42,8 +43,9 @@ class Uczen(models.Model):
   opis_ucznia = models.CharField(max_length= 100) 
   srednia_z_zachowania = models.DecimalField(max_digits=2, decimal_places=1)
   srednia_ocen = models.DecimalField(max_digits=2, decimal_places=1)
+  podejrzenie_ADHD = models.CharField(max_length=100)
 
-def __str__(self):
+  def __str__(self):
         return f"{self.imie} {self.nazwisko}"
 
 
@@ -58,7 +60,7 @@ class WynikiKwestionariuszy(models.Model):
   odp_4 = models.IntegerField()
   odp_5 = models.IntegerField()
 
-def __str__(self):
+  def __str__(self):
         return f"{self.odp_1} {self.odp_2} {self.odp_3} {self.odp_4} {self.odp_5}"
 
 # i think thi is no more needed
@@ -74,28 +76,40 @@ class WynikiGier(models.Model):
   wynik_5 = models.DecimalField(max_digits=5, decimal_places=2)
   wynik_6 = models.DecimalField(max_digits=5, decimal_places=2)
 
-def __str__(self):
+  def __str__(self):
      return f"{self.id_ucznia} {self.id_gry} {self.wynik_1} {self.wynik_2} {self.wynik_3} {self.wynik_4} {self.wynik_5} {self.wynik_6}"
 
 # game scores
-class ShapesDataset:
+class ShapesDataset(models.Model):
   game_id = models.IntegerField(primary_key=True)
   student_id = models.ForeignKey(Uczen, on_delete=models.SET_NULL, null=True)
   correct = models.IntegerField()
   incorrect = models.IntegerField()
-  time = models.DecimalField()
+  time = models.DecimalField(max_digits=10, decimal_places=2)
 
-class EmotionsDataset: 
+  def __str__(self):
+     return f"{self.game_id} {self.student_id} {self.correct} {self.incorrect} {self.time}"
+
+
+class EmotionsDataset(models.Model): 
   game_id = models.IntegerField(primary_key=True)
   student_id = models.ForeignKey(Uczen, on_delete=models.SET_NULL, null=True)
   happy = models.IntegerField()
   angry = models.IntegerField()
   sad = models.IntegerField()
-  time = models.DecimalField()
+  time = models.DecimalField(max_digits=10, decimal_places=2)
 
-class WritingsDataset: 
+  def __str__(self):
+     return f"{self.game_id} {self.student_id} {self.happy} {self.angry} {self.sad} {self.time}"
+
+
+class WritingsDataset(models.Model): 
   game_id = models.IntegerField(primary_key=True)
   student_id = models.ForeignKey(Uczen, on_delete=models.SET_NULL, null=True)
   image = models.BinaryField() # This stores raw binary data (like .png)
-  time = models.DecimalField()
+  time = models.DecimalField(max_digits=10, decimal_places=2)
+
+  def __str__(self):
+     return f"{self.game_id} {self.student_id} {self.image} {self.time}"
+
 

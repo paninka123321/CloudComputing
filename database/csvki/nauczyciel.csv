@@ -1,4 +1,4 @@
-﻿id_nauczyciela,Imię,Nazwisko,Wykształcenie,Nauczany_przedmiot,Wiek,Płeć,Klasa,Nazwa_szkoły
+﻿id_nauczyciela,imie,nazwisko,wyksztalcenie,nauczany_przedmiot,wiek,plec,klasa,nazwa_szkoly
 1,Anna,Kowalska,magister inżynier,angielski,50,kobieta,"3C, 1C",Szkoła Podstawowa nr 5 im. Marii Konopnickiej
 2,Paweł,Nowak,magister,matematyka,31,mężczyzna,2E,Szkoła Podstawowa nr 5 im. Marii Konopnickiej
 3,Katarzyna,Wiśniewska,licencjat,matematyka,31,kobieta,"2C, 1B",Szkoła Podstawowa nr 5 im. Marii Konopnickiej
