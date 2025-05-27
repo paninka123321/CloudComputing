@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: postgres_db
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: postgres_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../sql:/docker-entrypoint-initdb.d
+
+  web:
+    build:
+      context: ../backend
+      dockerfile: ../docker/Dockerfile
+    restart: always
+    volumes:
+      - ../backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - ../backend/.env
+    command: python manage.py runserver 0.0.0.0:8000
