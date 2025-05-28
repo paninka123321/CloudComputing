@@ -1,3 +1,4 @@
+# Views respond to HTTP requests, it communicates between fronted (thorough urls.py) and backend
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -8,6 +9,7 @@ from .models import (
     FactWritingDataset, FactTeacherSurveyDataset,
     FactShapesDataset, FactEmotionsDataset, FactAutismTeacherSurveyDataset
 )
+from .serializers import DimStudentSerializer
 
 ######### API endpoints #########
 
@@ -101,3 +103,29 @@ class ParentListView(View):
     def get(self, request):
         parents = list(DimParent.objects.values())
         return JsonResponse(parents, safe=False, json_dumps_params={'ensure_ascii': False})
+
+#  API do tworzenia, edytowania, usuwania, pobierania wszystkich uczniów – bez filtrowania.
+class DimStudentViewSet(viewsets.ModelViewSet):
+    '''Dzięki temu masz:
+
+        * GET /api/students/ → lista wszystkich uczniów
+        * POST /api/students/ → dodanie nowego ucznia
+        * PUT /api/students/5/ → edytowanie ucznia
+'''
+    queryset = DimStudent.objects.all()
+    serializer_class = DimStudentSerializer
+
+# Lista uczniów danego nauczyciela
+class StudentsByTeacherView(APIView):
+    '''
+    Ten widok filtruje uczniów po teacher_id, czyli daje tylko uczniów jednej klasy (wychowawcy), np taki endpoint:
+        * GET /api/teachers/1/students/ → tylko uczniowie klasy nauczyciela teacher_id = 1
+    '''
+    def get(self, request, teacher_id):
+        try:
+            teacher = DimTeacher.objects.get(pk=teacher_id)
+            students = DimStudent.objects.filter(class_name=teacher.class_name)
+            serializer = DimStudentSerializer(students, many=True)
+            return Response(serializer.data)
+        except DimTeacher.DoesNotExist:
+            return Response({'error': 'Teacher or students list not found'}, status=status.HTTP_404_NOT_FOUND)
