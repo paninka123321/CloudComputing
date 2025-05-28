@@ -1,3 +1,17 @@
+# usage:
+# 1. nowy obraz od zera:
+docker-compose -f docker/docker-compose.yml down --volumes --remove-orphans
+docker volume prune -f
+docker-compose -f docker/docker-compose.yml up --build
+# cloud-sql:
+docker exec -it docker-db-1 bash
+pg_dump -U postgres postgres_db > /tmp/dump.sql
+docker cp docker-db-1:/tmp/dump.sql ./dump.sql
+- i wgranie dump.sql na baze cloud sql
+# cloud-run
+docker build -f docker/Dockerfile -t gcr.io/psychological-app-a359c/backend backend
+backend-postgres-django % docker push gcr.io/psychological-app-a359c/backend
+
 # 🌩️ CloudComputing: Educational Platform with Role-Based Access
 
 **A full-stack application for teachers, students, and parents with cloud infrastructure (link to the demo UI-frontend hosting http://psychological-app-a359c-frontend.storage.googleapis.com/index.html)**  
