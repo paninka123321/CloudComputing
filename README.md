@@ -1,16 +1,27 @@
 # usage:
 # 1. nowy obraz od zera:
+```bash
 docker-compose -f docker/docker-compose.yml down --volumes --remove-orphans
 docker volume prune -f
 docker-compose -f docker/docker-compose.yml up --build
-# cloud-sql:
+```
+# zeby wdrozyc cloud-sql:
+```bash
 docker exec -it docker-db-1 bash
 pg_dump -U postgres postgres_db > /tmp/dump.sql
 docker cp docker-db-1:/tmp/dump.sql ./dump.sql
 - i wgranie dump.sql na baze cloud sql
-# cloud-run
+```
+# zeby wdrozyc cloud-run:
+```bash
 docker build -f docker/Dockerfile -t gcr.io/psychological-app-a359c/backend backend
 backend-postgres-django % docker push gcr.io/psychological-app-a359c/backend
+gcloud run deploy backend-postgres-django \          
+  --image gcr.io/psychological-app-a359c/backend \
+  --platform managed \
+  --region europe-central2 \
+  --allow-unauthenticated
+```
 
 # 🌩️ CloudComputing: Educational Platform with Role-Based Access
 
