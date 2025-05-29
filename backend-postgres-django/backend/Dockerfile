@@ -12,6 +12,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Kopiowanie całego projektu
 COPY . .
 
+
+
 # Zmienne środowiskowe
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1

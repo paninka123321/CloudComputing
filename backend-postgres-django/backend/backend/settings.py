@@ -51,16 +51,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
+USE_CLOUD_SQL = os.getenv("USE_CLOUD_SQL") == "1"
+
+if USE_CLOUD_SQL:
+    DB_HOST = f"/cloudsql/{os.getenv('INSTANCE_CONNECTION_NAME')}"
+else:
+    DB_HOST = os.getenv("DB_HOST", "localhost")
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config("POSTGRES_DB"),
-        'USER': config("POSTGRES_USER"),
-        'PASSWORD': config("POSTGRES_PASSWORD"),
-        'HOST': config("POSTGRES_HOST"),
-        'PORT': config("POSTGRES_PORT")
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASS"),
+        'HOST': DB_HOST,
+        'PORT': os.getenv("DB_PORT", "5432"),
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
