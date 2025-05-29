@@ -34,5 +34,3 @@ def writing_data_create(request):
     return JsonResponse({'error': 'Invalid method'}, status=405, json_dumps_params={'ensure_ascii': False})
 
 
-@csrf_exempt
-def shape

@@ -58,7 +58,7 @@ DATABASES = {
         'USER': config("POSTGRES_USER"),
         'PASSWORD': config("POSTGRES_PASSWORD"),
         'HOST': config("POSTGRES_HOST"),
-        'PORT': config("POSTGRES_PORT", default='5432')
+        'PORT': config("POSTGRES_PORT")
     }
 }
 
@@ -79,3 +79,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS
 CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", cast=Csv())
+
+# Dzięki temu Django będzie wiedział, gdzie zebrać statyczne pliki podczas collectstatic
+STATIC_ROOT = BASE_DIR / 'staticfiles'
