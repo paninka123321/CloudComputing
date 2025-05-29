@@ -9,33 +9,41 @@ from .models import (
     FactWritingDataset, FactTeacherSurveyDataset,
     FactShapesDataset, FactEmotionsDataset, FactAutismTeacherSurveyDataset
 )
-from .serializers import DimStudentSerializer
+from .serializers import DimStudentSerializer, FactWritingDatasetSerializer
+from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 ######### API endpoints #########
 
-@csrf_exempt
-def writing_data_create(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
+# @csrf_exempt
+# def writing_data_create(request):
+#     if request.method == 'POST':
+#         try:
+#             data = json.loads(request.body)
 
-            student_id = data.get('student')
-            image_uri = data.get('image')
-            time = data.get('time')
+#             student_id = data.get('student')
+#             image_uri = data.get('image')
+#             time = data.get('time')
 
-            student = DimStudent.objects.get(pk=student_id)
+#             student = DimStudent.objects.get(pk=student_id)
 
-            writing = FactWritingDataset.objects.create(
-                student=student,
-                png_file=image_uri,
-                time=time
-            )
+#             writing = FactWritingDataset.objects.create(
+#                 student=student,
+#                 png_file=image_uri,
+#                 time=time
+#             )
 
-            return JsonResponse({'status': 'success', 'id': writing.game_id}, status=201, json_dumps_params={'ensure_ascii': False})
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=400, json_dumps_params={'ensure_ascii': False})
-    return JsonResponse({'error': 'Invalid method'}, status=405, json_dumps_params={'ensure_ascii': False})
+#             return JsonResponse({'status': 'success', 'id': writing.game_id}, status=201, json_dumps_params={'ensure_ascii': False})
+#         except Exception as e:
+#             return JsonResponse({'status': 'error', 'message': str(e)}, status=400, json_dumps_params={'ensure_ascii': False})
+#     return JsonResponse({'error': 'Invalid method'}, status=405, json_dumps_params={'ensure_ascii': False})
 
+# zamieniamy to powyzej na dfr:
+class FactWritingDatasetViewSet(viewsets.ModelViewSet):
+    queryset = FactWritingDataset.objects.all()
+    serializer_class = FactWritingDatasetSerializer
 
 @csrf_exempt
 def shapes_data_create(request):

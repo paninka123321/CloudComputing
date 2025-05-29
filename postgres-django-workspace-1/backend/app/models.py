@@ -18,6 +18,7 @@ class DimTeacher(models.Model):
     sex = models.CharField(max_length=10)
     class_name = models.CharField(max_length=10)
     school_name = models.CharField(max_length=100)
+    firebase_uid = models.CharField(max_length=128, unique=True, null=True, blank=True)
 
     class Meta:
         db_table = 'dim_teacher'
@@ -31,6 +32,7 @@ class DimParent(models.Model):
     work = models.CharField(max_length=50)
     phone = models.CharField(max_length=15)
     email = models.CharField(max_length=100)
+    firebase_uid = models.CharField(max_length=128, unique=True, null=True, blank=True)
 
     class Meta:
         db_table = 'dim_parent'
@@ -46,6 +48,7 @@ class DimStudent(models.Model):
     description = models.TextField(blank=True, null=True)
     avg_behaviour = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     avg_marks = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+    firebase_uid = models.CharField(max_length=128, unique=True, null=True, blank=True)
 
     class Meta:
         db_table = 'dim_student'

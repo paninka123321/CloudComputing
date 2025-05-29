@@ -1,7 +1,10 @@
-import { createContext, useContext, useEffect, useId, useState } from "react";
-import { auth, getUserRole} from "../firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+// przechowuje użytkownika,
+// przechowuje jego rolę,
+// obsługuje logout.
 
+import { createContext, useContext, useEffect, useId, useState } from "react";
+import { auth, getUserRole, db} from "../firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 
 const AuthContext = createContext();
