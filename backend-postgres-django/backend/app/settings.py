@@ -1,14 +1,10 @@
 import os
-#from pathlib import Path
-from decouple import config, Csv
-
-#BASE_DIR = Path(__file__).resolve().parent.parent
+from decouple import config
 
 SECRET_KEY = config("SECRET_KEY")
-#DEBUG = config("DEBUG", default=False, cast=bool)
-#ALLOWED_HOSTS = ["*"]  # możesz ograniczyć w produkcji
+DEBUG = config("DEBUG", default=False, cast=bool)
+ALLOWED_HOSTS = ["*"]
 
-"""
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -32,7 +28,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'backend.urls'
+ROOT_URLCONF = 'app.urls'  # jeśli urls.py jest w app/
 
 TEMPLATES = [
     {
@@ -50,25 +46,21 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'backend.wsgi.application'
-"""
+WSGI_APPLICATION = 'app.wsgi.application'  # pod warunkiem, że WSGI plik tam jest
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config("POSTGRES_DB"),
-        'USER': config("POSTGRES_USER"),
-        'PASSWORD': config("POSTGRES_PASSWORD"),
-        'HOST': config("POSTGRES_HOST"),
-        'PORT': config("POSTGRES_PORT", default='5432')
+        'NAME': config("POSTGRES_DB", default="postgres"),
+        'USER': config("POSTGRES_USER", default="postgres"),
+        'PASSWORD': config("POSTGRES_PASSWORD", default="postgres_password"),
+        'HOST': f"/cloudsql/{config('INSTANCE_CONNECTION_NAME')}",
+        'PORT': '',
     }
 }
-"""
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+
+CORS_ALLOWED_ORIGINS = [
+    "http://psychological-app-a359c-frontend.storage.googleapis.com"
 ]
 
 LANGUAGE_CODE = 'en-us'
@@ -78,6 +70,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-"""
-# CORS
-CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", cast=Csv())
