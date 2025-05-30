@@ -1,52 +1,29 @@
 import os
 from decouple import config
 
-SECRET_KEY = config("SECRET_KEY", default="django-insecure-2^=#4p1dzhau)_bn2vd%9_r0b7dqtc!sxx)i9giay8rh91toom")  # lub wygeneruj lepszy
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+SECRET_KEY = config("SECRET_KEY", default="unsafe-default-secret")  # zmień w produkcji
 DEBUG = config("DEBUG", default=False, cast=bool)
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
     'app',
     'rest_framework',
     'corsheaders',
+    'django.contrib.contenttypes',
+    'django.contrib.auth',
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'app.urls'  # jeśli urls.py jest w app/
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
-WSGI_APPLICATION = 'app.wsgi.application'  # pod warunkiem, że WSGI plik tam jest
+ROOT_URLCONF = 'app.urls'
+WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -54,7 +31,7 @@ DATABASES = {
         'NAME': config("POSTGRES_DB", default="postgres_db"),
         'USER': config("POSTGRES_USER", default="postgres"),
         'PASSWORD': config("POSTGRES_PASSWORD", default="postgres_password"),
-        'HOST': config("POSTGRES_HOST", default="/cloudsql/psychological-app-a359c:europe-central2:psychological-db"),  # ważne
+        'HOST': config("POSTGRES_HOST", default="/cloudsql/psychological-app-a359c:europe-central2:psychological-db"),
         'PORT': config("POSTGRES_PORT", default="5432")
     }
 }
@@ -68,5 +45,4 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
