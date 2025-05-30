@@ -1,7 +1,7 @@
 import os
 from decouple import config
 
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY", default="django-insecure-2^=#4p1dzhau)_bn2vd%9_r0b7dqtc!sxx)i9giay8rh91toom")  # lub wygeneruj lepszy
 DEBUG = config("DEBUG", default=False, cast=bool)
 ALLOWED_HOSTS = ["*"]
 
@@ -51,11 +51,11 @@ WSGI_APPLICATION = 'app.wsgi.application'  # pod warunkiem, że WSGI plik tam je
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config("POSTGRES_DB", default="postgres"),
+        'NAME': config("POSTGRES_DB", default="postgres_db"),
         'USER': config("POSTGRES_USER", default="postgres"),
         'PASSWORD': config("POSTGRES_PASSWORD", default="postgres_password"),
-        'HOST': f"/cloudsql/{config('INSTANCE_CONNECTION_NAME')}",
-        'PORT': '',
+        'HOST': config("POSTGRES_HOST", default="/cloudsql/psychological-app-a359c:europe-central2:psychological-db"),  # ważne
+        'PORT': config("POSTGRES_PORT", default="5432")
     }
 }
 
