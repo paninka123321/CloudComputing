@@ -8,9 +8,11 @@ COPY requirements.txt ./
 
 # Instalacja zależności
 RUN pip install --no-cache-dir -r requirements.txt
-RUN mkdir /cloudsql
+
 # Kopiowanie całego projektu
 COPY . .
+
+
 
 # Zmienne środowiskowe
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -20,4 +22,4 @@ ENV PORT=8080
 # Zbieranie statycznych plików i migracje bazy przy starcie kontenera
 CMD python manage.py collectstatic --noinput && \
     python manage.py migrate --noinput && \
-    exec gunicorn backend.wsgi:application --bind 0.0.0.0:$PORT --workers 1
+    gunicorn backend.wsgi:application --bind 0.0.0.0:$PORT
