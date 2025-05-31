@@ -81,10 +81,10 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config("DB_NAME"),
+        'NAME': config("POSTGRES_DB"),
         'USER': config('POSTGRES_USER'),
         'PASSWORD': config('POSTGRES_PASSWORD'),
-        'HOST': config("DB_HOST"),
+        'HOST': config("DB_HOST"), #In Docker Compose, services talk to each other via their service names, This tells Django to connect to the container named db_docker, not your local Postgres.
         'PORT': config("DB_PORT"),
     }
 }

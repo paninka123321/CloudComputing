@@ -1,8 +1,0 @@
-# pack-refs with: peeled fully-peeled sorted 
-3bc0e1e369fa2823ff43263880c6428d25352db7 refs/heads/ML
-f1d4f4728a54199a395d02ffc2db33688bb80a5a refs/heads/Paulina-UI
-c0f00e2340de89b0cc15520cfcbfd1cc05241ceb refs/heads/main
-8dc5f61c916b507d2ea630bc72bc0af12efaef2f refs/pull/1/head
-8be56525b74d2a43664bcb53a20bee2e3910fea8 refs/pull/2/head
-7b0e5c2c38b63a01e1160720b5d9ed28d99066d6 refs/pull/3/head
-f1d4f4728a54199a395d02ffc2db33688bb80a5a refs/pull/4/head
