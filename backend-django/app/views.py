@@ -3,7 +3,6 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.shortcuts import get_object_or_404
 from .models import (
     DimStudent, DimTeacher, DimParent,
     FactWritingDataset, FactTeacherSurveyDataset,
@@ -16,7 +15,19 @@ from .serializers import (
     FactTeacherSurveyDatasetSerializer
 )
 
-# POST Endpoints
+# === CREATE (POST) ===
+class StudentCreateView(generics.CreateAPIView):
+    queryset = DimStudent.objects.all()
+    serializer_class = DimStudentSerializer
+
+class TeacherCreateView(generics.CreateAPIView):
+    queryset = DimTeacher.objects.all()
+    serializer_class = DimTeacherSerializer
+
+class ParentCreateView(generics.CreateAPIView):
+    queryset = DimParent.objects.all()
+    serializer_class = DimParentSerializer
+
 class WritingDataCreateView(generics.CreateAPIView):
     queryset = FactWritingDataset.objects.all()
     serializer_class = FactWritingDatasetSerializer
@@ -29,7 +40,15 @@ class EmotionsDataCreateView(generics.CreateAPIView):
     queryset = FactEmotionsDataset.objects.all()
     serializer_class = FactEmotionsDatasetSerializer
 
-# GET Views
+class AutismSurveyCreateView(generics.CreateAPIView):
+    queryset = FactAutismTeacherSurveyDataset.objects.all()
+    serializer_class = FactAutismTeacherSurveyDatasetSerializer
+
+class TeacherSurveyCreateView(generics.CreateAPIView):
+    queryset = FactTeacherSurveyDataset.objects.all()
+    serializer_class = FactTeacherSurveyDatasetSerializer
+
+# === LIST (GET) ===
 class StudentListView(generics.ListAPIView):
     queryset = DimStudent.objects.all()
     serializer_class = DimStudentSerializer

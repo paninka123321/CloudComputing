@@ -18,7 +18,6 @@ class DimTeacher(models.Model):
     sex = models.CharField(max_length=10)
     class_name = models.CharField(max_length=10)
     school_name = models.CharField(max_length=100)
-
     class Meta:
         db_table = 'dim_teacher'
 
@@ -53,7 +52,7 @@ class DimStudent(models.Model):
 
 class FactWritingDataset(models.Model):
     game_id = models.AutoField(primary_key=True)
-    student = models.ForeignKey(DimStudent, on_delete=models.CASCADE)
+    student_id = models.ForeignKey(DimStudent, on_delete=models.CASCADE, db_column='student_id')
     png_file = models.TextField(blank=True, null=True)
     time = models.DecimalField(max_digits=5, decimal_places=2)
 
@@ -63,7 +62,7 @@ class FactWritingDataset(models.Model):
 
 class FactShapesDataset(models.Model):
     game_id = models.AutoField(primary_key=True)
-    student = models.ForeignKey(DimStudent, on_delete=models.CASCADE)
+    student_id = models.ForeignKey(DimStudent, on_delete=models.CASCADE, db_column='student_id')
     correct = models.IntegerField(blank=True, null=True)
     incorrect = models.IntegerField(blank=True, null=True)
     time = models.DecimalField(max_digits=5, decimal_places=2)
@@ -74,7 +73,7 @@ class FactShapesDataset(models.Model):
 
 class FactEmotionsDataset(models.Model):
     game_id = models.AutoField(primary_key=True)
-    student = models.ForeignKey(DimStudent, on_delete=models.CASCADE)
+    student_id = models.ForeignKey(DimStudent, on_delete=models.CASCADE, db_column='student_id')
     happy = models.IntegerField(blank=True, null=True)
     angry = models.IntegerField(blank=True, null=True)
     sad = models.IntegerField(blank=True, null=True)
@@ -84,7 +83,7 @@ class FactEmotionsDataset(models.Model):
         db_table = 'fact_emotions_dataset'
 
 class FactAutismTeacherSurveyDataset(models.Model):
-    student = models.OneToOneField(DimStudent, on_delete=models.CASCADE, primary_key=True)
+    student_id = models.OneToOneField(DimStudent, on_delete=models.CASCADE, primary_key=True, db_column='student_id')
     q1 = models.IntegerField(blank=True, null=True)
     q2 = models.IntegerField(blank=True, null=True)
     q3 = models.IntegerField(blank=True, null=True)
@@ -107,7 +106,7 @@ class FactAutismTeacherSurveyDataset(models.Model):
 
 
 class FactTeacherSurveyDataset(models.Model):
-    student = models.OneToOneField(DimStudent, on_delete=models.CASCADE, primary_key=True)
+    student_id = models.OneToOneField(DimStudent, on_delete=models.CASCADE, primary_key=True, db_column='student_id')
     q1 = models.IntegerField(blank=True, null=True)
     q2 = models.IntegerField(blank=True, null=True)
     q3 = models.IntegerField(blank=True, null=True)
