@@ -8,19 +8,16 @@ ENV PYTHONUNBUFFERED 1
 # Create a working directory
 WORKDIR /code
 
-# Install dependencies
+# Copy requirements.txt and install dependencies
 COPY requirements.txt /code/
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Copy the whole project
+# Copy the whole project after dependencies are installed
 COPY . /code/
 
-# Add Cloud SQL proxy socket
+# Set Cloud SQL connection details
 ENV DB_SOCKET_PATH=/cloudsql
 ENV INSTANCE_CONNECTION_NAME=psychological-app-a359c:europe-central2:psychological-db
-
-# Collect static (optional, if needed)
-RUN python manage.py
 
 # Expose port
 EXPOSE 8080
