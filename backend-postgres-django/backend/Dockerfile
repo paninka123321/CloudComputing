@@ -20,7 +20,7 @@ ENV DB_SOCKET_PATH=/cloudsql
 ENV INSTANCE_CONNECTION_NAME=psychological-app-a359c:europe-central2:psychological-db
 
 # Collect static (optional, if needed)
-RUN python manage.py collectstatic --noinput
+RUN python manage.py
 
 # Expose port
 EXPOSE 8080
