@@ -14,13 +14,15 @@ docker cp docker-db-1:/tmp/dump.sql ./dump.sql
 ```
 # zeby wdrozyc cloud-run:
 ```bash
-docker build -f docker/Dockerfile -t gcr.io/psychological-app-a359c/backend backend
-backend-postgres-django % docker push gcr.io/psychological-app-a359c/backend
-gcloud run deploy backend-postgres-django \          
-  --image gcr.io/psychological-app-a359c/backend \
+# gdy juz mamy obraz w register artifact pod europe-central2-docker.pkg.dev/psychological-app-a359c/psycho-docker/quickstart to:
+gcloud builds submit --tag europe-central2-docker.pkg.dev/psychological-app-a359c/psycho-docker/quickstart
+# deploy:
+gcloud run deploy psychobackend \
+  --image europe-central2-docker.pkg.dev/psychological-app-a359c/psycho-docker/quickstart \
   --platform managed \
   --region europe-central2 \
-  --allow-unauthenticated
+  --allow-unauthenticated \
+  --add-cloudsql-instances psychological-app-a359c:europe-central2:psychological-db
 ```
 
 # 🌩️ CloudComputing: Educational Platform with Role-Based Access
@@ -55,12 +57,4 @@ gcloud run deploy backend-postgres-django \
 ## 🛠️ Development Setup
 ```bash
 # 1. Clone repository
-git clone https://github.com/paninka123321/CloudComputing.git
-cd CloudComputing
-
-# 2. Install dependencies
-npm install
-pip install -r backend/requirements.txt
-
-# 4. Run development servers
-npm run dev & python backend/manage.py runserver
+git clone https://github.com/paninka123321/Clo

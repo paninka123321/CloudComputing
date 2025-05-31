@@ -20,30 +20,46 @@ provider "google" {
   region      = var.region
 }
 
-resource "google_cloud_run_service" "django-app" {
-  name     = "django-backend"
-  location = var.region
+resource "google_cloud_run_service" "psychobackend" {
+  name     = "psychobackend"
+  location = "europe-central2"
 
   template {
     spec {
       containers {
-        image = "gcr.io/${var.project_id}/my-django-app"  # Update with your container image name
-        ports {
-          container_port = 8000
-        }
+        image = "europe-central2-docker.pkg.dev/psychological-app-a359c/psycho-docker/quickstart"
+
         env {
-          name  = "DJANGO_SECRET_KEY"
-          value = var.django_secret  # safer to use var than hardcoding
+          name  = "CLOUDRUN_SERVICE_URL"
+          value = "https://psychobackend-312700987588.europe-central2.run.app"
         }
+
+        env {
+          name  = "DB_HOST"
+          value = "/cloudsql/psychological-app-a359c:europe-central2:psychological-db"
+        }
+
+        ports {
+          container_port = 8080
+        }
+      }
+    }
+
+    metadata {
+      annotations = {
+        "run.googleapis.com/cloudsql-instances" = "psychological-app-a359c:europe-central2:psychological-db"
       }
     }
   }
 
-  traffic {
+  traffics {
     percent         = 100
     latest_revision = true
   }
+
+  autogenerate_revision_name = true
 }
+
 
 resource "google_storage_bucket" "frontend_bucket" {
   name                        = "${var.project_id}-frontend"
@@ -53,18 +69,4 @@ resource "google_storage_bucket" "frontend_bucket" {
 
   website {
     main_page_suffix = "index.html"
-    not_found_page   = "index.html"
-  }
-}
-
-resource "google_storage_bucket_iam_member" "frontend_public" {
-  bucket = google_storage_bucket.frontend_bucket.name
-  role   = "roles/storage.objectViewer"
-  member = "allUsers"
-}
-
-resource "google_artifact_registry_repository" "docker_repo" {
-  location      = var.region
-  repository_id = "django-backend-repo"
-  format        = "DOCKER"
-}
+    not_found_page   = "in
