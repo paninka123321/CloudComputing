@@ -1,8 +1,10 @@
 # views.py (zaktualizowane z DRF i serializerami)
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
 from .models import (
     DimStudent, DimTeacher, DimParent,
     FactWritingDataset, FactTeacherSurveyDataset,
@@ -85,3 +87,25 @@ class AutismSurveyListView(generics.ListAPIView):
 class TeacherSurveyListView(generics.ListAPIView):
     queryset = FactTeacherSurveyDataset.objects.all()
     serializer_class = FactTeacherSurveyDatasetSerializer
+
+#returns only the students belonging to the currently authenticated teacher's class
+
+class TeacherStudentListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # This assumes the teacher is authenticated via `request.user`
+        # You can identify the teacher through request.user or from an ID passed in headers or JWT
+
+        # Get the teacher’s record, assuming your User model links to DimTeacher
+        try:
+            teacher = DimTeacher.objects.get(user=request.user)
+        except DimTeacher.DoesNotExist:
+            return Response({"detail": "Teacher profile not found."}, status=404)
+
+        students = DimStudent.objects.filter(
+            class_name=teacher.class_name,
+        )
+
+        serializer = DimStudentSerializer(students, many=True)
+        return Response(serializer.data)
