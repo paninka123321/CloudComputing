@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import environ
+from corsheaders.defaults import default_headers
 from urllib.parse import urlparse
 
 # initialize environment variables
@@ -145,5 +146,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Default primary key field type
-# https://doc
+CORS_ALLOW_ALL_ORIGINS = True 
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'authorization',
+    'content-type',
+]
