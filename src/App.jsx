@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import PsychoSphere from "./components/PsychoSphere";
 import Logout from "./components/Logout";
+import CompleteProfile from "./components/CompleteProfile";
 import './App.css'
 import ForgotPassword from "./components/ForgotPassword";
 import React, { useEffect } from 'react';
@@ -27,6 +28,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/signup" element={<Signup />} />
+          <Route path="/complete-profile" element={<CompleteProfile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
           <Route path="/psychosphere" element={<PsychoSphere />} />
