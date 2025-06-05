@@ -5,12 +5,23 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import get_authorization_header
 from django.shortcuts import get_object_or_404
 import requests
 from django.http import JsonResponse
 from google.cloud import aiplatform
 
+# Allow firebase authentication in backend
+import firebase_admin
+from firebase_admin import credentials
 
+cred = credentials.Certificate(
+    "config/firebaseServiceAccountKey.json"  # Path to your Firebase service account key
+)
+firebase_admin.initialize_app(cred)
+
+from rest_framework.authentication import get_authorization_header
+from firebase_admin import auth as firebase_auth
 from .models import (
     DimStudent, DimTeacher, DimParent,
     FactWritingDataset, FactTeacherSurveyDataset,
