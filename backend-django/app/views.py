@@ -61,10 +61,18 @@ class TeacherSurveyCreateView(generics.CreateAPIView):
 
 # === LIST (GET) ===
 class StudentListView(generics.ListAPIView):
-    queryset = DimStudent.objects.all()
     serializer_class = DimStudentSerializer
 
-class StudentDetailView(generics.RetrieveAPIView):
+    def get_queryset(self):
+        user_email = self.request.user.email  # lub metoda z tokenem
+        teacher = DimTeacher.objects.get(email=user_email)
+        return DimStudent.objects.filter(class_name=teacher.class_name, school_name=teacher.school_name)
+
+
+class StudentDetailView(generics.RetrieveUpdateAPIView):
+    queryset = DimStudent.objects.all()
+    serializer_class = DimStudentSerializer
+    permission_classes = [IsAuthenticated]
     def get(self, request, student_id):
         user_email = self._get_user_email_from_token(request)
         if isinstance(user_email, Response):
@@ -118,6 +126,27 @@ class StudentDetailView(generics.RetrieveAPIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
+
+    def create(self, request, *args, **kwargs):
+        user_email = self._get_user_email_from_token(request)
+        if isinstance(user_email, Response):
+            return user_email  # error w tokenie
+
+        try:
+            teacher = DimTeacher.objects.get(email=user_email)
+        except DimTeacher.DoesNotExist:
+            return Response({"detail": "Teacher not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        data = request.data.copy()
+        data['class_name'] = teacher.class_name
+        # jeśli masz `school_name` w modelu studenta, dodaj:
+        # data['school_name'] = teacher.school_name
+
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def _get_user_email_from_token(self, request):
         auth_header = get_authorization_header(request).split()

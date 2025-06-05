@@ -22,22 +22,44 @@ export default function AddStudent({ onStudentAdded, onClose }) {
 
     const token = await user.getIdToken();
 
-    const studentData = {
-      name,
-      surname,
-      age: Number(age),
-    };
 
-    if (parentName && parentSurname) {
-      studentData.parent = {
-        name: parentName,
-        surname: parentSurname,
-        email: parentEmail,
-        phone: parentPhone,
-      };
-    }
+    let parentId = null;
 
-    try {
+if (parentName && parentSurname) {
+  const parentRes = await fetch("https://psychobackend-312700987588.europe-central2.run.app/api/parents/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: parentName,
+      surname: parentSurname,
+      email: parentEmail,
+      phone: parentPhone,
+    }),
+  });
+
+  if (!parentRes.ok) {
+    throw new Error("Błąd przy dodawaniu rodzica");
+  }
+
+  const parentData = await parentRes.json();
+  parentId = parentData.parent_id;
+};
+
+const studentData = {
+  name,
+  surname,
+  age: Number(age),
+  parent_id: parentId,
+};
+
+console.log("Wysyłam dane ucznia:", studentData);
+
+    
+    try { 
+        console.log("Wysyłam dane ucznia:", studentData);
+
       const res = await fetch("https://psychobackend-312700987588.europe-central2.run.app/api/students/", {
         method: "POST",
         headers: {

@@ -10,13 +10,13 @@ class DimStudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = DimStudent
         fields = ['student_id', 'name', 'surname', 'class_name', 'age', 'parent_id', 'description', 'avg_behaviour', 'avg_marks']   
-        read_only_fields = ['student_id']
+        read_only_fields = ['student_id', 'class_name']
 
 class DimTeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model = DimTeacher
         fields = ['teacher_id', 'name', 'surname', 'education', 'subject', 'age', 'sex', 'class_name', 'school_name']   
-        read_only_fields = ['teacher_id']
+        read_only_fields = ['teacher_id', 'email']
 
 class DimParentSerializer(serializers.ModelSerializer):
     class Meta:
