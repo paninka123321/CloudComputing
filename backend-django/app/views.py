@@ -61,12 +61,8 @@ class TeacherSurveyCreateView(generics.CreateAPIView):
 
 # === LIST (GET) ===
 class StudentListView(generics.ListAPIView):
+    get_queryset = DimStudent.objects.all()
     serializer_class = DimStudentSerializer
-
-    def get_queryset(self):
-        user_email = self.request.user.email  # lub metoda z tokenem
-        teacher = DimTeacher.objects.get(email=user_email)
-        return DimStudent.objects.filter(class_name=teacher.class_name, school_name=teacher.school_name)
 
 
 class StudentDetailView(generics.RetrieveUpdateAPIView):
@@ -89,8 +85,7 @@ class StudentDetailView(generics.RetrieveUpdateAPIView):
             return Response({"detail": "Student not found."}, status=404)
 
         # Optional: enforce that teacher can access only students from their class/school
-        if (student.class_name != teacher.class_name or
-                getattr(student, 'school_name', None) != teacher.school_name):
+        if (student.class_name != teacher.class_name):
             return Response({"detail": "Access denied."}, status=403)
 
         serializer = DimStudentSerializer(student)
@@ -200,26 +195,26 @@ def get_parent_email_by_student(request, student_id):
 #returns only the students belonging to the currently authenticated teacher's class
 
 class TeacherStudentListView(APIView):
-    permission_classes = [IsAuthenticated]
+    sserializer_class = DimStudentSerializer
 
     def get(self, request):
-        # This assumes the teacher is authenticated via `request.user`
-        # You can identify the teacher through request.user or from an ID passed in headers or JWT
+        teacher_email = request.headers.get("X-Teacher-Email")
+        if not teacher_email:
+            return Response({"error": "Brak emaila nauczyciela"}, status=400)
 
-        # Get the teacher’s record, assuming your User model links to DimTeacher
         try:
-            teacher = DimTeacher.objects.get(user=request.user)
+            teacher = DimTeacher.objects.get(email=teacher_email)
         except DimTeacher.DoesNotExist:
-            return Response({"detail": "Teacher profile not found."}, status=404)
+            return Response({"error": "Nauczyciel nie istnieje"}, status=404)
 
         students = DimStudent.objects.filter(
             class_name=teacher.class_name,
+            school_name=teacher.school_name
         )
-
         serializer = DimStudentSerializer(students, many=True)
         return Response(serializer.data)
     
-
+    
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from google.cloud import aiplatform

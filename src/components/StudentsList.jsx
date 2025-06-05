@@ -14,13 +14,13 @@ export default function StudentsList({ refresh }) {
     const fetchStudents = async () => {
       setLoading(true);
       try {
-        const token = await user.getIdToken();
+        const email = user.email;
         const response = await fetch(
           "https://psychobackend-312700987588.europe-central2.run.app/teacher/students/",
           {
             headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
+                "x-teacher-email": email,
+                "Content-Type": "application/json",
             },
           }
         );
@@ -62,7 +62,7 @@ export default function StudentsList({ refresh }) {
               <tr
                 key={student.student_id || student.id}
                 onClick={() =>
-                  navigate(`/student/${student.student_id || student.id}`)
+                  navigate(`/students/${student.student_id || student.id}`)
                 }
                 style={{ cursor: "pointer", backgroundColor: "#fff" }}
                 onMouseOver={(e) =>
