@@ -5,6 +5,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
+import requests
+from django.http import JsonResponse
+from google.cloud import aiplatform
+
+
 from .models import (
     DimStudent, DimTeacher, DimParent,
     FactWritingDataset, FactTeacherSurveyDataset,
@@ -109,3 +114,56 @@ class TeacherStudentListView(APIView):
 
         serializer = DimStudentSerializer(students, many=True)
         return Response(serializer.data)
+    
+
+
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from google.cloud import aiplatform
+import requests
+import logging
+
+# Inicjalizacja Vertex AI - wykonaj to tylko raz przy starcie
+aiplatform.init(project="psychological-app-a359c", location="europe-central2")
+vertex_endpoint = aiplatform.Endpoint(
+    endpoint_name="projects/psychological-app-a359c/locations/europe-central2/endpoints/43404321018085376"
+)
+
+class PredictEmotionsView(APIView):
+    def get(self, request):
+        try:
+            # 1. Pobierz dane z lokalnego API
+            response = requests.get("https://psychobackend-312700987588.europe-central2.run.app/fact/emotions_dataset/")
+            response.raise_for_status()  # rzuci wyjątek jeśli status != 200
+            raw_data = response.json()
+
+            # 2. Przekształć dane do formatu oczekiwanego przez model
+            instances = [
+                {
+                    "happy": row["happy"],
+                    "angry": row["angry"],
+                    "sad": row["sad"],
+                    "time": row["time"]
+                }
+                for row in raw_data
+            ]
+
+            # 3. Wyślij do modelu
+            prediction_response = vertex_endpoint.predict(instances=instances)
+
+            return Response({"predictions": prediction_response.predictions}, status=200)
+
+        except requests.exceptions.RequestException as e:
+            logging.error(f"Błąd pobierania danych: {e}")
+            return Response({"error": "Błąd pobierania danych z lokalnego API."}, status=502)
+
+        except ValueError as e:
+            logging.error(f"Błąd dekodowania JSON: {e}")
+            return Response({"error": "Niepoprawny format danych JSON."}, status=400)
+
+        except Exception as e:
+            logging.exception("Niespodziewany błąd podczas predykcji.")
+            return Response({"error": f"Wystąpił błąd serwera: {str(e)}"}, status=500)
+

@@ -7,7 +7,7 @@ from app.views import (
     WritingDatasetListView, ShapesDatasetListView, EmotionsDatasetListView,
     AutismSurveyListView, TeacherSurveyListView,
     AutismSurveyCreateView, TeacherSurveyCreateView,
-    TeacherStudentListView
+    TeacherStudentListView, PredictEmotionsView
 )
 
 urlpatterns = [
@@ -35,6 +35,9 @@ urlpatterns = [
     path('fact/shapes_dataset/', ShapesDatasetListView.as_view(), name='shapes_dataset_list'),
     path('fact/emotions_dataset/', EmotionsDatasetListView.as_view(), name='emotions_dataset_list'),
     path('fact/autism_survey/', AutismSurveyListView.as_view(), name='autism_survey_list'),
-    path('fact/teacher_survey/', TeacherSurveyListView.as_view(), name='teacher_survey_list')
+    path('fact/teacher_survey/', TeacherSurveyListView.as_view(), name='teacher_survey_list'),
 
+    #MODEL
+    path('predict_emotions/', PredictEmotionsView.as_view(), name='predict_emotions')
     ]
+    
