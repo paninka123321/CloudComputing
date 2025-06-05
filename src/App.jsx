@@ -34,6 +34,7 @@ function App() {
           <Route path="/psychosphere" element={<PsychoSphere />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/Logout" element={<Logout />} />
+          <Route path="/student/:id" element={<StudentProfile />} />
         </Routes>
       </Router>
     </AuthProvider>

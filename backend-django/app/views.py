@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import get_authorization_header
+from firebase_admin import auth as firebase_auth
 from django.shortcuts import get_object_or_404
 import requests
 from django.http import JsonResponse
@@ -63,9 +65,65 @@ class StudentListView(generics.ListAPIView):
     serializer_class = DimStudentSerializer
 
 class StudentDetailView(generics.RetrieveAPIView):
-    queryset = DimStudent.objects.all()
-    serializer_class = DimStudentSerializer
-    lookup_field = 'pk'
+    def get(self, request, student_id):
+        user_email = self._get_user_email_from_token(request)
+        if isinstance(user_email, Response):
+            return user_email  # return error response
+
+        try:
+            teacher = DimTeacher.objects.get(email=user_email)
+        except DimTeacher.DoesNotExist:
+            return Response({"detail": "Teacher not found."}, status=404)
+
+        try:
+            student = DimStudent.objects.get(pk=student_id)
+        except DimStudent.DoesNotExist:
+            return Response({"detail": "Student not found."}, status=404)
+
+        # Optional: enforce that teacher can access only students from their class/school
+        if (student.class_name != teacher.class_name or
+                getattr(student, 'school_name', None) != teacher.school_name):
+            return Response({"detail": "Access denied."}, status=403)
+
+        serializer = DimStudentSerializer(student)
+        return Response(serializer.data)
+
+    def patch(self, request, student_id):
+        user_email = self._get_user_email_from_token(request)
+        if isinstance(user_email, Response):
+            return user_email
+
+        try:
+            teacher = DimTeacher.objects.get(email=user_email)
+        except DimTeacher.DoesNotExist:
+            return Response({"detail": "Teacher not found."}, status=404)
+
+        try:
+            student = DimStudent.objects.get(pk=student_id)
+        except DimStudent.DoesNotExist:
+            return Response({"detail": "Student not found."}, status=404)
+
+        # Check if the teacher can edit this student
+        if (student.class_name != teacher.class_name or
+                getattr(student, 'school_name', None) != teacher.school_name):
+            return Response({"detail": "Access denied."}, status=403)
+
+        serializer = DimStudentSerializer(student, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+    def _get_user_email_from_token(self, request):
+        auth_header = get_authorization_header(request).split()
+        if not auth_header or auth_header[0].lower() != b'bearer':
+            return Response({"detail": "Missing or invalid token header"}, status=401)
+
+        try:
+            decoded_token = firebase_auth.verify_id_token(auth_header[1].decode())
+            return decoded_token.get("email")
+        except Exception:
+            return Response({"detail": "Invalid Firebase token"}, status=401)
 
 class TeacherListView(generics.ListAPIView):
     queryset = DimTeacher.objects.all()

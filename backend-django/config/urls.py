@@ -20,7 +20,7 @@ urlpatterns = [
     path('teachers/', TeacherListView.as_view(), name='teacher_list'),
     path('parents/', ParentListView.as_view(), name='parent_list'),
     path('teacher/students/', TeacherStudentListView.as_view(), name='teacher-students'),
-    path('students/<int:pk>/', StudentDetailView.as_view(), name='student_detail'),
+    path('students/<int:student_id>/', StudentDetailView.as_view(), name='student_detail'),
     path('parent-email/<int:student_id>/', get_parent_email_by_student, name='parent-email-by-student'),
 
     # POST endpoints (create)

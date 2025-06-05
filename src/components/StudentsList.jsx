@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 
 export default function StudentsList({ refresh }) {
   const { user } = useAuth();
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     if (!user) return;
@@ -54,16 +58,22 @@ export default function StudentsList({ refresh }) {
           </thead>
           <tbody>
             {students.map((student) => (
-              <tr key={student.student_id || student.id}>
+              <tr
+                key={student.student_id || student.id}
+                onClick={() => navigate(`/student/${student.student_id || student.id}`)}
+                style={{ cursor: "pointer", backgroundColor: "#fff" }}
+                onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#f9f9f9")}
+                onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#fff")}
+        >
                 <td style={tdStyle}>{student.name}</td>
                 <td style={tdStyle}>{student.surname}</td>
                 <td style={tdStyle}>{student.age}</td>
                 <td style={tdStyle}>
-                  {student.parent
+                    {student.parent
                     ? `${student.parent.name} ${student.parent.surname}`
                     : "Brak"}
                 </td>
-              </tr>
+            </tr>
             ))}
           </tbody>
         </table>
