@@ -1,27 +1,17 @@
 # views.py (zaktualizowane z DRF i serializerami)
 from rest_framework import generics, status
 from rest_framework.views import APIView
+from collections import Counter
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import get_authorization_header
 from django.shortcuts import get_object_or_404
 import requests
 from django.http import JsonResponse
 from google.cloud import aiplatform
 
-# Allow firebase authentication in backend
-import firebase_admin
-from firebase_admin import credentials
 
-cred = credentials.Certificate(
-    "config/firebaseServiceAccountKey.json"  # Path to your Firebase service account key
-)
-firebase_admin.initialize_app(cred)
-
-from rest_framework.authentication import get_authorization_header
-from firebase_admin import auth as firebase_auth
 from .models import (
     DimStudent, DimTeacher, DimParent,
     FactWritingDataset, FactTeacherSurveyDataset,
@@ -42,24 +32,6 @@ class StudentCreateView(generics.CreateAPIView):
 class TeacherCreateView(generics.CreateAPIView):
     queryset = DimTeacher.objects.all()
     serializer_class = DimTeacherSerializer
-
-    def perform_create(self, serializer):
-        parent_data = self.request.data.get("parent")
-
-        parent_instance = None
-        if parent_data and parent_data.get("name") and parent_data.get("surname"):
-            parent_instance = DimParent.objects.create(
-                name=parent_data["name"],
-                surname=parent_data["surname"],
-                age=parent_data.get("age", 0),
-                work=parent_data.get("work", ""),
-                phone=parent_data.get("phone", ""),
-                email=parent_data.get("email", ""),
-            )
-
-        serializer.save(parent=parent_instance)
-
-        
 
 class ParentCreateView(generics.CreateAPIView):
     queryset = DimParent.objects.all()
@@ -136,33 +108,25 @@ def get_parent_email_by_student(request, student_id):
 #returns only the students belonging to the currently authenticated teacher's class
 
 class TeacherStudentListView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
-        auth_header = get_authorization_header(request).split()
-        if not auth_header or auth_header[0].lower() != b'bearer':
-            return Response({"detail": "Invalid token header"}, status=401)
+        # This assumes the teacher is authenticated via `request.user`
+        # You can identify the teacher through request.user or from an ID passed in headers or JWT
 
-        id_token = auth_header[1].decode()
+        # Get the teacher’s record, assuming your User model links to DimTeacher
         try:
-            decoded_token = firebase_auth.verify_id_token(id_token)
-            email = decoded_token.get('email')
-        except Exception:
-            return Response({"detail": "Invalid Firebase token"}, status=401)
-
-        try:
-            teacher = DimTeacher.objects.get(email=email)
+            teacher = DimTeacher.objects.get(user=request.user)
         except DimTeacher.DoesNotExist:
             return Response({"detail": "Teacher profile not found."}, status=404)
 
         students = DimStudent.objects.filter(
             class_name=teacher.class_name,
-            school_name=teacher.school_name,
         )
 
         serializer = DimStudentSerializer(students, many=True)
         return Response(serializer.data)
-
-
-
+    
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -176,34 +140,24 @@ aiplatform.init(project="psychological-app-a359c", location="europe-central2")
 vertex_endpoint = aiplatform.Endpoint(
     endpoint_name="projects/psychological-app-a359c/locations/europe-central2/endpoints/43404321018085376"
 )
-
 # Endpoint do modelu shapes
 vertex_shapes_endpoint = aiplatform.Endpoint(
     endpoint_name="projects/psychological-app-a359c/locations/europe-central2/endpoints/592843475557285888"  
 )
-
 # Endpoint do modelu questionnaires
 vertex_questionnaires_endpoint = aiplatform.Endpoint(
     endpoint_name="projects/psychological-app-a359c/locations/europe-central2/endpoints/608606074253082624"
 )
-class PredictEmotionsView(APIView):
-    def get(self, request):
-        try:
-            # 1. Pobierz dane z lokalnego API
-            response = requests.get("https://psychobackend-312700987588.europe-central2.run.app/fact/emotions_dataset/")
-            response.raise_for_status()  # rzuci wyjątek jeśli status != 200
-            raw_data = response.json()
 
-            # 2. Przekształć dane do formatu oczekiwanego przez model
+class PredictEmotionsView(APIView):
+    def get(self, request, student_id):
+        try:
+            raw_data = FactEmotionsDataset.objects.filter(student_id=student_id).values("happy", "angry", "sad", "time")
             instances = [
-                [row["happy"], row["angry"], row["sad"], row["time"]]
+                [row["happy"], row["angry"], row["sad"], float(row["time"])]
                 for row in raw_data
             ]
-
-
-            # 3. Wyślij do modelu
             prediction_response = vertex_endpoint.predict(instances=instances)
-
             return Response({"predictions": prediction_response.predictions}, status=200)
 
         except requests.exceptions.RequestException as e:
@@ -219,33 +173,14 @@ class PredictEmotionsView(APIView):
             return Response({"error": f"Wystąpił błąd serwera: {str(e)}"}, status=500)
 
 class PredictShapesView(APIView):
-    def get(self, request):
+    def get(self, request, student_id):
         try:
-            # 1. Pobierz dane z lokalnego API
-            response = requests.get("https://psychobackend-312700987588.europe-central2.run.app/fact/shapes_dataset/")
-            response.raise_for_status()
-            raw_data = response.json()
-
-            # 2. Mapa czasu
-            time_mapping = {
-                6: 1.00,
-                5: 0.95,
-                4: 0.85,
-                3: 0.70,
-                2: 0.45,
-                1: 0.20,
-                0: 0.00
-            }
-
-            # 3. Przekształć dane do formatu oczekiwanego przez model
+            raw_data = FactShapesDataset.objects.filter(student_id=student_id).values("correct", "time")
             instances = [
-                [row["correct"], time_mapping.get(row["czas"], 0.0)]
+                [float(row["correct"]) / 6.0 if row["correct"] else 0.0, float(row["time"])]
                 for row in raw_data
             ]
-
-            # 4. Wyślij do modelu shapes
             prediction_response = vertex_shapes_endpoint.predict(instances=instances)
-
             return Response({"predictions": prediction_response.predictions}, status=200)
 
         except requests.exceptions.RequestException as e:
@@ -259,26 +194,42 @@ class PredictShapesView(APIView):
         except Exception as e:
             logging.exception("Niespodziewany błąd podczas predykcji.")
             return Response({"error": f"Wystąpił błąd serwera: {str(e)}"}, status=500)
-class PredictQuestionnaireView(APIView):
-    def get(self, request):
+
+class PredictQuestionnaire1View(APIView):
+    def get(self, request, student_id):
         try:
-            # 1. Pobierz dane z lokalnego API
-            response = requests.get("https://psychobackend-312700987588.europe-central2.run.app/fact/teacher_survey/")
-            response.raise_for_status()
-            raw_data = response.json()
+            question_keys = [f"q{i}" for i in range(1, 17)]
+            data = FactAutismTeacherSurveyDataset.objects.filter(student_id=student_id).values(*question_keys).first()
+            if not data:
+                return Response({"error": "No data for given student"}, status=404)
 
-            # 2. Lista wymaganych kolumn
-            question_keys = [f"Q{i}" for i in range(1, 17)]
+            instance = [[data.get(k, 0) or 0 for k in question_keys]]
+            prediction_response = vertex_questionnaires_endpoint.predict(instances=instance)
+            return Response({"predictions": prediction_response.predictions}, status=200)
 
-            # 3. Przygotuj dane wejściowe jako listy wartości Q1–Q16
-            instances = [
-                [row.get(key, 0) for key in question_keys]
-                for row in raw_data
-            ]
+        except requests.exceptions.RequestException as e:
+            logging.error(f"Błąd pobierania danych: {e}")
+            return Response({"error": "Błąd pobierania danych z lokalnego API."}, status=502)
 
-            # 4. Wyślij do modelu
-            prediction_response = vertex_questionnaires_endpoint.predict(instances=instances)
+        except ValueError as e:
+            logging.error(f"Błąd dekodowania JSON: {e}")
+            return Response({"error": "Niepoprawny format danych JSON."}, status=400)
 
+        except Exception as e:
+            logging.exception("Niespodziewany błąd podczas predykcji.")
+            return Response({"error": f"Wystąpił błąd serwera: {str(e)}"}, status=500)
+        
+
+class PredictQuestionnaire2View(APIView):
+    def get(self, request, student_id):
+        try:
+            question_keys = [f"q{i}" for i in range(1, 17)]
+            data = FactTeacherSurveyDataset.objects.filter(student_id=student_id).values(*question_keys).first()
+            if not data:
+                return Response({"error": "No data for given student"}, status=404)
+
+            instance = [[data.get(k, 0) or 0 for k in question_keys]]
+            prediction_response = vertex_questionnaires_endpoint.predict(instances=instance)
             return Response({"predictions": prediction_response.predictions}, status=200)
 
         except requests.exceptions.RequestException as e:
@@ -293,3 +244,66 @@ class PredictQuestionnaireView(APIView):
             logging.exception("Niespodziewany błąd podczas predykcji.")
             return Response({"error": f"Wystąpił błąd serwera: {str(e)}"}, status=500)
 
+
+class PredictEnsembleView(APIView):
+    def get(self, request, student_id):
+        try:
+            predictions = []
+
+            # 1. Predict emotions
+            raw_emotions = FactEmotionsDataset.objects.filter(student_id=student_id).values("happy", "angry", "sad", "time")
+            emotion_instances = [
+                [row["happy"], row["angry"], row["sad"], float(row["time"])]
+                for row in raw_emotions
+            ]
+            if emotion_instances:
+                emotion_result = vertex_endpoint.predict(instances=emotion_instances)
+                predictions += [round(p) for p in emotion_result.predictions]
+
+            # 2. Predict shapes
+            raw_shapes = FactShapesDataset.objects.filter(student_id=student_id).values("correct", "time")
+            shape_instances = [
+                [float(row["correct"] or 0) / 6.0, float(row["time"])]
+                for row in raw_shapes
+            ]
+            if shape_instances:
+                shape_result = vertex_shapes_endpoint.predict(instances=shape_instances)
+                predictions += [round(p) for p in shape_result.predictions]
+
+            # 3. Predict questionnaire - autism
+            question_keys = [f"q{i}" for i in range(1, 17)]
+            data_autism = FactAutismTeacherSurveyDataset.objects.filter(student_id=student_id).values(*question_keys).first()
+            if data_autism:
+                autism_instance = [[data_autism.get(k, 0) or 0 for k in question_keys]]
+                autism_result = vertex_questionnaires_endpoint.predict(instances=autism_instance)
+                predictions += [round(p) for p in autism_result.predictions]
+
+            # 4. Predict questionnaire - ADHD
+            data_adhd = FactTeacherSurveyDataset.objects.filter(student_id=student_id).values(*question_keys).first()
+            if data_adhd:
+                adhd_instance = [[data_adhd.get(k, 0) or 0 for k in question_keys]]
+                adhd_result = vertex_questionnaires_endpoint.predict(instances=adhd_instance)
+                predictions += [round(p) for p in adhd_result.predictions]
+
+            if not predictions:
+                return Response({"error": "Brak danych do agregacji predykcji."}, status=404)
+
+            # Majority vote
+            counter = Counter(predictions)
+            negative_count = counter.get(-1, 0)
+            positive_count = counter.get(1, 0)
+            total = negative_count + positive_count
+
+            if total == 0:
+                score = None  
+            else:
+                score = negative_count / total
+
+            return Response({
+                "predictions": predictions,
+                "negative_ratio": score 
+            }, status=200)
+
+        except Exception as e:
+            logging.exception("Błąd podczas predykcji ensemble.")
+            return Response({"error": str(e)}, status=500)
