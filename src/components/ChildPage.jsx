@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 const ChildPage = () => {
@@ -51,7 +51,7 @@ const ChildPage = () => {
                             <strong>{child.name}</strong> — wiek: {child.age} <br />
 
                             <button onClick={() => handlePredict(child.student_id)}>
-                                🔮 Wykonaj predykcję
+                                 Wykonaj predykcję
                             </button>
 
                             {predictions[child.student_id] && (

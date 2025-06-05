@@ -62,17 +62,14 @@ export const sendEmotionsData = (data: EmotionsData) => {
 // === Writings ===
 
 export const sendWritingsData = async (data: WritingsData) => {
-  const base64Image = await FileSystem.readAsStringAsync(data.imageUri, {
-    encoding: FileSystem.EncodingType.Base64,
-  });
-
   return fetch(`${API_BASE_URL}/api/writings/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       student_id: data.student,
-      png_file: base64Image, // to odpowiada polu w serializerze
+      png_file: data.imageUri, // Base64 bez dodatkowego przetwarzania
       time: data.time,
     }),
   });
 };
+

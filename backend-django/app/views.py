@@ -12,7 +12,8 @@ from django.shortcuts import get_object_or_404
 import requests
 from django.http import JsonResponse
 from google.cloud import aiplatform
-
+import urllib.parse
+from rest_framework.exceptions import ValidationError
 
 from .models import (
     DimStudent, DimTeacher, DimParent,
@@ -194,27 +195,35 @@ def get_parent_email_by_student(request, student_id):
 
 #returns only the students belonging to the currently authenticated teacher's class
 
-class TeacherStudentListView(APIView):
-    sserializer_class = DimStudentSerializer
 
-    def get(self, request):
-        teacher_email = request.headers.get("X-Teacher-Email")
-        if not teacher_email:
-            return Response({"error": "Brak emaila nauczyciela"}, status=400)
+class TeacherStudentListView(generics.ListAPIView):
+    """
+    Widok zwracający listę uczniów danej klasy nauczyciela.
+    Klucz: get_queryset() na podstawie ?email=<email>.
+    """
+    serializer_class = DimStudentSerializer
 
+    def get_queryset(self):
+        raw_email = self.request.GET.get("email")
+        print("Raw email nauczyciela:", raw_email)  # ✅ Dodaj tymczasowy log
+        email = urllib.parse.unquote(raw_email) if raw_email else None  # ✅ dekoduj e-mail
+        print("Email nauczyciela:", email)  # ✅ Dodaj tymczasowy log)
+        if not email:
+            raise ValidationError({"error": "Brak emaila nauczyciela"})
+        
         try:
-            teacher = DimTeacher.objects.get(email=teacher_email)
+            teacher = DimTeacher.objects.get(email=email)
         except DimTeacher.DoesNotExist:
-            return Response({"error": "Nauczyciel nie istnieje"}, status=404)
-
-        students = DimStudent.objects.filter(
+            raise ValidationError({"error": "Nauczyciel o podanym emailu nie istnieje"})
+        
+        # Zwróć tylko uczniów z tej samej klasy i szkoły
+        return DimStudent.objects.filter(
             class_name=teacher.class_name,
-            school_name=teacher.school_name
+            #school_name=teacher.school_name uczen na razie nie ma sql name a powinien miec
         )
-        serializer = DimStudentSerializer(students, many=True)
-        return Response(serializer.data)
+
     
-    
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from google.cloud import aiplatform

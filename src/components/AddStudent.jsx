@@ -11,6 +11,7 @@ export default function AddStudent({ onStudentAdded, onClose }) {
   const [parentEmail, setParentEmail] = useState("");
   const [parentPhone, setParentPhone] = useState("");
   const [error, setError] = useState("");
+  const [className, setClassName] = useState(""); // <--- dodaj to, jeśli potrzebujesz
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,6 +52,7 @@ const studentData = {
   name,
   surname,
   age: Number(age),
+  class_name: className, // <--- dodaj to, jeśli potrzebujesz
   parent_id: parentId,
 };
 
@@ -85,6 +87,7 @@ console.log("Wysyłam dane ucznia:", studentData);
         <input placeholder="Imię ucznia" value={name} onChange={(e) => setName(e.target.value)} required />
         <input placeholder="Nazwisko ucznia" value={surname} onChange={(e) => setSurname(e.target.value)} required />
         <input placeholder="Wiek" type="number" value={age} onChange={(e) => setAge(e.target.value)} required />
+        <input placeholder="Nazwa klasy" value={className} onChange={(e) => setClassName(e.target.value)} required />
 
         <p><strong>Dane rodzica (opcjonalnie):</strong></p>
         <input placeholder="Imię rodzica" value={parentName} onChange={(e) => setParentName(e.target.value)} />

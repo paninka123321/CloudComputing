@@ -51,6 +51,7 @@ export default function Gra1() {
   const [showCongrats, setShowCongrats] = useState(false);
   const [results, setResults] = useState<number[]>([]);
   const [startTime, setStartTime] = useState<number | null>(null);
+  const [dataSent, setDataSent] = useState(false); // Flaga zapobiegająca wielokrotnemu wysyłaniu danych
 
   useEffect(() => {
     const parsedId = parseInt(childId);
@@ -88,7 +89,7 @@ export default function Gra1() {
   };
 
   const handleRoundCompletion = async (results: number[]) => {
-    if (!startTime) return;
+    if (!startTime || dataSent) return; // Zapobiega wielokrotnemu wysyłaniu danych
 
     try {
       const durationSec = Math.round((Date.now() - startTime) / 1000);
@@ -103,7 +104,13 @@ export default function Gra1() {
       });
 
       console.log(`Wyniki shapes wysłane dla ${childId}`);
-      router.push("/");
+      setDataSent(true); // Ustaw flagę, aby dane nie były wysyłane ponownie
+      setShowCongrats(true); // Wyświetl komunikat "Brawo, gotowe!"
+      
+      // Po sekundzie przekierowanie do menu
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
     } catch (error) {
       console.error("Błąd wysyłania shapes:", error);
       Alert.alert("Błąd", "Nie udało się wysłać wyników shapes");
@@ -117,17 +124,12 @@ export default function Gra1() {
     const updatedResults = [...results, isCorrect ? 1 : 0];
     setResults(updatedResults);
 
-    if (isCorrect) {
-      setShowCongrats(true);
-      setTimeout(() => {
-        if (round >= 6) {
-          handleRoundCompletion(updatedResults);
-        } else {
-          setRound(prev => prev + 1);
-          startNewRound();
-          setShowCongrats(false);
-        }
-      }, 2000);
+    // Przejdź do kolejnej rundy niezależnie od poprawności odpowiedzi
+    if (round >= 6) {
+      await handleRoundCompletion(updatedResults);
+    } else {
+      setRound(prev => prev + 1);
+      startNewRound();
     }
   };
 
@@ -174,25 +176,3 @@ const styles = StyleSheet.create({
   round: {
     fontSize: 18,
     marginBottom: 20,
-  },
-  grid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    width: "100%",
-  },
-  image: {
-    width: 150,
-    height: 150,
-    margin: 10,
-  },
-  centered: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  bigText: {
-    fontSize: 32,
-    fontWeight: "bold",
-  }
-});

@@ -45,6 +45,7 @@ const CompleteProfile = () => {
         sex,
         class_name: className,
         school_name: schoolName,
+        email: user.email, // email from auth context (firebase auth)
       };
     } else if (role === "parent") {
       url = "/api/parents/"; // Endpoint for parents
@@ -100,6 +101,7 @@ const CompleteProfile = () => {
           <input placeholder="Płeć" value={sex} onChange={e => setSex(e.target.value)} required />
           <input placeholder="Nazwa klasy" value={className} onChange={e => setClassName(e.target.value)} required />
           <input placeholder="Szkoła" value={schoolName} onChange={e => setSchoolName(e.target.value)} required />
+          <input placeholder="Email" value={user.email} disabled />
         </>
       )}
 

@@ -1,27 +1,26 @@
 {
-    "expo": {
-      "name": "apka_tablet",
-      "slug": "apka_tablet",
-      "version": "1.0.0",
-      "orientation": "portrait",
-      "platforms": ["ios", "android", "web"],
-      "sdkVersion": "53.0.0",
-      "updates": {
-        "fallbackToCacheTimeout": 0
-      },
-      "assetBundlePatterns": ["**/*"],
-      "ios": {
-        "supportsTablet": true
-      },
-      "android": {
-        "adaptiveIcon": {
-          "foregroundImage": "./assets/images/adaptive-icon.png",
-          "backgroundColor": "#FFFFFF"
-        }
-      },
-      "web": {
-        "favicon": "./assets/images/favicon.png"
+  "expo": {
+    "name": "apka_tablet",
+    "slug": "apka_tablet",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "platforms": ["ios", "android", "web"],
+    "sdkVersion": "53.0.0",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
       }
+    },
+    "web": {
+      "favicon": "./assets/images/favicon.png"
     }
   }
-  
+}
