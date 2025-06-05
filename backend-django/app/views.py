@@ -32,6 +32,24 @@ class TeacherCreateView(generics.CreateAPIView):
     queryset = DimTeacher.objects.all()
     serializer_class = DimTeacherSerializer
 
+    def perform_create(self, serializer):
+        parent_data = self.request.data.get("parent")
+
+        parent_instance = None
+        if parent_data and parent_data.get("name") and parent_data.get("surname"):
+            parent_instance = DimParent.objects.create(
+                name=parent_data["name"],
+                surname=parent_data["surname"],
+                age=parent_data.get("age", 0),
+                work=parent_data.get("work", ""),
+                phone=parent_data.get("phone", ""),
+                email=parent_data.get("email", ""),
+            )
+
+        serializer.save(parent=parent_instance)
+
+        
+
 class ParentCreateView(generics.CreateAPIView):
     queryset = DimParent.objects.all()
     serializer_class = DimParentSerializer

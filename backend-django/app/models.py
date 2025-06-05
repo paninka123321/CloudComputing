@@ -41,7 +41,7 @@ class DimStudent(models.Model):
     surname = models.CharField(max_length=50)
     class_name = models.CharField(max_length=10)
     age = models.IntegerField()
-    parent = models.ForeignKey(DimParent, on_delete=models.CASCADE)
+    parent = models.ForeignKey(DimParent, on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField(blank=True, null=True)
     avg_behaviour = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     avg_marks = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
