@@ -45,7 +45,6 @@ const Signup = () => {
         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         <select value={role} onChange={(e) => setRole(e.target.value)} required>
           <option value="">Wybierz rolę</option>
-          <option value="student">Student</option>
           <option value="parent">Parent</option>
           <option value="teacher">Teacher</option>
         </select>

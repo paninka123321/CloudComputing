@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext"; // <--- dodaj to!
 
 export default function AddStudent({ onStudentAdded, onClose }) {
+  const { user } = useAuth(); // <--- dodaj to!
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [age, setAge] = useState("");
-  const [className, setClassName] = useState("");
   const [parentName, setParentName] = useState("");
   const [parentSurname, setParentSurname] = useState("");
   const [parentEmail, setParentEmail] = useState("");
@@ -14,11 +15,17 @@ export default function AddStudent({ onStudentAdded, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!user) {
+      setError("Musisz być zalogowany.");
+      return;
+    }
+
+    const token = await user.getIdToken();
+
     const studentData = {
       name,
       surname,
       age: Number(age),
-      class_name: className,
     };
 
     if (parentName && parentSurname) {
@@ -35,13 +42,14 @@ export default function AddStudent({ onStudentAdded, onClose }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // <--- dodaj to!
         },
         body: JSON.stringify(studentData),
       });
 
       if (!res.ok) throw new Error("Błąd przy dodawaniu ucznia");
 
-      onStudentAdded(); // wywołuje callback do odświeżenia listy
+      onStudentAdded(); // Odśwież listę i zamknij modal
     } catch (err) {
       console.error(err);
       setError(err.message);
@@ -55,7 +63,6 @@ export default function AddStudent({ onStudentAdded, onClose }) {
         <input placeholder="Imię ucznia" value={name} onChange={(e) => setName(e.target.value)} required />
         <input placeholder="Nazwisko ucznia" value={surname} onChange={(e) => setSurname(e.target.value)} required />
         <input placeholder="Wiek" type="number" value={age} onChange={(e) => setAge(e.target.value)} required />
-        <input placeholder="Klasa (np. 2A)" value={className} onChange={(e) => setClassName(e.target.value)} required />
 
         <p><strong>Dane rodzica (opcjonalnie):</strong></p>
         <input placeholder="Imię rodzica" value={parentName} onChange={(e) => setParentName(e.target.value)} />

@@ -12,6 +12,8 @@ import CompleteProfile from "./components/CompleteProfile";
 import './App.css'
 import ForgotPassword from "./components/ForgotPassword";
 import React, { useEffect } from 'react';
+import StudentProfile from "./components/StudentProfile"; 
+import Class from "./components/Class";
 
 
 function App() {
@@ -35,6 +37,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/Logout" element={<Logout />} />
           <Route path="/student/:id" element={<StudentProfile />} />
+          <Route path="/class" element={<Class><Dashboard /></Class>} />
         </Routes>
       </Router>
     </AuthProvider>

@@ -103,12 +103,17 @@ class StudentDetailView(generics.RetrieveAPIView):
         except DimStudent.DoesNotExist:
             return Response({"detail": "Student not found."}, status=404)
 
-        # Check if the teacher can edit this student
+        # Sprawdź, czy nauczyciel ma dostęp do ucznia
         if (student.class_name != teacher.class_name or
                 getattr(student, 'school_name', None) != teacher.school_name):
             return Response({"detail": "Access denied."}, status=403)
 
-        serializer = DimStudentSerializer(student, data=request.data, partial=True)
+        # 🔒 Wymuszenie class_name zgodnych z nauczycielem
+        data = request.data.copy()
+        data['class_name'] = teacher.class_name
+
+
+        serializer = DimStudentSerializer(student, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
