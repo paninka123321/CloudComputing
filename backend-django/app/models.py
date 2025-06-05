@@ -10,6 +10,7 @@ class DimClass(models.Model):
 
 class DimTeacher(models.Model):
     teacher_id = models.AutoField(primary_key=True)
+    email = models.EmailField(unique=True)  #zeby moc mapowac nauczyciela do ucznia
     name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
     education = models.CharField(max_length=100)
