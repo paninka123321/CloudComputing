@@ -138,10 +138,20 @@ import logging
 
 # Inicjalizacja Vertex AI - wykonaj to tylko raz przy starcie
 aiplatform.init(project="psychological-app-a359c", location="europe-central2")
+# Endpoint do modelu emotions
 vertex_endpoint = aiplatform.Endpoint(
     endpoint_name="projects/psychological-app-a359c/locations/europe-central2/endpoints/43404321018085376"
 )
 
+# Endpoint do modelu shapes
+vertex_shapes_endpoint = aiplatform.Endpoint(
+    endpoint_name="projects/psychological-app-a359c/locations/europe-central2/endpoints/592843475557285888"  
+)
+
+# Endpoint do modelu questionnaires
+vertex_questionnaires_endpoint = aiplatform.Endpoint(
+    endpoint_name="projects/psychological-app-a359c/locations/europe-central2/endpoints/608606074253082624"
+)
 class PredictEmotionsView(APIView):
     def get(self, request):
         try:
@@ -152,17 +162,88 @@ class PredictEmotionsView(APIView):
 
             # 2. Przekształć dane do formatu oczekiwanego przez model
             instances = [
-                {
-                    "happy": row["happy"],
-                    "angry": row["angry"],
-                    "sad": row["sad"],
-                    "time": row["time"]
-                }
+                [row["happy"], row["angry"], row["sad"], row["time"]]
                 for row in raw_data
             ]
 
+
             # 3. Wyślij do modelu
             prediction_response = vertex_endpoint.predict(instances=instances)
+
+            return Response({"predictions": prediction_response.predictions}, status=200)
+
+        except requests.exceptions.RequestException as e:
+            logging.error(f"Błąd pobierania danych: {e}")
+            return Response({"error": "Błąd pobierania danych z lokalnego API."}, status=502)
+
+        except ValueError as e:
+            logging.error(f"Błąd dekodowania JSON: {e}")
+            return Response({"error": "Niepoprawny format danych JSON."}, status=400)
+
+        except Exception as e:
+            logging.exception("Niespodziewany błąd podczas predykcji.")
+            return Response({"error": f"Wystąpił błąd serwera: {str(e)}"}, status=500)
+
+class PredictShapesView(APIView):
+    def get(self, request):
+        try:
+            # 1. Pobierz dane z lokalnego API
+            response = requests.get("https://psychobackend-312700987588.europe-central2.run.app/fact/shapes_dataset/")
+            response.raise_for_status()
+            raw_data = response.json()
+
+            # 2. Mapa czasu
+            time_mapping = {
+                6: 1.00,
+                5: 0.95,
+                4: 0.85,
+                3: 0.70,
+                2: 0.45,
+                1: 0.20,
+                0: 0.00
+            }
+
+            # 3. Przekształć dane do formatu oczekiwanego przez model
+            instances = [
+                [row["correct"], time_mapping.get(row["czas"], 0.0)]
+                for row in raw_data
+            ]
+
+            # 4. Wyślij do modelu shapes
+            prediction_response = vertex_shapes_endpoint.predict(instances=instances)
+
+            return Response({"predictions": prediction_response.predictions}, status=200)
+
+        except requests.exceptions.RequestException as e:
+            logging.error(f"Błąd pobierania danych: {e}")
+            return Response({"error": "Błąd pobierania danych z lokalnego API."}, status=502)
+
+        except ValueError as e:
+            logging.error(f"Błąd dekodowania JSON: {e}")
+            return Response({"error": "Niepoprawny format danych JSON."}, status=400)
+
+        except Exception as e:
+            logging.exception("Niespodziewany błąd podczas predykcji.")
+            return Response({"error": f"Wystąpił błąd serwera: {str(e)}"}, status=500)
+class PredictQuestionnaireView(APIView):
+    def get(self, request):
+        try:
+            # 1. Pobierz dane z lokalnego API
+            response = requests.get("https://psychobackend-312700987588.europe-central2.run.app/fact/teacher_survey/")
+            response.raise_for_status()
+            raw_data = response.json()
+
+            # 2. Lista wymaganych kolumn
+            question_keys = [f"Q{i}" for i in range(1, 17)]
+
+            # 3. Przygotuj dane wejściowe jako listy wartości Q1–Q16
+            instances = [
+                [row.get(key, 0) for key in question_keys]
+                for row in raw_data
+            ]
+
+            # 4. Wyślij do modelu
+            prediction_response = vertex_questionnaires_endpoint.predict(instances=instances)
 
             return Response({"predictions": prediction_response.predictions}, status=200)
 
