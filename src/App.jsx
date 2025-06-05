@@ -14,6 +14,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import React, { useEffect } from 'react';
 import StudentProfile from "./components/StudentProfile"; 
 import Class from "./components/Class";
+import ChildPage from "./components/ChildPage";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           <Route path="/psychosphere" element={<PsychoSphere />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/Logout" element={<Logout />} />
+          <Route path="/child" element={<ChildPage />} />
           <Route path="/student/:id" element={<StudentProfile />} />
           <Route path="/class" element={<Class><Dashboard /></Class>} />
         </Routes>
