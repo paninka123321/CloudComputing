@@ -12,29 +12,33 @@ export default function StudentsList({ refresh }) {
     if (!user) return;
 
     const fetchStudents = async () => {
-      setLoading(true);
-      try {
-        const email = user.email;
-        const response = await fetch(
-          "https://psychobackend-312700987588.europe-central2.run.app/teacher/students/",
-          {
-            headers: {
-                "x-teacher-email": email,
+        setLoading(true);
+        try {
+            const token = await user.getIdToken(); // ✅ najpierw pobierz token
+            const email = user.email;
+
+            const response = await fetch(
+            `https://psychobackend-312700987588.europe-central2.run.app/teacher/students/?email=${encodeURIComponent(email)}`,
+            {
+                headers: {
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+                },
+            }
+            );
+
+            if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            setStudents(data);
+        } catch (error) {
+            console.error("Błąd pobierania uczniów:", error);
+            setStudents([]);
+        } finally {
+            setLoading(false);
         }
-        const data = await response.json();
-        setStudents(data);
-      } catch (error) {
-        console.error("Błąd pobierania uczniów:", error);
-        setStudents([]);
-      } finally {
-        setLoading(false);
-      }
     };
 
     fetchStudents();

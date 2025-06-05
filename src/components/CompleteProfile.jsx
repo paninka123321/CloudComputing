@@ -45,6 +45,7 @@ const CompleteProfile = () => {
         sex,
         class_name: className,
         school_name: schoolName,
+        email: user.email, // email from auth context (firebase auth)
       };
     } else if (role === "parent") {
       url = "/api/parents/"; // Endpoint for parents

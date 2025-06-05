@@ -11,3 +11,4 @@ django-environ==0.11.2
 requests
 google-cloud-aiplatform
 firebase-admin
+
