@@ -2,6 +2,7 @@
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
@@ -92,6 +93,16 @@ class AutismSurveyListView(generics.ListAPIView):
 class TeacherSurveyListView(generics.ListAPIView):
     queryset = FactTeacherSurveyDataset.objects.all()
     serializer_class = FactTeacherSurveyDatasetSerializer
+
+@api_view(['GET'])
+def get_parent_email_by_student(request, student_id):
+    student = get_object_or_404(DimStudent, pk=student_id)
+    parent = student.parent
+
+    if not parent.email:
+        return Response({'detail': 'Email not found for parent.'}, status=status.HTTP_404_NOT_FOUND)
+
+    return Response({'parent_email': parent.email})
 
 #returns only the students belonging to the currently authenticated teacher's class
 
