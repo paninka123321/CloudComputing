@@ -44,7 +44,7 @@ export default function Gra3() {
     try {
       await sendWritingsData({
         student: parseInt(childId),
-        imageUri: `data:image/png;base64,${signature}`, // już base64, więc traktujemy jako URI
+        imageUri: signature, // Base64 bez dodatkowego przetwarzania
         time: durationSec,
       });
 
@@ -104,3 +104,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
 });
+
