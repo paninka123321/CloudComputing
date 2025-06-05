@@ -125,25 +125,30 @@ def get_parent_email_by_student(request, student_id):
 #returns only the students belonging to the currently authenticated teacher's class
 
 class TeacherStudentListView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def get(self, request):
-        # This assumes the teacher is authenticated via `request.user`
-        # You can identify the teacher through request.user or from an ID passed in headers or JWT
+        auth_header = get_authorization_header(request).split()
+        if not auth_header or auth_header[0].lower() != b'bearer':
+            return Response({"detail": "Invalid token header"}, status=401)
 
-        # Get the teacher’s record, assuming your User model links to DimTeacher
+        id_token = auth_header[1].decode()
         try:
-            teacher = DimTeacher.objects.get(user=request.user)
+            decoded_token = firebase_auth.verify_id_token(id_token)
+            email = decoded_token.get('email')
+        except Exception:
+            return Response({"detail": "Invalid Firebase token"}, status=401)
+
+        try:
+            teacher = DimTeacher.objects.get(email=email)
         except DimTeacher.DoesNotExist:
             return Response({"detail": "Teacher profile not found."}, status=404)
 
         students = DimStudent.objects.filter(
             class_name=teacher.class_name,
+            school_name=teacher.school_name,
         )
 
         serializer = DimStudentSerializer(students, many=True)
         return Response(serializer.data)
-    
 
 
 
