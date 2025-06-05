@@ -152,3 +152,5 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     'authorization',
     'content-type',
 ]
+
+CORS_ALLOW_CREDENTIALS = True
