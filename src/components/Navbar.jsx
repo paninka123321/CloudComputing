@@ -28,11 +28,30 @@ console.log("Role:", role);
                       <li><Link to="/child">Child</Link></li>
                   )}
                   {role === "teacher" && (
-                      <>
-                          <li><Link to="/class">Class</Link></li>
-                          <li><Link to="/chat">Chat</Link></li>
-                      </>
-                  )}
+                    <>
+                        <li><Link to="/class">Class</Link></li>
+                        <li><Link to="/chat">Chat</Link></li>
+                        <li>
+                        <a
+                            href="https://docs.google.com/forms/d/e/1FAIpQLSfQPTijbJQb-Ub7jHNwXllJeNit5hWAWKV3l419yirSqU7lNw/viewform?usp=header"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Ankieta ADHD
+                        </a>
+                        </li>
+                        <li>
+                        <a
+                            href="https://docs.google.com/forms/d/e/1FAIpQLSe_l78ywiA2-ZGNTUjMQSabHaReDtoxR8QZ2FPSvLIsx1FTEg/viewform?usp=header"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Ankieta Autyzmu
+                        </a>
+                        </li>
+                    </>
+                )}
+
               </ul>
 
               <div className="logout-section">
