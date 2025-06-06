@@ -62,8 +62,11 @@ class TeacherSurveyCreateView(generics.CreateAPIView):
 
 # === LIST (GET) ===
 class StudentListView(generics.ListAPIView):
-    get_queryset = DimStudent.objects.all()
     serializer_class = DimStudentSerializer
+
+    def get_queryset(self):
+        return DimStudent.objects.all()
+
 
 
 class StudentDetailView(generics.RetrieveUpdateAPIView):
@@ -269,14 +272,33 @@ class PredictEmotionsView(APIView):
             return Response({"error": f"Wystąpił błąd serwera: {str(e)}"}, status=500)
 
 class PredictShapesView(APIView):
-    def get(self, request, student_id):
+    def get(self, request):
         try:
-            raw_data = FactShapesDataset.objects.filter(student_id=student_id).values("correct", "time")
+            # 1. Pobierz dane z lokalnego API
+            response = requests.get("https://psychobackend-312700987588.europe-central2.run.app/fact/shapes_dataset/")
+            response.raise_for_status()
+            raw_data = response.json()
+
+            # 2. Mapa czasu
+            correct_mapping = {
+                6: 1.00,
+                5: 0.95,
+                4: 0.85,
+                3: 0.70,
+                2: 0.45,
+                1: 0.20,
+                0: 0.00
+            }
+
+            # 3. Przekształć dane do formatu oczekiwanego przez model
             instances = [
-                [float(row["correct"]) / 6.0 if row["correct"] else 0.0, float(row["time"])]
+                [correct_mapping.get(row["correct"],0.0), row["czas"]]
                 for row in raw_data
             ]
+
+            # 4. Wyślij do modelu shapes
             prediction_response = vertex_shapes_endpoint.predict(instances=instances)
+
             return Response({"predictions": prediction_response.predictions}, status=200)
 
         except requests.exceptions.RequestException as e:
@@ -290,6 +312,7 @@ class PredictShapesView(APIView):
         except Exception as e:
             logging.exception("Niespodziewany błąd podczas predykcji.")
             return Response({"error": f"Wystąpił błąd serwera: {str(e)}"}, status=500)
+
 
 class PredictQuestionnaire1View(APIView):
     def get(self, request, student_id):
