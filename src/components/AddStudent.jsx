@@ -11,82 +11,46 @@ export default function AddStudent({ onStudentAdded, onClose }) {
   const [parentEmail, setParentEmail] = useState("");
   const [parentPhone, setParentPhone] = useState("");
   const [error, setError] = useState("");
-  const [className, setClassName] = useState(""); // <--- dodaj to, jeśli potrzebujesz
-  const [emailTeacher] = useState(""); // <--- email ucznia, jeśli potrzebujesz
 
-  const handleSubmit = async (e) => {
+
+    const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!user) {
       setError("Musisz być zalogowany.");
       return;
     }
+    try {
+      const token = await user.getIdToken();
 
-    const token = await user.getIdToken();
-
-
-    let parentId = null;
-
-if (parentName && parentSurname) {
-  const parentRes = await fetch("https://psychobackend-312700987588.europe-central2.run.app/api/parents/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name: parentName,
-      surname: parentSurname,
-      email: parentEmail,
-      phone: parentPhone,
-    }),
-  });
-
-  if (!parentRes.ok) {
-    throw new Error("Błąd przy dodawaniu rodzica");
-  }
-
-  const parentData = await parentRes.json();
-  parentId = parentData.parent_id;
-};
-
-const studentData = {
-  name,
-  surname,
-  age: Number(age),
-  class_name: className, // <--- dodaj to, jeśli potrzebujesz
-  parent_id: parentId,
-  email : emailTeacher, // <--- email ucznia, jeśli potrzebujesz
-};
-
-console.log("Wysyłam dane ucznia:", studentData);
-
-    
-    try { 
-        console.log("Wysyłam dane ucznia:", studentData);
+      const studentData = {
+        name,
+        surname,
+        age: age ? Number(age) : null,
+        // nie podajemy class_name! To backend ustali!
+      };
 
       const res = await fetch("https://psychobackend-312700987588.europe-central2.run.app/api/students/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // <--- dodaj to!
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(studentData),
       });
 
       if (!res.ok) {
-  const errorData = await res.json();
-  throw new Error(errorData.detail || "Błąd przy dodawaniu ucznia");
-}
+        const errorData = await res.json();
+        throw new Error(errorData.detail || "Błąd przy dodawaniu ucznia");
+      }
 
-      onStudentAdded(); // Odśwież listę i zamknij modal
+      onStudentAdded();
     } catch (err) {
-      console.error(err);
       setError(err.message);
     }
   };
 
   return (
-    <div style={{ backgroundColor: "#eee", padding: "1rem", marginTop: "1rem" }}>
+    <div style={{ backgroundColor: "grey", padding: "1rem", marginTop: "1rem" }}>
       <h2>Dodaj ucznia</h2>
       <form onSubmit={handleSubmit}>
         <input placeholder="Imię ucznia" value={name} onChange={(e) => setName(e.target.value)} required />

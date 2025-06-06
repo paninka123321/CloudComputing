@@ -9,7 +9,7 @@ from app.views import (
     AutismSurveyCreateView, TeacherSurveyCreateView,
     TeacherStudentListView, PredictEmotionsView, get_parent_email_by_student,
     PredictShapesView, PredictQuestionnaire1View, PredictQuestionnaire2View,
-    PredictEnsembleView
+    PredictEnsembleView, GetTeacherIDView
 )
 
 urlpatterns = [
@@ -22,6 +22,7 @@ urlpatterns = [
     path('teacher/students/', TeacherStudentListView.as_view(), name='teacher-students'),
     path('students/<int:pk>/', StudentDetailView.as_view(), name='student_detail'),
     path('parent-email/<int:student_id>/', get_parent_email_by_student, name='parent-email-by-student'),
+    path("api/teacher-id/", GetTeacherIDView.as_view(), name="get-teacher-id"),
 
     # POST endpoints (create)
     path('api/students/', StudentCreateView.as_view(), name='students_create'),

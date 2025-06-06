@@ -147,8 +147,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CORS_ALLOW_ALL_ORIGINS = True 
-
-
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    "x-teacher-email"
-]
+CORS_ALLOW_CREDENTIALS = True

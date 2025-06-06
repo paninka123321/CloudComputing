@@ -29,8 +29,21 @@ from .serializers import (
 
 # === CREATE (POST) ===
 class StudentCreateView(generics.CreateAPIView):
-    queryset = DimStudent.objects.all()
     serializer_class = DimStudentSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        email = getattr(user, "email", None)
+        if not email:
+            raise ValidationError({"error": "Brak emaila w tokenie"})
+        try:
+            teacher = DimTeacher.objects.get(email=email)
+        except DimTeacher.DoesNotExist:
+            raise ValidationError({"error": "Nauczyciel nie znaleziony"})
+
+        # Ustawiamy class_name z nauczyciela i tworzymy ucznia
+        serializer.save(class_name=teacher.class_name)
 
 class TeacherCreateView(generics.CreateAPIView):
     queryset = DimTeacher.objects.all()
@@ -61,6 +74,22 @@ class TeacherSurveyCreateView(generics.CreateAPIView):
     serializer_class = FactTeacherSurveyDatasetSerializer
 
 # === LIST (GET) ===
+
+# Returns the teacher ID based on the authenticated user's email
+class GetTeacherIDView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        email = getattr(request.user, "email", None)
+        if not email:
+            return Response({"error": "Brak emaila w tokenie"}, status=400)
+        try:
+            teacher = DimTeacher.objects.get(email=email)
+            return Response({"teacher_id": teacher.teacher_id})
+        except DimTeacher.DoesNotExist:
+            return Response({"error": "Nauczyciel nie znaleziony"}, status=404)
+        
+
 class StudentListView(generics.ListAPIView):
     queryset = DimStudent.objects.all()
     serializer_class = DimStudentSerializer
@@ -179,28 +208,19 @@ def get_parent_email_by_student(request, student_id):
 
 
 class TeacherStudentListView(generics.ListAPIView):
-    """
-    Widok zwracający listę uczniów danej klasy nauczyciela.
-    Klucz: get_queryset() na podstawie ?email=<email>.
-    """
     serializer_class = DimStudentSerializer
 
     def get_queryset(self):
-        raw_email = self.request.GET.get("email")
-        print("Raw email nauczyciela:", raw_email)  # ✅ Dodaj tymczasowy log
-        email = urllib.parse.unquote(raw_email) if raw_email else None  # ✅ dekoduj e-mail
-        print("Email nauczyciela:", email)  # ✅ Dodaj tymczasowy log)
-        if not email:
-            raise ValidationError({"error": "Brak emaila nauczyciela"})
-        
+        teacher_id = self.request.GET.get("teacher_id")
+        if not teacher_id:
+            raise ValidationError({"error": "Brak teacher_id w zapytaniu"})
+
         try:
-            teacher = DimTeacher.objects.get(email=email)
+            teacher = DimTeacher.objects.get(teacher_id=teacher_id)
         except DimTeacher.DoesNotExist:
-            raise ValidationError({"error": "Nauczyciel o podanym emailu nie istnieje"})
-        
-        # Zwróć tylko uczniów z tej samej klasy i szkoły
-        return DimStudent.objects.filter(
-            class_name=teacher.class_name)
+            raise ValidationError({"error": "Nauczyciel nie znaleziony"})
+
+        return DimStudent.objects.filter(class_name=teacher.class_name)
 
     
 

@@ -2,47 +2,41 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-export default function StudentsList({ refresh }) {
+export default function StudentsList({ refresh, teacherId }) {
   const { user } = useAuth();
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !teacherId) return;
 
     const fetchStudents = async () => {
-        setLoading(true);
-        try {
-            const token = await user.getIdToken(); // ✅ najpierw pobierz token
-            const email = user.email;
+      setLoading(true);
+      try {
+        const token = await user.getIdToken();
+        const response = await fetch(`https://psychobackend-312700987588.europe-central2.run.app/api/students/?teacher_id=${teacherId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
 
-            const response = await fetch(
-            `https://psychobackend-312700987588.europe-central2.run.app/teacher/students/?email=${encodeURIComponent(email)}`,
-            {
-                headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-                },
-            }
-            );
-
-            if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            setStudents(data);
-        } catch (error) {
-            console.error("Błąd pobierania uczniów:", error);
-            setStudents([]);
-        } finally {
-            setLoading(false);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+
+        const data = await response.json();
+        setStudents(data);
+      } catch (error) {
+        console.error("Błąd pobierania uczniów:", error);
+        setStudents([]);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchStudents();
-  }, [user, refresh]);
+  }, [user, refresh, teacherId]);
 
   if (!user) return <div>Zaloguj się, aby zobaczyć uczniów</div>;
   if (loading) return <div>Ładowanie uczniów...</div>;
