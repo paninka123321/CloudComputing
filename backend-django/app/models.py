@@ -46,7 +46,8 @@ class DimStudent(models.Model):
     description = models.TextField(blank=True, null=True)
     avg_behaviour = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     avg_marks = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
-
+    email = models.EmailField()
+    
     class Meta:
         db_table = 'dim_student'
 
