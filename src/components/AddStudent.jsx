@@ -12,6 +12,7 @@ export default function AddStudent({ onStudentAdded, onClose }) {
   const [parentPhone, setParentPhone] = useState("");
   const [error, setError] = useState("");
   const [className, setClassName] = useState(""); // <--- dodaj to, jeśli potrzebujesz
+  const [emailTeacher] = useState(""); // <--- email ucznia, jeśli potrzebujesz
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,6 +55,7 @@ const studentData = {
   age: Number(age),
   class_name: className, // <--- dodaj to, jeśli potrzebujesz
   parent_id: parentId,
+  email : emailTeacher, // <--- email ucznia, jeśli potrzebujesz
 };
 
 console.log("Wysyłam dane ucznia:", studentData);
@@ -71,7 +73,10 @@ console.log("Wysyłam dane ucznia:", studentData);
         body: JSON.stringify(studentData),
       });
 
-      if (!res.ok) throw new Error("Błąd przy dodawaniu ucznia");
+      if (!res.ok) {
+  const errorData = await res.json();
+  throw new Error(errorData.detail || "Błąd przy dodawaniu ucznia");
+}
 
       onStudentAdded(); // Odśwież listę i zamknij modal
     } catch (err) {
@@ -88,6 +93,7 @@ console.log("Wysyłam dane ucznia:", studentData);
         <input placeholder="Nazwisko ucznia" value={surname} onChange={(e) => setSurname(e.target.value)} required />
         <input placeholder="Wiek" type="number" value={age} onChange={(e) => setAge(e.target.value)} required />
         <input placeholder="Nazwa klasy" value={className} onChange={(e) => setClassName(e.target.value)} required />
+        <input placeholder="Email" value={email} onChange={(e) => setParentEmail(e.target.value)} required />
 
         <p><strong>Dane rodzica (opcjonalnie):</strong></p>
         <input placeholder="Imię rodzica" value={parentName} onChange={(e) => setParentName(e.target.value)} />

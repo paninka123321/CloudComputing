@@ -62,7 +62,7 @@ class TeacherSurveyCreateView(generics.CreateAPIView):
 
 # === LIST (GET) ===
 class StudentListView(generics.ListAPIView):
-    get_queryset = DimStudent.objects.all()
+    queryset = DimStudent.objects.all()
     serializer_class = DimStudentSerializer
 
 
@@ -70,10 +70,12 @@ class StudentDetailView(generics.RetrieveUpdateAPIView):
     queryset = DimStudent.objects.all()
     serializer_class = DimStudentSerializer
     permission_classes = [IsAuthenticated]
-    def get(self, request, student_id):
+
+    def get(self, request, *args, **kwargs):
+        student_id = kwargs.get("student_id")
         user_email = self._get_user_email_from_token(request)
         if isinstance(user_email, Response):
-            return user_email  # return error response
+            return user_email  # zwróć błąd z tokenem
 
         try:
             teacher = DimTeacher.objects.get(email=user_email)
@@ -85,14 +87,14 @@ class StudentDetailView(generics.RetrieveUpdateAPIView):
         except DimStudent.DoesNotExist:
             return Response({"detail": "Student not found."}, status=404)
 
-        # Optional: enforce that teacher can access only students from their class/school
-        if (student.class_name != teacher.class_name):
+        if student.class_name != teacher.class_name:
             return Response({"detail": "Access denied."}, status=403)
 
         serializer = DimStudentSerializer(student)
         return Response(serializer.data)
 
-    def patch(self, request, student_id):
+    def patch(self, request, *args, **kwargs):
+        student_id = kwargs.get("student_id")
         user_email = self._get_user_email_from_token(request)
         if isinstance(user_email, Response):
             return user_email
@@ -107,42 +109,18 @@ class StudentDetailView(generics.RetrieveUpdateAPIView):
         except DimStudent.DoesNotExist:
             return Response({"detail": "Student not found."}, status=404)
 
-        # Sprawdź, czy nauczyciel ma dostęp do ucznia
         if (student.class_name != teacher.class_name or
                 getattr(student, 'school_name', None) != teacher.school_name):
             return Response({"detail": "Access denied."}, status=403)
 
-        # 🔒 Wymuszenie class_name zgodnych z nauczycielem
         data = request.data.copy()
         data['class_name'] = teacher.class_name
-
 
         serializer = DimStudentSerializer(student, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
-
-    def create(self, request, *args, **kwargs):
-        user_email = self._get_user_email_from_token(request)
-        if isinstance(user_email, Response):
-            return user_email  # error w tokenie
-
-        try:
-            teacher = DimTeacher.objects.get(email=user_email)
-        except DimTeacher.DoesNotExist:
-            return Response({"detail": "Teacher not found."}, status=status.HTTP_404_NOT_FOUND)
-
-        data = request.data.copy()
-        data['class_name'] = teacher.class_name
-        # jeśli masz `school_name` w modelu studenta, dodaj:
-        # data['school_name'] = teacher.school_name
-
-        serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def _get_user_email_from_token(self, request):
         auth_header = get_authorization_header(request).split()
@@ -218,9 +196,7 @@ class TeacherStudentListView(generics.ListAPIView):
         
         # Zwróć tylko uczniów z tej samej klasy i szkoły
         return DimStudent.objects.filter(
-            class_name=teacher.class_name,
-            #school_name=teacher.school_name uczen na razie nie ma sql name a powinien miec
-        )
+            class_name=teacher.class_name)
 
     
 

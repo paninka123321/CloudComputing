@@ -9,7 +9,7 @@ from .models import (
 class DimStudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = DimStudent
-        fields = ['student_id', 'name', 'surname', 'class_name', 'age', 'parent_id', 'description', 'avg_behaviour', 'avg_marks', 'class_name', 'email']   
+        fields = ['student_id', 'name', 'surname', 'class_name', 'age', 'parent_id', 'description', 'avg_behaviour', 'avg_marks', 'email']   
         read_only_fields = ['student_id']
 
 class DimTeacherSerializer(serializers.ModelSerializer):
