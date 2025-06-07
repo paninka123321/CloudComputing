@@ -33,30 +33,37 @@ from .serializers import (
 
 # === CREATE (POST) ===
 class TeacherCreateView(generics.CreateAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = DimTeacher.objects.all()
     serializer_class = DimTeacherSerializer
 
 class ParentCreateView(generics.CreateAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = DimParent.objects.all()
     serializer_class = DimParentSerializer
 
 class WritingDataCreateView(generics.CreateAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = FactWritingDataset.objects.all()
     serializer_class = FactWritingDatasetSerializer
 
 class ShapesDataCreateView(generics.CreateAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = FactShapesDataset.objects.all()
     serializer_class = FactShapesDatasetSerializer
 
 class EmotionsDataCreateView(generics.CreateAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = FactEmotionsDataset.objects.all()
     serializer_class = FactEmotionsDatasetSerializer
 
 class AutismSurveyCreateView(generics.CreateAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = FactAutismTeacherSurveyDataset.objects.all()
     serializer_class = FactAutismTeacherSurveyDatasetSerializer
 
 class TeacherSurveyCreateView(generics.CreateAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = FactTeacherSurveyDataset.objects.all()
     serializer_class = FactTeacherSurveyDatasetSerializer
 
@@ -146,30 +153,37 @@ class StudentDetailView(generics.RetrieveUpdateAPIView):
             return Response({"detail": "Invalid Firebase token"}, status=401)
 
 class TeacherListView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = DimTeacher.objects.all()
     serializer_class = DimTeacherSerializer
 
 class ParentListView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = DimParent.objects.all()
     serializer_class = DimParentSerializer
 
 class WritingDatasetListView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = FactWritingDataset.objects.all()
     serializer_class = FactWritingDatasetSerializer
 
 class ShapesDatasetListView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = FactShapesDataset.objects.all()
     serializer_class = FactShapesDatasetSerializer
 
 class EmotionsDatasetListView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = FactEmotionsDataset.objects.all()
     serializer_class = FactEmotionsDatasetSerializer
 
 class AutismSurveyListView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = FactAutismTeacherSurveyDataset.objects.all()
     serializer_class = FactAutismTeacherSurveyDatasetSerializer
 
 class TeacherSurveyListView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = FactTeacherSurveyDataset.objects.all()
     serializer_class = FactTeacherSurveyDatasetSerializer
 
@@ -207,6 +221,7 @@ vertex_questionnaires_endpoint = aiplatform.Endpoint(
 )
 
 class PredictEmotionsView(APIView):
+    permission_classes = [permissions.AllowAny]
     def get(self, request, student_id):
         try:
             raw_data = FactEmotionsDataset.objects.filter(student_id=student_id).values("happy", "angry", "sad", "time")
@@ -230,6 +245,7 @@ class PredictEmotionsView(APIView):
             return Response({"error": f"Wystąpił błąd serwera: {str(e)}"}, status=500)
 
 class PredictShapesView(APIView):
+    permission_classes = [permissions.AllowAny]
     def get(self, request):
         try:
             # 1. Pobierz dane z lokalnego API
@@ -273,6 +289,7 @@ class PredictShapesView(APIView):
 
 
 class PredictQuestionnaire1View(APIView):
+    permission_classes = [permissions.AllowAny]
     def get(self, request, student_id):
         try:
             question_keys = [f"q{i}" for i in range(1, 17)]
@@ -298,6 +315,7 @@ class PredictQuestionnaire1View(APIView):
         
 
 class PredictQuestionnaire2View(APIView):
+    permission_classes = [permissions.AllowAny]
     def get(self, request, student_id):
         try:
             question_keys = [f"q{i}" for i in range(1, 17)]
@@ -323,6 +341,7 @@ class PredictQuestionnaire2View(APIView):
 
 
 class PredictEnsembleView(APIView):
+    permission_classes = [permissions.AllowAny]
     def get(self, request, student_id):
         try:
             predictions = []
