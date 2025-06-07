@@ -6,11 +6,46 @@ from .models import (
     FactShapesDataset, FactEmotionsDataset, FactAutismTeacherSurveyDataset
 )
 
+from rest_framework import serializers
+
+class DimParentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DimParent
+        fields = ['parent_id', 'name', 'surname', 'email', 'phone']
+
+# nested serializer - laczacy z parentem
 class DimStudentSerializer(serializers.ModelSerializer):
+    class_name = serializers.CharField(read_only=True)  # pole do odczytu, nie wymagane od klienta
+
     class Meta:
         model = DimStudent
-        fields = ['student_id', 'name', 'surname', 'class_name', 'age', 'parent_id', 'description', 'avg_behaviour', 'avg_marks', 'teacher_id']   
+        fields = ['name', 'surname', 'class_name', 'age', 'parent', 'description', 'avg_behaviour', 'avg_marks']
         read_only_fields = ['student_id']
+
+    def create(self, validated_data):
+        parent_data = validated_data.pop('parent', None)
+        validated_data.pop('class_name', None)
+        validated_data.pop('teacher', None)
+        
+        # Pobieramy nauczyciela z kontekstu 
+        teacher = self.context.get('teacher')
+        if not teacher:
+            raise serializers.ValidationError({"error": "Brak nauczyciela w kontekście"})
+
+        # Tworzymy rodzica, jeśli podano dane
+        parent_obj = None
+        if parent_data:
+            parent_obj = DimParent.objects.create(**parent_data)
+
+        # Tworzymy ucznia z automatycznym przypisaniem teacher i class_name
+        student = DimStudent.objects.create(
+            **validated_data,
+            class_name=teacher.class_name,
+            teacher=teacher,
+            parent=parent_obj
+        )
+        return student
+
 
 class DimTeacherSerializer(serializers.ModelSerializer):
     class Meta:

@@ -2,25 +2,35 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-export default function StudentsList({ refresh, teacherId }) {
+export default function StudentsList({ refresh }) {
   const { user } = useAuth();
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user || !teacherId) return;
+    if (!user) return;
 
     const fetchStudents = async () => {
       setLoading(true);
       try {
         const token = await user.getIdToken();
-        const response = await fetch(`https://psychobackend-312700987588.europe-central2.run.app/api/students/?teacher_id=${teacherId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `https://psychobackend-312700987588.europe-central2.run.app/students/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
+        if (response.status === 403) {
+          throw new Error("Brak dostępu do tych danych.");
+        }
+        if (response.status === 401) {
+          throw new Error("Musisz być zalogowany.");
+        }
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -36,7 +46,7 @@ export default function StudentsList({ refresh, teacherId }) {
     };
 
     fetchStudents();
-  }, [user, refresh, teacherId]);
+  }, [user, refresh]);
 
   if (!user) return <div>Zaloguj się, aby zobaczyć uczniów</div>;
   if (loading) return <div>Ładowanie uczniów...</div>;

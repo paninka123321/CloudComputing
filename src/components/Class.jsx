@@ -17,13 +17,14 @@ export default function Class() {
       try {
         const res = await fetch("https://psychobackend-312700987588.europe-central2.run.app/api/teacher-id/", {
           headers: {
-            Authorization: `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
         if (!res.ok) throw new Error("Błąd pobierania teacher_id");
         const data = await res.json();
         setTeacherId(data.teacher_id);
+        console.log("Get Teacher Id", data.teacher_id);
       } catch (e) {
         console.error(e);
       }
