@@ -94,23 +94,36 @@ class StudentDetailView(generics.RetrieveUpdateAPIView):
         student_id = kwargs.get("student_id")
         user_email = self._get_user_email_from_token(request)
         if isinstance(user_email, Response):
-            return user_email  # zwróć błąd z tokenem
+            return user_email  # błąd tokena
 
-        try:
-            teacher = DimTeacher.objects.get(email=user_email)
-        except DimTeacher.DoesNotExist:
-            return Response({"detail": "Teacher not found."}, status=404)
-
+        # Pobierz studenta
         try:
             student = DimStudent.objects.get(pk=student_id)
         except DimStudent.DoesNotExist:
             return Response({"detail": "Student not found."}, status=404)
 
-        if student.class_name != teacher.class_name:
-            return Response({"detail": "Access denied."}, status=403)
+        # Próbuj jako nauczyciel
+        try:
+            teacher = DimTeacher.objects.get(email=user_email)
+        except DimTeacher.DoesNotExist:
+            teacher = None
+
+        if teacher:
+            if student.class_name != teacher.class_name:
+                return Response({"detail": "Access denied (teacher)."}, status=403)
+        else:
+            # Próbuj jako rodzic
+            try:
+                parent = DimParent.objects.get(email=user_email)
+            except DimParent.DoesNotExist:
+                return Response({"detail": "User not found (neither teacher nor parent)."}, status=404)
+
+            if student.parent_id != parent.id:
+                return Response({"detail": "Access denied (parent)."}, status=403)
 
         serializer = DimStudentSerializer(student)
         return Response(serializer.data)
+
 
     def patch(self, request, *args, **kwargs):
         student_id = kwargs.get("student_id")
@@ -412,16 +425,18 @@ class StudentListCreateView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        logger.info(f"User in get_queryset: {user}")
         email = getattr(user, "email", None)
-        logger.info(f"Email from user: {email}")
         if not email:
             raise ValidationError({"error": "Brak emaila w tokenie"})
         try:
             teacher = DimTeacher.objects.get(email=email)
+            return DimStudent.objects.filter(teacher=teacher)
         except DimTeacher.DoesNotExist:
-            raise ValidationError({"error": "Nauczyciel nie znaleziony"})
-        return DimStudent.objects.filter(teacher=teacher)
+            try:
+                parent = DimParent.objects.get(email=email)
+                return DimStudent.objects.filter(parent=parent)
+            except DimParent.DoesNotExist:
+                raise ValidationError({"error": "Użytkownik nie jest ani nauczycielem, ani rodzicem"})
 
     def perform_create(self, serializer):
         user = self.request.user
