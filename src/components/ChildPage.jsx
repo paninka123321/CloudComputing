@@ -11,9 +11,15 @@ const ChildPage = () => {
         const fetchChildren = async () => {
             try {
                 if (user && role === "parent") {
-                    const res = await fetch("https://psychobackend-312700987588.europe-central2.run.app/students/");
-                    const allStudents = await res.json();
-                    const myChildren = allStudents.filter(student => student.parent_id === user.id);
+                    const token = await user.getIdToken();
+                    const res = await fetch("https://psychobackend-312700987588.europe-central2.run.app/students/", {
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                        },
+                    });
+                    if (!res.ok) throw new Error("Błąd serwera");
+                    const myChildren = await res.json();
                     setChildren(myChildren);
                 }
             } catch (err) {
@@ -22,6 +28,7 @@ const ChildPage = () => {
                 setLoading(false);
             }
         };
+
 
         fetchChildren();
     }, [user, role]);
