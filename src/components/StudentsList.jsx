@@ -6,6 +6,7 @@ export default function StudentsList({ refresh }) {
   const { user } = useAuth();
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [predictions, setPredictions] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,7 +48,21 @@ export default function StudentsList({ refresh }) {
 
     fetchStudents();
   }, [user, refresh]);
-
+    const handlePredict = async (studentId) => {
+        try {
+            const res = await fetch(
+                `https://psychobackend-312700987588.europe-central2.run.app/predict_ensemble/${studentId}/`
+            );
+            const data = await res.json();
+            setPredictions((prev) => ({ ...prev, [studentId]: data }));
+        } catch (error) {
+            console.error("Błąd predykcji:", error);
+            setPredictions((prev) => ({
+                ...prev,
+                [studentId]: { prediction: "Błąd predykcji" },
+            }));
+        }
+    };
   if (!user) return <div>Zaloguj się, aby zobaczyć uczniów</div>;
   if (loading) return <div>Ładowanie uczniów...</div>;
 
@@ -59,37 +74,70 @@ export default function StudentsList({ refresh }) {
         <table style={{ borderCollapse: "collapse", width: "100%" }}>
           <thead>
             <tr>
+              <th style={thStyle}>Id</th>
               <th style={thStyle}>Imię</th>
               <th style={thStyle}>Nazwisko</th>
               <th style={thStyle}>Wiek</th>
-              <th style={thStyle}>Rodzic</th>
+              <th style={thStyle}>Rodzic</th> 
             </tr>
           </thead>
           <tbody>
-            {students.map((student) => (
-              <tr
-                key={student.student_id || student.id}
-                onClick={() =>
-                  navigate(`/students/${student.student_id || student.id}`)
-                }
-                style={{ cursor: "pointer", backgroundColor: "#fff" }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#f9f9f9")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#fff")
-                }
-              >
-                <td style={tdStyle}>{student.name}</td>
-                <td style={tdStyle}>{student.surname}</td>
-                <td style={tdStyle}>{student.age}</td>
-                <td style={tdStyle}>
-                  {student.parent
-                    ? `${student.parent.name} ${student.parent.surname}`
-                    : "Brak"}
-                </td>
-              </tr>
-            ))}
+                          {students.map((student) => (
+                              <React.Fragment key={student.student_id || student.id}>
+                                  <tr
+                                      onClick={() =>
+                                          navigate(`/students/${student.student_id || student.id}`)
+                                      }
+                                      style={{ cursor: "pointer", backgroundColor: "#fff" }}
+                                      onMouseOver={(e) =>
+                                          (e.currentTarget.style.backgroundColor = "#f9f9f9")
+                                      }
+                                      onMouseOut={(e) =>
+                                          (e.currentTarget.style.backgroundColor = "#fff")
+                                      }
+                                  >
+                                      <td style={tdStyle}>{student.student_id}</td>
+                                      <td style={tdStyle}>{student.name}</td>
+                                      <td style={tdStyle}>{student.surname}</td>
+                                      <td style={tdStyle}>{student.age}</td>
+                                      <td style={tdStyle}>
+                                          {student.parent
+                                              ? `${student.parent.name} ${student.parent.surname}`
+                                              : "Brak"}
+                                      </td>
+                                      <td style={tdStyle}>
+                                          <button onClick={(e) => {
+                                              e.stopPropagation(); // zapobiega nawigacji przy kliknięciu przycisku
+                                              handlePredict(student.student_id);
+                                          }}>
+                                              Wykonaj predykcję
+                                          </button>
+                                      </td>
+                                  </tr>
+
+                                  {predictions[student.student_id] && (
+                                      <tr>
+                                          <td colSpan="6" style={{ ...tdStyle, backgroundColor: "#f5f5f5" }}>
+                                              <strong>Wskaźnik:</strong>{" "}
+                                              {predictions[student.student_id].negative_ratio?.toFixed(2)} <br />
+                                              <strong
+                                                  style={{
+                                                      color:
+                                                          predictions[student.student_id].negative_ratio > 0.5
+                                                              ? "orange"
+                                                              : "green",
+                                                  }}
+                                              >
+                                                  {predictions[student.student_id].negative_ratio > 0.5
+                                                      ? "Podejrzenie neuroatypowości"
+                                                      : "Wszystko w porządku"}
+                                              </strong>
+                                          </td>
+                                      </tr>
+                                  )}
+                              </React.Fragment>
+                          ))}
+
           </tbody>
         </table>
       )}
