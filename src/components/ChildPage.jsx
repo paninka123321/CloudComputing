@@ -67,19 +67,17 @@ const ChildPage = () => {
 
                             {predictions[child.student_id] && (
                                 <div style={{ marginTop: "5px" }}>
-                                    <strong>Predykcje:</strong>{" "}
-                                    {predictions[child.student_id].predictions?.join(", ")} <br />
-                                    <strong>Negatywny wskaźnik:</strong>{" "}
+                                    <strong>Wskaźnik:</strong>{" "}
                                     {predictions[child.student_id].negative_ratio?.toFixed(2)} <br />
                                     <strong
                                         style={{
                                             color:
-                                                predictions[child.student_id].negative_ratio > 0.75
+                                                predictions[child.student_id].negative_ratio > 0.5
                                                     ? "orange"
                                                     : "green",
                                         }}
                                     >
-                                        {predictions[child.student_id].negative_ratio > 0.75
+                                        {predictions[child.student_id].negative_ratio > 0.5
                                             ? "Podejrzenie neuroatypowości"
                                             : "Wszystko w porządku"}
                                     </strong>

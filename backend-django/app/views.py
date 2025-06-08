@@ -16,6 +16,8 @@ import urllib.parse
 from rest_framework.exceptions import ValidationError
 from rest_framework import permissions
 import logging
+from decimal import Decimal
+from collections import Counter
 
 logger = logging.getLogger(__name__)
 
@@ -257,16 +259,16 @@ class PredictEmotionsView(APIView):
             logging.exception("Niespodziewany błąd podczas predykcji.")
             return Response({"error": f"Wystąpił błąd serwera: {str(e)}"}, status=500)
 
+
 class PredictShapesView(APIView):
     permission_classes = [permissions.AllowAny]
-    def get(self, request):
-        try:
-            # 1. Pobierz dane z lokalnego API
-            response = requests.get("https://psychobackend-312700987588.europe-central2.run.app/fact/shapes_dataset/")
-            response.raise_for_status()
-            raw_data = response.json()
 
-            # 2. Mapa czasu
+    def get(self, request, student_id):
+        try:
+            # 1. Pobierz dane z bazy dla konkretnego studenta
+            raw_data = FactShapesDataset.objects.filter(student_id=student_id).values("correct", "time")
+
+            # 2. Mapa correct na float
             correct_mapping = {
                 6: 1.00,
                 5: 0.95,
@@ -277,27 +279,35 @@ class PredictShapesView(APIView):
                 0: 0.00
             }
 
-            # 3. Przekształć dane do formatu oczekiwanego przez model
+            # 3. Przekształć dane na instancje wejściowe modelu
             instances = [
-                [correct_mapping.get(row["correct"],0.0), row["czas"]]
+                [correct_mapping.get(row.get("correct", 0), 0.0), float(row.get("time", 0.0))]
                 for row in raw_data
             ]
 
-            # 4. Wyślij do modelu shapes
+            if not instances:
+                return Response({"error": "Brak danych kształtów dla tego studenta."}, status=404)
+
+            # 4. Wywołaj endpoint modelu
             prediction_response = vertex_shapes_endpoint.predict(instances=instances)
 
-            return Response({"predictions": prediction_response.predictions}, status=200)
+            # 5. Funkcja konwertująca Decimal na float
+            def convert_decimals(obj):
+                if isinstance(obj, list):
+                    return [convert_decimals(i) for i in obj]
+                elif isinstance(obj, dict):
+                    return {k: convert_decimals(v) for k, v in obj.items()}
+                elif isinstance(obj, Decimal):
+                    return float(obj)
+                else:
+                    return obj
 
-        except requests.exceptions.RequestException as e:
-            logging.error(f"Błąd pobierania danych: {e}")
-            return Response({"error": "Błąd pobierania danych z lokalnego API."}, status=502)
+            cleaned_predictions = convert_decimals(prediction_response.predictions)
 
-        except ValueError as e:
-            logging.error(f"Błąd dekodowania JSON: {e}")
-            return Response({"error": "Niepoprawny format danych JSON."}, status=400)
+            return Response({"predictions": cleaned_predictions}, status=200)
 
         except Exception as e:
-            logging.exception("Niespodziewany błąd podczas predykcji.")
+            logging.exception("Błąd podczas predykcji kształtów.")
             return Response({"error": f"Wystąpił błąd serwera: {str(e)}"}, status=500)
 
 
@@ -371,10 +381,22 @@ class PredictEnsembleView(APIView):
 
             # 2. Predict shapes
             raw_shapes = FactShapesDataset.objects.filter(student_id=student_id).values("correct", "time")
+            correct_mapping = {
+                6: 1.00,
+                5: 0.95,
+                4: 0.85,
+                3: 0.70,
+                2: 0.45,
+                1: 0.20,
+                0: 0.00
+            }
+
+            # 3. Przekształć dane do formatu oczekiwanego przez model
             shape_instances = [
-                [float(row["correct"] or 0) / 6.0, float(row["time"])]
+                [correct_mapping.get(row["correct"],0.0), float(row["time"])]
                 for row in raw_shapes
             ]
+            
             if shape_instances:
                 shape_result = vertex_shapes_endpoint.predict(instances=shape_instances)
                 predictions += [round(p) for p in shape_result.predictions]
