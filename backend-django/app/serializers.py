@@ -19,7 +19,7 @@ class DimStudentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DimStudent
-        fields = ['name', 'surname', 'class_name', 'age', 'parent', 'description', 'avg_behaviour', 'avg_marks']
+        fields = ['student_id', 'name', 'surname', 'class_name', 'age', 'parent', 'description', 'avg_behaviour', 'avg_marks']
         read_only_fields = ['student_id']
 
     def create(self, validated_data):

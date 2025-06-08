@@ -426,17 +426,23 @@ class StudentListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         email = getattr(user, "email", None)
+        logger.info(f"Email from user: {email}")
+
         if not email:
             raise ValidationError({"error": "Brak emaila w tokenie"})
-        try:
-            teacher = DimTeacher.objects.get(email=email)
+
+        # Spróbuj najpierw jako nauczyciel
+        teacher = DimTeacher.objects.filter(email=email).first()
+        if teacher:
             return DimStudent.objects.filter(teacher=teacher)
-        except DimTeacher.DoesNotExist:
-            try:
-                parent = DimParent.objects.get(email=email)
-                return DimStudent.objects.filter(parent=parent)
-            except DimParent.DoesNotExist:
-                raise ValidationError({"error": "Użytkownik nie jest ani nauczycielem, ani rodzicem"})
+
+        # Spróbuj jako rodzic
+        parent = DimParent.objects.filter(email=email).first()
+        if parent:
+            return DimStudent.objects.filter(parent=parent)
+
+        # Jeżeli ani jedno, ani drugie
+        raise ValidationError({"error": "Użytkownik nie jest nauczycielem ani rodzicem"})
 
     def perform_create(self, serializer):
         user = self.request.user

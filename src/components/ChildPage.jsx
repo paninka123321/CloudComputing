@@ -21,6 +21,8 @@ const ChildPage = () => {
                     if (!res.ok) throw new Error("Błąd serwera");
                     const myChildren = await res.json();
                     setChildren(myChildren);
+                    console.log("Dzieci z API:", myChildren);
+
                 }
             } catch (err) {
                 console.error("Błąd przy pobieraniu dzieci:", err);
@@ -54,17 +56,36 @@ const ChildPage = () => {
             ) : (
                 <ul>
                     {children.map(child => (
+                       
                         <li key={child.student_id}>
-                            <strong>{child.name}</strong> — wiek: {child.age} <br />
+                            
+                            <strong>{child.name} {child.surname}</strong> wiek: {child.age} - klasa { child.class_name}  <br />
 
                             <button onClick={() => handlePredict(child.student_id)}>
-                                 Wykonaj predykcję
+                                Wykonaj predykcję
                             </button>
 
                             {predictions[child.student_id] && (
                                 <div style={{ marginTop: "5px" }}>
-                                    <strong>Predykcja:</strong> {predictions[child.student_id].prediction} <br />
+                                    <strong>Predykcje:</strong>{" "}
+                                    {predictions[child.student_id].predictions?.join(", ")} <br />
+                                    <strong>Negatywny wskaźnik:</strong>{" "}
+                                    {predictions[child.student_id].negative_ratio?.toFixed(2)} <br />
+                                    <strong
+                                        style={{
+                                            color:
+                                                predictions[child.student_id].negative_ratio > 0.75
+                                                    ? "orange"
+                                                    : "green",
+                                        }}
+                                    >
+                                        {predictions[child.student_id].negative_ratio > 0.75
+                                            ? "Podejrzenie neuroatypowości"
+                                            : "Wszystko w porządku"}
+                                    </strong>
                                 </div>
+
+
                             )}
                         </li>
                     ))}
