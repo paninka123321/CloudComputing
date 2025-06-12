@@ -30,7 +30,6 @@ console.log("Role:", role);
                   {role === "teacher" && (
                     <>
                         <li><Link to="/class">Class</Link></li>
-                        <li><Link to="/chat">Chat</Link></li>
                         <li>
                         <a
                             href="https://docs.google.com/forms/d/e/1FAIpQLSfQPTijbJQb-Ub7jHNwXllJeNit5hWAWKV3l419yirSqU7lNw/viewform?usp=header"
