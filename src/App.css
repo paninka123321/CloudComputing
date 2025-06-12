@@ -41,3 +41,10 @@ body {
   padding: 0;
 
 }
+
+.center {
+  margin: auto;
+  width: 90%;
+  padding: 30%;
+  text-align: center;
+}

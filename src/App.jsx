@@ -40,8 +40,9 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/Logout" element={<Logout />} />
           <Route path="/child" element={<ChildPage />} />
-          <Route path="/student/:id" element={<StudentProfile />} />
+          <Route path="/students/:id" element={<StudentProfile />} />
           <Route path="/class" element={<Class><Dashboard /></Class>} />
+          
         </Routes>
       </Router>
     </AuthProvider>

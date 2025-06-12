@@ -37,13 +37,13 @@ export default function Class() {
     setRefresh(!refresh);
   };
 
-  if (!user) return <div>Zaloguj się, aby zobaczyć klasę</div>;
-  if (!teacherId) return <div>Ładowanie danych nauczyciela...</div>;
+  if (!user) return <div style={{ textAlign: "center" , color: "black"}}>Zaloguj się, aby zobaczyć klasę</div>;
+  if (!teacherId) return <div style={{ textAlign: "center", color: "black" }}>Ładowanie danych nauczyciela...</div>;
 
   return (
-    <div>
+    <div className="center">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h1>Twoja klasa:</h1>
+        <h1 style={{color:"white", textShadow: "2px 2px 0 #33006F, -2px -2px 0 #33006F, 2px -2px 0 #33006F, -2px 2px 0 #33006F"}}>Twoja klasa:</h1>
         <button onClick={() => setShowModal(true)}>➕ Dodaj ucznia</button>
       </div>
       <StudentsList refresh={refresh} teacherId={teacherId} />

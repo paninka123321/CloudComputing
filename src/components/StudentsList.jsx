@@ -71,7 +71,7 @@ export default function StudentsList({ refresh }) {
       {Array.isArray(students) && students.length === 0 ? (
         <p>Brak uczniów w tej klasie.</p>
       ) : (
-        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+        <table style={{ borderCollapse: "collapse", width: "100%"}}>
           <thead>
             <tr>
               <th style={thStyle}>Id</th>
@@ -149,10 +149,13 @@ const thStyle = {
   padding: "8px",
   background: "#f0f0f0",
   border: "1px solid #ccc",
-  textAlign: "left",
+  textAlign: "center",
+  color: "black",
+  fontWeight: "bold",
 };
 
 const tdStyle = {
   padding: "8px",
   border: "1px solid #ccc",
+  color: "#33006F"
 };

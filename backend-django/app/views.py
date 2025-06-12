@@ -143,8 +143,7 @@ class StudentDetailView(generics.RetrieveUpdateAPIView):
         except DimStudent.DoesNotExist:
             return Response({"detail": "Student not found."}, status=404)
 
-        if (student.class_name != teacher.class_name or
-                getattr(student, 'school_name', None) != teacher.school_name):
+        if (student.class_name != teacher.class_name):
             return Response({"detail": "Access denied."}, status=403)
 
         data = request.data.copy()

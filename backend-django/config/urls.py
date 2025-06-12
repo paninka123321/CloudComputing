@@ -17,7 +17,7 @@ urlpatterns = [
     # GET users
     path('teachers/', TeacherListView.as_view(), name='teacher_list'),
     path('parents/', ParentListView.as_view(), name='parent_list'),
-    path('students/<int:pk>/', StudentDetailView.as_view(), name='student_detail'),
+    #path('students/<int:pk>/', StudentDetailView.as_view(), name='student_detail'),
     path('parent-email/<int:student_id>/', get_parent_email_by_student, name='parent-email-by-student'),
     path("api/teacher-id/", GetTeacherIDView.as_view(), name="get-teacher-id"),
 
@@ -32,6 +32,7 @@ urlpatterns = [
 
     # GET & POST students
     path('students/', StudentListCreateView.as_view(), name='student_list'),
+    path('students/<int:student_id>/', StudentDetailView.as_view(), name='student-detail'),
 
     # GET games and quests data (list)
     path('fact/writing_dataset/', WritingDatasetListView.as_view(), name='writing_dataset_list'),

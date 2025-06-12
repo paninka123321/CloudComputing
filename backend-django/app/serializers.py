@@ -16,7 +16,8 @@ class DimParentSerializer(serializers.ModelSerializer):
 # nested serializer - laczacy z parentem
 class DimStudentSerializer(serializers.ModelSerializer):
     class_name = serializers.CharField(read_only=True)  # pole do odczytu, nie wymagane od klienta
-
+    parent = DimParentSerializer(read_only=True)
+    
     class Meta:
         model = DimStudent
         fields = ['student_id', 'name', 'surname', 'class_name', 'age', 'parent', 'description', 'avg_behaviour', 'avg_marks']

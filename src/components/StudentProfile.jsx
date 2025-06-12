@@ -4,102 +4,142 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function StudentProfile() {
-  const { id } = useParams(); // student_id
-  const { user } = useAuth();
-  const [student, setStudent] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [editedData, setEditedData] = useState(null);
+    const { id } = useParams(); // /students/:id
+    const { user, role } = useAuth();
+    const [student, setStudent] = useState(null);
+    const [editMode, setEditMode] = useState(false);
+    const [form, setForm] = useState({});
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!user) return;
+    useEffect(() => {
+        const fetchStudent = async () => {
+            setLoading(true);
+            try {
+                const token = await user.getIdToken();
+                const res = await fetch(
+                    `https://psychobackend-312700987588.europe-central2.run.app/students/${id}/`,
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                            "Content-Type": "application/json"
+                        }
+                    }
+                );
+                if (!res.ok) throw new Error("Błąd pobierania danych");
+                const data = await res.json();
+                setStudent(data);
+                setForm({
+                    description: data.description || "",
+                    avg_behaviour: data.avg_behaviour || "",
+                    avg_marks: data.avg_marks || ""
+                });
+            } catch (e) {
+                setStudent(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+        if (user) fetchStudent();
+    }, [id, user]);
 
-    user.getIdToken().then((token) => {
-      fetch(`https://psychobackend-312700987588.europe-central2.run.app/api/students/${id}/`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setStudent(data);
-          setEditedData(data);
-          setLoading(false);
-        })
-        .catch(console.error);
-    });
-  }, [user, id]);
+    const handleChange = e => {
+        setForm({ ...form, [e.target.name]: e.target.value });
+    };
 
-  const handleSave = async () => {
-    const token = await user.getIdToken();
-    fetch(`https://psychobackend-312700987588.europe-central2.run.app/api/students/${id}/`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(editedData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setStudent(data);
-        alert("Zapisano zmiany");
-      })
-      .catch(console.error);
-  };
+    const handleSave = async () => {
+        try {
+            const token = await user.getIdToken();
+            const res = await fetch(
+                `https://psychobackend-312700987588.europe-central2.run.app/students/${id}/`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(form)
+                }
+            );
+            if (!res.ok) throw new Error("Błąd zapisu");
+            const data = await res.json();
+            setStudent(data);
+            setEditMode(false);
+        } catch (e) {
+            alert("Błąd zapisu");
+        }
+    };
 
-  if (loading) return <div>Ładowanie...</div>;
+    if (loading) return <div>Ładowanie...</div>;
+    if (!student) return <div>Błąd ładowania danych dziecka.</div>;
 
-  return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">
-        Szczegóły ucznia: {student.name} {student.surname}
-      </h1>
-
-      <div className="mb-4">
-        <label className="block">Opis:</label>
-        <textarea
-          className="border p-2 w-full"
-          value={editedData.description || ""}
-          onChange={(e) => setEditedData({ ...editedData, description: e.target.value })}
-        />
-      </div>
-
-      <div className="mb-4">
-        <label>Średnia ocen:</label>
-        <input
-          type="number"
-          value={editedData.avg_marks || ""}
-          onChange={(e) => setEditedData({ ...editedData, avg_marks: parseFloat(e.target.value) })}
-          className="border p-2 w-full"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label>Średnie zachowanie:</label>
-        <input
-          type="number"
-          value={editedData.avg_behaviour || ""}
-          onChange={(e) => setEditedData({ ...editedData, avg_behaviour: parseFloat(e.target.value) })}
-          className="border p-2 w-full"
-        />
-      </div>
-
-      {editedData.parent && (
-        <div className="border-t pt-4 mt-4">
-          <h2 className="text-lg font-semibold">Rodzic:</h2>
-          <p>
-            {editedData.parent.name} {editedData.parent.surname}, {editedData.parent.age} lat
-          </p>
-          <p>Email: {editedData.parent.email}</p>
-          <p>Telefon: {editedData.parent.phone}</p>
-          <p>Zawód: {editedData.parent.work}</p>
+    return (
+        <div style={{ maxWidth: 500, margin: "auto", color:  "#33006F", alignContent: "center" }}>
+            <h2>
+                {student.name} {student.surname}
+            </h2>
+            <p>
+                <strong>Wiek:</strong> {student.age}
+            </p>
+            <p>
+                <strong>Klasa:</strong> {student.class_name}
+            </p>
+            <p>
+                <strong>Rodzic:</strong> {student.parent ? `${student.parent.name} ${student.parent.surname}` : "Brak"}
+            </p>
+            <p>
+                <strong>Opis:</strong><br />
+                {editMode ? (
+                    <textarea
+                        name="description"
+                        value={form.description}
+                        onChange={handleChange}
+                        rows={3}
+                        style={{ width: "100%" }}
+                    />
+                ) : (
+                    student.description || "Brak"
+                )}
+            </p>
+            <p>
+                <strong>Śr. zachowanie:</strong>{" "}
+                {editMode ? (
+                    <input
+                        type="number"
+                        step="0.01"
+                        name="avg_behaviour"
+                        value={form.avg_behaviour}
+                        onChange={handleChange}
+                        style={{ width: 80 }}
+                    />
+                ) : (
+                    student.avg_behaviour ?? "Brak"
+                )}
+            </p>
+            <p>
+                <strong>Śr. ocena:</strong>{" "}
+                {editMode ? (
+                    <input
+                        type="number"
+                        step="0.01"
+                        name="avg_marks"
+                        value={form.avg_marks}
+                        onChange={handleChange}
+                        style={{ width: 80 }}
+                    />
+                ) : (
+                    student.avg_marks ?? "Brak"
+                )}
+            </p>
+            {role === "teacher" && (
+                editMode ? (
+                    <div>
+                        <button onClick={handleSave}>Zapisz</button>
+                        <button onClick={() => setEditMode(false)}>Anuluj</button>
+                    </div>
+                ) : (
+                    <button onClick={() => setEditMode(true)}>Edytuj dane</button>
+                )
+            )}
         </div>
-      )}
-
-      <button
-        onClick={handleSave}
-        className="mt-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        Zapisz zmiany
-      </button>
-    </div>
-  );
+    );
 }
