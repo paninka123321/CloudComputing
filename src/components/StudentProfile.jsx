@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "./StudentProfile.css";
+import { useNavigate } from "react-router-dom";
 
 export default function StudentProfile() {
     const { id } = useParams(); // /students/:id
@@ -11,6 +12,7 @@ export default function StudentProfile() {
     const [editMode, setEditMode] = useState(false);
     const [form, setForm] = useState({});
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchStudent = async () => {
@@ -75,6 +77,20 @@ export default function StudentProfile() {
 
     return (
     <div className="student-profile-container">
+        <button
+            onClick={() => navigate("/class")}
+            style={{
+                background: "none",
+                border: "none",
+                fontSize: "2rem",
+                cursor: "pointer",
+                color: "#33006F",
+                marginBottom: "1rem"
+            }}
+            aria-label="Powrót do listy uczniów"
+            >
+            ←
+            </button>
         <h2>
             {student.name} {student.surname}
         </h2>
