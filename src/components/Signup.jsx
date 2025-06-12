@@ -3,7 +3,7 @@ import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom"; // to handle navigation after signup
- 
+import "./Signup.css";
 
 
 const Signup = () => {
@@ -38,7 +38,8 @@ const Signup = () => {
   };
 
   return (
-    <div>
+  <div className="signup-container">
+    <div className="signup-card">
       <h2>Sign Up</h2>
       <form onSubmit={handleSignup}>
         <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -48,11 +49,12 @@ const Signup = () => {
           <option value="parent">Parent</option>
           <option value="teacher">Teacher</option>
         </select>
-        <button type="submit">Sign Up</button>
+        <button className="signup-btn" type="submit">Sign Up</button>
       </form>
-      {error && <p>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
     </div>
-  );
-};
+  </div>
+);
+}
 
 export default Signup;

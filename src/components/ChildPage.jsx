@@ -46,13 +46,13 @@ const ChildPage = () => {
         }
     };
 
-    if (loading) return <p>Ładowanie danych dziecka...</p>;
+    if (loading) return <p style={{ color: "black" }}>Ładowanie danych dziecka...</p>;
 
     return (
         <div>
-            <h1>Twoje dziecko/dzieci</h1>
+            <h1 style={{ color: "black" }}>Twoje dziecko/dzieci</h1>
             {children.length === 0 ? (
-                <p>Brak przypisanych dzieci.</p>
+                <p style={{ color: "black" }}>Brak przypisanych dzieci.</p>
             ) : (
                 <ul>
                     {children.map(child => (
@@ -82,8 +82,6 @@ const ChildPage = () => {
                                             : "Wszystko w porządku"}
                                     </strong>
                                 </div>
-
-
                             )}
                         </li>
                     ))}

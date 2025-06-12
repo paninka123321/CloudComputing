@@ -1,6 +1,7 @@
 // data completion form
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import "./CompleteProfile.css";
 
 const CompleteProfile = () => {
   const { user, role } = useAuth();
@@ -88,35 +89,34 @@ const CompleteProfile = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Uzupełnij swój profil uzytkownika({role})</h2>
-      <input placeholder="Imię" value={name} onChange={e => setName(e.target.value)} required />
-      <input placeholder="Nazwisko" value={surname} onChange={e => setSurname(e.target.value)} required />
-      <input placeholder="Wiek" type="number" value={age} onChange={e => setAge(e.target.value)} required />
+  <form onSubmit={handleSubmit} className="complete-profile-container">
+    <h2>Uzupełnij swój profil użytkownika ({role})</h2>
+    <input placeholder="Imię" value={name} onChange={e => setName(e.target.value)} required />
+    <input placeholder="Nazwisko" value={surname} onChange={e => setSurname(e.target.value)} required />
+    <input placeholder="Wiek" type="number" value={age} onChange={e => setAge(e.target.value)} required />
 
-      {role === "teacher" && (
-        <>
-          <input placeholder="Wykształcenie" value={education} onChange={e => setEducation(e.target.value)} required />
-          <input placeholder="Przedmiot" value={subject} onChange={e => setSubject(e.target.value)} required />
-          <input placeholder="Płeć" value={sex} onChange={e => setSex(e.target.value)} required />
-          <input placeholder="Nazwa klasy" value={className} onChange={e => setClassName(e.target.value)} required />
-          <input placeholder="Szkoła" value={schoolName} onChange={e => setSchoolName(e.target.value)} required />
-          <input placeholder="Email" value={user.email} disabled />
-        </>
-      )}
+    {role === "teacher" && (
+      <>
+        <input placeholder="Wykształcenie" value={education} onChange={e => setEducation(e.target.value)} required />
+        <input placeholder="Przedmiot" value={subject} onChange={e => setSubject(e.target.value)} required />
+        <input placeholder="Płeć" value={sex} onChange={e => setSex(e.target.value)} required />
+        <input placeholder="Nazwa klasy" value={className} onChange={e => setClassName(e.target.value)} required />
+        <input placeholder="Szkoła" value={schoolName} onChange={e => setSchoolName(e.target.value)} required />
+        <input placeholder="Email" value={user.email} disabled />
+      </>
+    )}
 
-      {role === "parent" && (
-        <>
-          <input placeholder="Zawód" value={work} onChange={e => setWork(e.target.value)} required />
-          <input placeholder="Telefon" value={phone} onChange={e => setPhone(e.target.value)} required />
-          <input placeholder="Email" value={user.email} disabled />
-        </>
-      )}
+    {role === "parent" && (
+      <>
+        <input placeholder="Zawód" value={work} onChange={e => setWork(e.target.value)} required />
+        <input placeholder="Telefon" value={phone} onChange={e => setPhone(e.target.value)} required />
+        <input placeholder="Email" value={user.email} disabled />
+      </>
+    )}
 
-      <button type="submit">Zapisz dane</button>
-      {error && <p>{error}</p>}
-    </form>
-  );
-};
-
+    <button type="submit">Zapisz dane</button>
+    {error && <p>{error}</p>}
+  </form>
+);
+}
 export default CompleteProfile;

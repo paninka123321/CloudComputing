@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import "./StudentProfile.css";
 
 export default function StudentProfile() {
     const { id } = useParams(); // /students/:id
@@ -73,73 +74,72 @@ export default function StudentProfile() {
     if (!student) return <div>Błąd ładowania danych dziecka.</div>;
 
     return (
-        <div style={{ maxWidth: 500, margin: "auto", color:  "#33006F", alignContent: "center" }}>
-            <h2>
-                {student.name} {student.surname}
-            </h2>
-            <p>
-                <strong>Wiek:</strong> {student.age}
-            </p>
-            <p>
-                <strong>Klasa:</strong> {student.class_name}
-            </p>
-            <p>
-                <strong>Rodzic:</strong> {student.parent ? `${student.parent.name} ${student.parent.surname}` : "Brak"}
-            </p>
-            <p>
-                <strong>Opis:</strong><br />
-                {editMode ? (
-                    <textarea
-                        name="description"
-                        value={form.description}
-                        onChange={handleChange}
-                        rows={3}
-                        style={{ width: "100%" }}
-                    />
-                ) : (
-                    student.description || "Brak"
-                )}
-            </p>
-            <p>
-                <strong>Śr. zachowanie:</strong>{" "}
-                {editMode ? (
-                    <input
-                        type="number"
-                        step="0.01"
-                        name="avg_behaviour"
-                        value={form.avg_behaviour}
-                        onChange={handleChange}
-                        style={{ width: 80 }}
-                    />
-                ) : (
-                    student.avg_behaviour ?? "Brak"
-                )}
-            </p>
-            <p>
-                <strong>Śr. ocena:</strong>{" "}
-                {editMode ? (
-                    <input
-                        type="number"
-                        step="0.01"
-                        name="avg_marks"
-                        value={form.avg_marks}
-                        onChange={handleChange}
-                        style={{ width: 80 }}
-                    />
-                ) : (
-                    student.avg_marks ?? "Brak"
-                )}
-            </p>
-            {role === "teacher" && (
-                editMode ? (
-                    <div>
-                        <button onClick={handleSave}>Zapisz</button>
-                        <button onClick={() => setEditMode(false)}>Anuluj</button>
-                    </div>
-                ) : (
-                    <button onClick={() => setEditMode(true)}>Edytuj dane</button>
-                )
+    <div className="student-profile-container">
+        <h2>
+            {student.name} {student.surname}
+        </h2>
+        <p>
+            <strong>Wiek:</strong> {student.age}
+        </p>
+        <p>
+            <strong>Klasa:</strong> {student.class_name}
+        </p>
+        <p>
+            <strong>Rodzic:</strong> {student.parent ? `${student.parent.name} ${student.parent.surname}` : "Brak"}
+        </p>
+        <p>
+            <strong>Opis:</strong><br />
+            {editMode ? (
+                <textarea
+                    name="description"
+                    value={form.description}
+                    onChange={handleChange}
+                    rows={3}
+                />
+            ) : (
+                student.description || "Brak"
             )}
-        </div>
-    );
+        </p>
+        <p>
+            <strong>Śr. zachowanie:</strong>{" "}
+            {editMode ? (
+                <input
+                    type="number"
+                    step="0.01"
+                    name="avg_behaviour"
+                    value={form.avg_behaviour}
+                    onChange={handleChange}
+                />
+            ) : (
+                student.avg_behaviour ?? "Brak"
+            )}
+        </p>
+        <p>
+            <strong>Śr. ocena:</strong>{" "}
+            {editMode ? (
+                <input
+                    type="number"
+                    step="0.01"
+                    name="avg_marks"
+                    value={form.avg_marks}
+                    onChange={handleChange}
+                />
+            ) : (
+                student.avg_marks ?? "Brak"
+            )}
+        </p>
+        {role === "teacher" && (
+            editMode ? (
+                <div className="button-group">
+                    <button onClick={handleSave}>Zapisz</button>
+                    <button onClick={() => setEditMode(false)}>Anuluj</button>
+                </div>
+            ) : (
+                <div className="button-group">
+                    <button onClick={() => setEditMode(true)}>Edytuj dane</button>
+                </div>
+            )
+        )}
+    </div>
+);
 }
