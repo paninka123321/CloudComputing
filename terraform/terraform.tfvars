@@ -1,3 +1,6 @@
 project_id = "psychological-app-a359c"
 region     = "europe-west1"
 credentials_file = "./terraform-sa.json"
+django_secret     = "django-insecure-n6h3rw#=rpi_oubg!prwa1zlw04_9ee$$if3yw1&m$u1bu%52m"
+db_user           = "postgres"
+db_password       = "postgres_password"

@@ -1,4 +1,5 @@
 provider "google" {
-  project = "psychological-app-a359c"
-  region  = "europe-central2"
+  credentials = file(var.credentials_file)
+  project     = var.project_id
+  region      = var.region
 }

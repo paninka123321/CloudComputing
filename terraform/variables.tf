@@ -1,15 +1,7 @@
-variable "project_id" {
-  description = "GCP project ID"
-  type = string
-}
+variable "project_id" {}
+variable "region" {}
+variable "credentials_file" {}
+variable "django_secret" {}
 
-variable "region" {
-  description = "GCP region"
-  type    = string
-  default = "europe-west1"
-}
-
-variable "credentials_file" {
-  description = "Path to the service account key JSON"
-  type        = string
-}
+variable "db_user" {}
+variable "db_password" {}

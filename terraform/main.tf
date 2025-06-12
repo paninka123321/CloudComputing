@@ -1,58 +1,24 @@
-terraform {
-  required_version = ">= 1.5.0"
-
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 5.0"  # You can pin more precisely if needed
-    }
-  }
-
-  backend "gcs" {
-    bucket = "tf-state-psychological-bucket"   # Replace with your actual bucket name
-    prefix = "terraform/state"             # Optional path inside the bucket
-  }
-}
-
-provider "google" {
-  credentials = file(var.credentials_file)  # Usually points to a .json key file or uses ADC
-  project     = var.project_id
-  region      = var.region
-}
-
-resource "google_cloud_run_service" "psychobackend" {
+# === Cloud Run ===
+resource "google_cloud_run_service" "django_app" {
   name     = "psychobackend"
-  location = "europe-central2"
+  location = var.region
 
   template {
     spec {
       containers {
-        image = "europe-central2-docker.pkg.dev/psychological-app-a359c/psycho-docker/quickstart"
-
-        env {
-          name  = "CLOUDRUN_SERVICE_URL"
-          value = "https://psychobackend-312700987588.europe-central2.run.app"
-        }
-
-        env {
-          name  = "DB_HOST"
-          value = "/cloudsql/psychological-app-a359c:europe-central2:psychological-db"
-        }
-
+        image = "europe-central2-docker.pkg.dev/${var.project_id}/psycho-docker/latest"
         ports {
-          container_port = 8080
+          container_port = 8000
         }
-      }
-    }
-
-    metadata {
-      annotations = {
-        "run.googleapis.com/cloudsql-instances" = "psychological-app-a359c:europe-central2:psychological-db"
+        env {
+          name  = "DJANGO_SECRET_KEY"
+          value = var.django_secret
+        }
       }
     }
   }
 
-  traffics {
+  traffic {
     percent         = 100
     latest_revision = true
   }
@@ -60,13 +26,75 @@ resource "google_cloud_run_service" "psychobackend" {
   autogenerate_revision_name = true
 }
 
+resource "google_cloud_run_service_iam_member" "allow_all" {
+  service  = google_cloud_run_service.django_app.name
+  location = var.region
+  role     = "roles/run.invoker"
+  member   = "allUsers"
+}
 
-resource "google_storage_bucket" "frontend_bucket" {
-  name                        = "${var.project_id}-frontend"
-  location                    = var.region
-  force_destroy               = true
-  uniform_bucket_level_access = true
-
+# === Frontend (static GCS hosting) ===
+resource "google_storage_bucket" "frontend" {
+  name     = "psychological-app-a359c-frontend"
+  location = "europe-west1"
   website {
     main_page_suffix = "index.html"
-    not_found_page   = "in
+    not_found_page   = "index.html"
+  }
+  uniform_bucket_level_access = true
+  force_destroy = true
+}
+
+resource "google_storage_bucket_iam_member" "frontend_public" {
+  bucket = google_storage_bucket.frontend.name
+  role   = "roles/storage.objectViewer"
+  member = "allUsers"
+}
+
+# === Artifact Registry (Docker) ===
+resource "google_artifact_registry_repository" "docker_repo" {
+  location      = var.region
+  repository_id = "psycho-docker"
+  format        = "DOCKER"
+  description   = "Repozytorium obrazów Dockera"
+}
+
+# === Cloud SQL ===
+resource "google_sql_database_instance" "postgres_instance" {
+  name             = "psychological-db"
+  database_version = "POSTGRES_17"
+  region           = var.region
+
+  settings {
+    tier = "db-f1-micro"
+    ip_configuration {
+      ipv4_enabled    = true
+      authorized_networks {
+        name  = "public"
+        value = "0.0.0.0/0"
+      }
+    }
+  }
+}
+
+resource "google_sql_database" "app_db" {
+  name     = "appdb"
+  instance = google_sql_database_instance.postgres_instance.name
+}
+
+resource "google_sql_user" "default" {
+  name     = var.db_user
+  instance = google_sql_database_instance.postgres_instance.name
+  password = var.db_password
+}
+
+# === Firebase Auth (email login only) ===
+resource "google_identity_platform_project_default_config" "firebase_auth" {
+  project = var.project_id
+
+  sign_in {
+    email {
+      enabled = true
+    }
+  }
+}
