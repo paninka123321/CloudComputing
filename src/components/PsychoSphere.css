@@ -20,6 +20,7 @@
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   text-align: left;
+  color: #7b3fd1;
 }
 
 .psych-section h2 {
@@ -30,6 +31,7 @@
 .psych-section p {
   font-size: 1.1rem;
   line-height: 1.6;
+  color: #7b3fd1;
 }
 
 blockquote {
